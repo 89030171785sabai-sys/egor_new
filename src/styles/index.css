@@ -1,52 +1,97 @@
 @import 'tailwindcss';
 
 /*
- * Design tokens. Values here are provisional placeholders — they get replaced
- * with the real palette, type scale and radii once the reference design is
- * available. Every component reads from these tokens, never from raw hex.
+ * Brand tokens. Colours and radii are read off the client's own site, so the
+ * whole palette lives here and components never reach for a raw value.
  */
 @theme {
-  --color-brand-50: #fdf6ef;
-  --color-brand-100: #f9e6d2;
-  --color-brand-200: #f0c79c;
-  --color-brand-300: #e3a15f;
-  --color-brand-400: #d67f33;
-  --color-brand-500: #b95f18;
-  --color-brand-600: #97490f;
-  --color-brand-700: #74370c;
-  --color-brand-800: #4f250a;
-  --color-brand-900: #2b1406;
+  /* Terracotta — the accent: buttons, figures, markers. */
+  --color-brand-50: #fdf2ea;
+  --color-brand-100: #fae0ce;
+  --color-brand-200: #f4c09e;
+  --color-brand-300: #ec9a68;
+  --color-brand-400: #e37b40;
+  --color-brand-500: #d9642a;
+  --color-brand-600: #b84f1f;
+  --color-brand-700: #8e3d18;
+  --color-brand-800: #632a11;
+  --color-brand-900: #3a1809;
 
-  --color-ink-50: #f6f6f5;
-  --color-ink-100: #e7e6e4;
-  --color-ink-300: #b3b0ab;
-  --color-ink-500: #6f6b64;
-  --color-ink-700: #3d3a35;
-  --color-ink-900: #1c1a17;
+  /* Charcoal — text and the dark sections. */
+  --color-ink-50: #f7f6f4;
+  --color-ink-100: #eae7e2;
+  --color-ink-200: #d6d1c9;
+  --color-ink-300: #b0aaa1;
+  --color-ink-400: #868076;
+  --color-ink-500: #625d55;
+  --color-ink-600: #45413b;
+  --color-ink-700: #2b2a28;
+  --color-ink-800: #1d1c1a;
+  --color-ink-900: #121110;
 
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  /* Warm neutrals — page and card backgrounds. */
+  --color-sand-50: #faf6f1;
+  --color-sand-100: #f7f1ea;
+  --color-sand-200: #f1e7dc;
+  --color-sand-300: #e6d8c8;
 
-  --radius-card: 1rem;
-  --radius-btn: 0.625rem;
+  --font-display: 'Prata', 'Times New Roman', serif;
+  --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
 
-  --container-content: 75rem;
+  --radius-card: 1.125rem;
+  --radius-panel: 1.5rem;
+
+  --container-content: 80rem;
 }
 
 html {
   scroll-behavior: smooth;
+  /* The sticky header floats over content, so anchors need clearance. */
+  scroll-padding-top: 7rem;
 }
 
 body {
-  background-color: var(--color-white);
-  color: var(--color-ink-900);
+  background-color: var(--color-sand-100);
+  color: var(--color-ink-800);
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Respect users who ask for less motion — scroll reveals fall back to static. */
+/*
+ * Display headings are set in the accent serif, uppercase and tight, the way
+ * the brand sets them.
+ */
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+}
+
+/* Scroll reveal: elements start shifted and settle when they enter view. */
+.reveal {
+  opacity: 0;
+  transform: translateY(1.25rem);
+  transition:
+    opacity 0.7s ease-out,
+    transform 0.7s ease-out;
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
   *,
   *::before,
   *::after {
