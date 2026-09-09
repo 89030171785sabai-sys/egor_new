@@ -34,7 +34,11 @@ export function Footer() {
               {contacts.email}
             </a>
           )}
-          {hasContact(contacts.address) && <p className="py-1 text-ink-300">{contacts.address}</p>}
+          {contacts.addresses.map((address) => (
+            <p key={address.street} className="py-1 text-ink-300">
+              {address.city}, {address.street}
+            </p>
+          ))}
           {hasContact(contacts.workingHours) && (
             <p className="py-1 text-ink-300">{contacts.workingHours}</p>
           )}
@@ -44,7 +48,9 @@ export function Footer() {
           <p className="mb-3 font-semibold text-white">Реквизиты</p>
           {hasContact(contacts.legal.entity) && <p className="py-1">{contacts.legal.entity}</p>}
           {hasContact(contacts.legal.inn) && <p className="py-1">ИНН {contacts.legal.inn}</p>}
-          {hasContact(contacts.legal.ogrn) && <p className="py-1">ОГРН {contacts.legal.ogrn}</p>}
+          {hasContact(contacts.legal.ogrnip) && (
+            <p className="py-1">ОГРНИП {contacts.legal.ogrnip}</p>
+          )}
         </div>
       </div>
 

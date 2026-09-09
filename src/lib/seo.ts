@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-const SITE_NAME = 'Дым и Пар'
+const SITE_NAME = 'Жар-Дым'
 const ORIGIN = 'https://xn----7sbnf7av3f.xn--p1ai'
 
 function upsertMeta(selector: string, create: () => HTMLElement, value: string) {

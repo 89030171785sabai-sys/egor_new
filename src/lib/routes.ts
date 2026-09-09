@@ -72,7 +72,7 @@ export const routes: RouteMeta[] = [
     path: '/contacts',
     label: 'Контакты',
     title: 'Контакты',
-    description: 'Телефон, мессенджеры и адрес производства банных чанов «Дым и Пар».',
+    description: 'Телефон, мессенджеры и адрес производства банных чанов «Жар-Дым».',
     inNav: true,
   },
 ]
