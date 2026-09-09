@@ -13,6 +13,18 @@ export interface ModelPrice {
   to?: number
 }
 
+/**
+ * Sizes a model is built in, as the maximum number of people. The catalogue
+ * filter works off these. Confirm the real availability per model with the
+ * client — for now every tub carries the full size range and the tub-shaped
+ * bath carries the two it makes sense in.
+ */
+export type Capacity = 4 | 6 | 9 | 12
+
+export const capacities: Capacity[] = [4, 6, 9, 12]
+
+export const capacityLabel = (capacity: Capacity) => `до ${capacity}`
+
 export interface Model {
   slug: string
   name: string
@@ -24,6 +36,7 @@ export interface Model {
   /** Hours to heat from cold to bathing temperature. */
   heatingHours: number
   theme: ModelTheme
+  sizes: Capacity[]
   /** Kit contents, as listed on the catalogue card. */
   includes: string[]
   price?: ModelPrice
@@ -40,6 +53,7 @@ export const models: Model[] = [
     description: 'Гранёная чаша на стационарной печи с внутренней топкой.',
     heatingHours: 3.5,
     theme: 'ink',
+    sizes: [4, 6, 9, 12],
     includes: [
       'Чаша из пищевой нержавейки',
       'Отделка «стандарт»',
@@ -59,6 +73,7 @@ export const models: Model[] = [
     description: 'Вальцованная форма чаши на печи-подставке.',
     heatingHours: 3.5,
     theme: 'graphite',
+    sizes: [4, 6, 9, 12],
     includes: [
       'Чаша из пищевой нержавейки',
       'Отделка «стандарт»',
@@ -78,6 +93,7 @@ export const models: Model[] = [
     description: 'Гранёная чаша на печи с водяным контуром — для ускоренного нагрева.',
     heatingHours: 2,
     theme: 'copper',
+    sizes: [4, 6, 9, 12],
     includes: [
       'Чаша из пищевой нержавейки',
       'Отделка «стандарт»',
@@ -98,6 +114,7 @@ export const models: Model[] = [
     description: 'Печь можно расположить в 1,5–2 м от чаши — удобно для монтажа в террасу.',
     heatingHours: 2.5,
     theme: 'sand',
+    sizes: [4, 6, 9, 12],
     includes: [
       'Чаша из пищевой нержавейки',
       'Отделка «стандарт»',
@@ -120,6 +137,7 @@ export const models: Model[] = [
       'Печь с водяным контуром и теплосъёмными трубами. Вертикальная загрузка дров, низкий борт для безопасности.',
     heatingHours: 1.5,
     theme: 'terracotta',
+    sizes: [4, 6, 9, 12],
     includes: [
       'Чаша из пищевой нержавейки',
       'Отделка «стандарт»',
@@ -141,6 +159,7 @@ export const models: Model[] = [
     description: 'Прямоугольная купель со встроенной печью и дровником. Премиальное решение.',
     heatingHours: 2,
     theme: 'olive',
+    sizes: [6, 9],
     includes: [
       'Купель из пищевой нержавейки',
       'Встроенная печь и дровник',
