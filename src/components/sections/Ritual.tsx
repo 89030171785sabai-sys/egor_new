@@ -28,6 +28,7 @@ export function Ritual() {
                 silhouette={false}
                 className="-ml-8 size-32 shrink-0 rounded-full"
                 label="живой огонь в топке"
+                showLabel={false}
               />
               <p className="text-lg leading-snug text-ink-700">
                 Живой огонь и вода — вместо кафеля и таймера

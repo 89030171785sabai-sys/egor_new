@@ -25,14 +25,17 @@ export function PlaceholderImage({
   ratio = '4/3',
   className = '',
   silhouette = true,
+  showLabel = true,
 }: {
   tone?: PlaceholderTone
-  /** What photograph belongs here, shown as a caption chip. */
+  /** What photograph belongs here. Always announced, shown when it fits. */
   label?: string
   /** Any CSS aspect-ratio value, e.g. '16/9' or '3/4'. */
   ratio?: string
   className?: string
   silhouette?: boolean
+  /** Off for slots too small or too round to carry the caption chip. */
+  showLabel?: boolean
 }) {
   const palette = tones[tone]
   // The caption is positioned against this element, so it has to be a
@@ -89,7 +92,7 @@ export function PlaceholderImage({
         </svg>
       )}
 
-      {label && (
+      {label && showLabel && (
         <span className="absolute bottom-3 left-3 rounded-full bg-black/35 px-3 py-1 text-[0.6875rem] text-white/90 backdrop-blur">
           {label}
         </span>
