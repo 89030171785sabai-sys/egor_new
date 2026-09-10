@@ -9,6 +9,7 @@ import { Production } from '../components/sections/Production'
 import { Guarantees } from '../components/sections/Guarantees'
 import { Process } from '../components/sections/Process'
 import { Delivery } from '../components/sections/Delivery'
+import { Reviews } from '../components/sections/Reviews'
 import { Faq } from '../components/sections/Faq'
 import { Contacts } from '../components/sections/Contacts'
 import { FinalCta } from '../components/sections/FinalCta'
@@ -35,6 +36,7 @@ export function HomePage() {
       <Process />
       <Guarantees />
       <Delivery />
+      <Reviews />
       <Faq />
       <Contacts />
       <FinalCta />

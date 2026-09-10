@@ -1,7 +1,5 @@
 import { useEffect } from 'react'
-
-const SITE_NAME = 'Жар-Дым'
-const ORIGIN = 'https://xn----7sbnf7av3f.xn--p1ai'
+import { SITE_NAME, SITE_ORIGIN } from './site'
 
 function upsertMeta(selector: string, create: () => HTMLElement, value: string) {
   let el = document.head.querySelector(selector)
@@ -41,6 +39,6 @@ export function useSeo({
       const link = document.createElement('link')
       link.rel = 'canonical'
       return link
-    }, `${ORIGIN}${path}`)
+    }, `${SITE_ORIGIN}${path}`)
   }, [title, description, path, robots])
 }

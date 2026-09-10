@@ -35,6 +35,10 @@ export interface Model {
   description: string
   /** Hours to heat from cold to bathing temperature. */
   heatingHours: number
+  /** Stove layout — the trait that separates the models. */
+  stove: string
+  /** Shape of the bowl. */
+  bowl: string
   theme: ModelTheme
   sizes: Capacity[]
   /** Kit contents, as listed on the catalogue card. */
@@ -52,6 +56,8 @@ export const models: Model[] = [
     kind: 'Банный чан',
     description: 'Гранёная чаша на стационарной печи с внутренней топкой.',
     heatingHours: 3.5,
+    stove: 'Стационарная, с внутренней топкой',
+    bowl: 'Гранёная',
     theme: 'ink',
     sizes: [4, 6, 9, 12],
     includes: [
@@ -72,6 +78,8 @@ export const models: Model[] = [
     kind: 'Банный чан',
     description: 'Вальцованная форма чаши на печи-подставке.',
     heatingHours: 3.5,
+    stove: 'Печь-подставка под чашей',
+    bowl: 'Вальцованная',
     theme: 'graphite',
     sizes: [4, 6, 9, 12],
     includes: [
@@ -92,6 +100,8 @@ export const models: Model[] = [
     kind: 'Банный чан',
     description: 'Гранёная чаша на печи с водяным контуром — для ускоренного нагрева.',
     heatingHours: 2,
+    stove: 'С водяным контуром и подставкой',
+    bowl: 'Гранёная',
     theme: 'copper',
     sizes: [4, 6, 9, 12],
     includes: [
@@ -113,6 +123,8 @@ export const models: Model[] = [
     kind: 'Банный чан',
     description: 'Печь можно расположить в 1,5–2 м от чаши — удобно для монтажа в террасу.',
     heatingHours: 2.5,
+    stove: 'Выносная, в 1,5–2 м от чаши',
+    bowl: 'Гранёная',
     theme: 'sand',
     sizes: [4, 6, 9, 12],
     includes: [
@@ -136,6 +148,8 @@ export const models: Model[] = [
     description:
       'Печь с водяным контуром и теплосъёмными трубами. Вертикальная загрузка дров, низкий борт для безопасности.',
     heatingHours: 1.5,
+    stove: 'Приварная боковая с водяным контуром',
+    bowl: 'Гранёная, низкий борт',
     theme: 'terracotta',
     sizes: [4, 6, 9, 12],
     includes: [
@@ -158,6 +172,8 @@ export const models: Model[] = [
     kind: 'Купель',
     description: 'Прямоугольная купель со встроенной печью и дровником. Премиальное решение.',
     heatingHours: 2,
+    stove: 'Встроенная, с дровником',
+    bowl: 'Прямоугольная',
     theme: 'olive',
     sizes: [6, 9],
     includes: [
