@@ -181,7 +181,10 @@ export function Header() {
   )
 }
 
-/** Renders a route as a router link and an in-page target as a plain anchor. */
+/**
+ * Renders anything rooted at the site as a router link, so the base path is
+ * applied; a bare in-page target stays a plain anchor.
+ */
 function NavItem({
   to,
   className,
@@ -193,7 +196,7 @@ function NavItem({
   onClick?: () => void
   children: React.ReactNode
 }) {
-  if (to.includes('#')) {
+  if (!to.startsWith('/')) {
     return (
       <a href={to} className={className} onClick={onClick}>
         {children}

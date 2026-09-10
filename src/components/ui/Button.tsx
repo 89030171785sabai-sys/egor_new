@@ -65,8 +65,10 @@ export function ButtonLink({
     </>
   )
 
-  // Anchors and external links stay plain anchors; routes go through the router.
-  if (to.startsWith('#') || to.startsWith('http') || to.startsWith('tel:') || to.startsWith('/#')) {
+  // Only same-page and external targets stay plain anchors. Anything starting
+  // with a slash — hash included — goes through the router, which applies the
+  // base path the site is served from.
+  if (to.startsWith('#') || to.startsWith('http') || to.startsWith('tel:') || to.startsWith('mailto:')) {
     return (
       <a href={to} className={classes} {...rest}>
         {content}
