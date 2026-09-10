@@ -1,8 +1,9 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Button } from '../ui/Button'
 import { PlaceholderImage } from '../ui/PlaceholderImage'
 import { LeadForm } from '../forms/LeadForm'
 import { quizSteps, summariseAnswers, type QuizOption, type QuizStep } from '../../data/quiz'
+import { QUIZ_PRESELECT_EVENT, type QuizPreselect } from '../widgets/FloatingWidgets'
 
 type Answers = Record<string, string[]>
 
@@ -22,6 +23,23 @@ export function Quiz() {
   const isLast = index === quizSteps.length - 1
 
   const summary = useMemo(() => summariseAnswers(answers), [answers])
+
+  // The floating picker answers the first question; the configurator takes it
+  // and opens on the next step rather than asking again.
+  useEffect(() => {
+    const onPreselect = (event: Event) => {
+      const { stepId, optionId } = (event as CustomEvent<QuizPreselect>).detail
+      const stepIndex = quizSteps.findIndex((candidate) => candidate.id === stepId)
+      if (stepIndex === -1) return
+
+      setAnswers((current) => ({ ...current, [stepId]: [optionId] }))
+      setFinished(false)
+      setIndex(Math.min(stepIndex + 1, quizSteps.length - 1))
+    }
+
+    window.addEventListener(QUIZ_PRESELECT_EVENT, onPreselect)
+    return () => window.removeEventListener(QUIZ_PRESELECT_EVENT, onPreselect)
+  }, [])
 
   function choose(option: QuizOption) {
     if (step.mode === 'single') {

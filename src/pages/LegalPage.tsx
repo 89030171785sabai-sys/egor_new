@@ -41,7 +41,7 @@ function LegalContent({
         <span className="text-ink-700">{document.title}</span>
       </nav>
 
-      <h1 className="font-display mt-6 text-3xl uppercase sm:text-4xl">{document.title}</h1>
+      <h1 className="font-display mt-6 text-[2rem] sm:text-[2.5rem]">{document.title}</h1>
       <p className="mt-3 text-sm text-ink-400">Редакция от {document.updated}</p>
       <p className="mt-6 leading-relaxed text-ink-600">{document.intro}</p>
 

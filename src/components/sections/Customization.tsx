@@ -32,7 +32,7 @@ export function Customization() {
   return (
     <section className="bg-ink-900 py-20 lg:py-28">
       <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
-        <h2 className="font-display mx-auto max-w-3xl text-center text-3xl uppercase sm:text-4xl lg:text-5xl">
+        <h2 className="font-display mx-auto max-w-3xl text-center text-[2rem] sm:text-[2.75rem] lg:text-[3.5rem]">
           <span className="text-brand-400">Место силы</span>
           <span className="text-sand-100">, отдыха и общения</span>
         </h2>

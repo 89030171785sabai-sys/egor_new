@@ -42,8 +42,8 @@
   --color-sand-200: #eceef1;
   --color-sand-300: #dee1e6;
 
-  --font-display: 'Manrope', ui-sans-serif, system-ui, sans-serif;
-  --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Onest', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Onest', ui-sans-serif, system-ui, sans-serif;
 
   --radius-card: 1.125rem;
   --radius-panel: 1.5rem;
@@ -65,14 +65,14 @@ body {
 }
 
 /*
- * Display headings are set in the accent serif, uppercase and tight, the way
- * the brand sets them.
+ * Display headings: sentence case, light, very large and tightly leaded — the
+ * way the reference sets them. Weight carries the emphasis, not capitals.
  */
 .font-display {
   font-family: var(--font-display);
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 1.03;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.06;
 }
 
 /* Scroll reveal: elements start shifted and settle when they enter view. */

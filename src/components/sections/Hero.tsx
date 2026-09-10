@@ -23,7 +23,7 @@ export function Hero() {
 
       <div className="mx-auto w-full max-w-(--container-content) px-4 pt-32 pb-16 sm:px-6 lg:pt-40 lg:pb-24">
         <div className="mx-auto max-w-3xl text-center">
-          <h1 className="font-display text-4xl text-white uppercase sm:text-5xl lg:text-[3.5rem]">
+          <h1 className="font-display text-[2.5rem] text-white sm:text-[3.25rem] lg:text-[4.25rem]">
             Банный чан под ключ{' '}
             {/* The price is the punchline — it never breaks away from the dash. */}
             <span className="whitespace-nowrap">— от {formatPrice(priceFrom)}</span>

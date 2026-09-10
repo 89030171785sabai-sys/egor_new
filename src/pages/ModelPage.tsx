@@ -73,7 +73,7 @@ function ModelDetail({ model }: { model: Model }) {
 
           <h1 className="mt-6 text-white">
             <span className="block text-xl sm:text-2xl">{model.kind}</span>
-            <span className="font-display mt-1 block text-4xl uppercase sm:text-6xl lg:text-7xl">
+            <span className="font-display mt-1 block text-[2.75rem] sm:text-[4rem] lg:text-[5rem]">
               {model.name}
             </span>
           </h1>

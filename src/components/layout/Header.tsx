@@ -33,25 +33,25 @@ export function Header() {
     <header className="pointer-events-none fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4 sm:pt-4">
       <div className="mx-auto max-w-(--container-content)">
         <div
-          className={`pointer-events-auto mx-auto flex items-center gap-3 rounded-full bg-white/95 backdrop-blur transition-all duration-300 ${
-            scrolled ? 'px-4 py-2 shadow-lg shadow-ink-900/10' : 'px-5 py-3 shadow-md shadow-ink-900/5'
+          className={`pointer-events-auto mx-auto flex w-fit max-w-full items-center gap-2 rounded-full bg-white/95 backdrop-blur transition-all duration-300 ${
+            scrolled ? 'px-3 py-1.5 shadow-lg shadow-ink-900/10' : 'px-4 py-2 shadow-md shadow-ink-900/5'
           }`}
         >
           <Link
             to="/"
-            className="font-display shrink-0 text-lg tracking-wide uppercase sm:text-xl"
+            className="shrink-0 px-2 text-base font-semibold tracking-[0.12em] uppercase sm:text-lg"
             aria-label={`${contacts.companyName} — на главную`}
           >
             {contacts.companyName}
           </Link>
 
-          <nav className="mx-auto hidden items-center gap-1 xl:flex">
+          <nav className="hidden items-center gap-0.5 lg:flex">
             {modelRoutes.map((route) => (
               <NavLink
                 key={route.path}
                 to={route.path}
                 className={({ isActive }) =>
-                  `rounded-full px-3 py-1.5 text-[0.8125rem] whitespace-nowrap transition-colors ${
+                  `rounded-full px-2.5 py-1.5 text-[0.8125rem] whitespace-nowrap transition-colors ${
                     isActive
                       ? 'bg-brand-500 text-white'
                       : 'text-ink-600 hover:bg-sand-200 hover:text-ink-900'
@@ -65,14 +65,14 @@ export function Header() {
 
           <a
             href={contacts.phone.href}
-            className="ml-auto hidden text-sm font-semibold whitespace-nowrap xl:ml-0 lg:block"
+            className="hidden pl-2 text-sm font-semibold whitespace-nowrap lg:block"
           >
             {contacts.phone.display}
           </a>
 
           <a
             href="#contacts"
-            className="hidden shrink-0 rounded-full bg-ink-800 px-4 py-2 text-sm text-white transition-colors hover:bg-ink-900 md:block"
+            className="hidden shrink-0 rounded-full bg-ink-900 px-4 py-2 text-sm text-white transition-colors hover:bg-ink-800 md:block"
           >
             Связаться
           </a>
@@ -94,7 +94,7 @@ export function Header() {
             onClick={() => setMenuOpen((open) => !open)}
             aria-expanded={menuOpen}
             aria-label={menuOpen ? 'Закрыть меню' : 'Открыть меню'}
-            className="ml-auto grid size-9 shrink-0 place-items-center rounded-full bg-sand-200 xl:hidden"
+            className="ml-auto grid size-9 shrink-0 place-items-center rounded-full bg-sand-200 lg:hidden"
           >
             <span className="relative block h-3 w-4">
               <span
@@ -117,7 +117,7 @@ export function Header() {
         </div>
 
         {menuOpen && (
-          <nav className="pointer-events-auto mt-2 max-h-[80dvh] overflow-y-auto rounded-panel bg-white p-5 shadow-xl shadow-ink-900/10 xl:hidden">
+          <nav className="pointer-events-auto mt-2 max-h-[80dvh] overflow-y-auto rounded-panel bg-white p-5 shadow-xl shadow-ink-900/10 lg:hidden">
             <p className="mb-2 text-xs tracking-wider text-ink-400 uppercase">Модели</p>
             {modelRoutes.map((route) => (
               <Link

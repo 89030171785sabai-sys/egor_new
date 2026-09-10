@@ -10,7 +10,7 @@ export interface Address {
 }
 
 export const contacts = {
-  companyName: 'Жар-Дым',
+  companyName: 'Дым и Пар',
   tagline: 'Банные чаны от производителя',
 
   phone: { display: '+7 (966) 666-01-21', href: 'tel:+79666660121' },

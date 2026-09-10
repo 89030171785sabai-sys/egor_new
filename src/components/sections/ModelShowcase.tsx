@@ -44,7 +44,7 @@ function Banner({ model, withCopy }: { model: Model; withCopy: boolean }) {
 
       <div className="flex h-full flex-col justify-between p-6 sm:p-8">
         <div className="flex flex-wrap items-start justify-between gap-6">
-          <h3 className="font-display text-4xl text-white uppercase sm:text-5xl lg:text-6xl">
+          <h3 className="font-display text-[2.5rem] text-white sm:text-[3.25rem] lg:text-[4rem]">
             {model.name}
           </h3>
 

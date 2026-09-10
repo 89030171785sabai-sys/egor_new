@@ -2,6 +2,7 @@ import { Outlet, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import { Header } from './Header'
 import { Footer } from './Footer'
+import { FloatingWidgets } from '../widgets/FloatingWidgets'
 
 export function Layout() {
   const { pathname, hash } = useLocation()
@@ -27,6 +28,7 @@ export function Layout() {
         <Outlet />
       </main>
       <Footer />
+      <FloatingWidgets />
     </div>
   )
 }
