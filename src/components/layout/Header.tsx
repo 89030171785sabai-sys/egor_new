@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import { ModelDrawer } from './ModelDrawer'
 import { homeSections, modelRoutes } from '../../lib/routes'
 import { contacts, hasContact } from '../../data/contacts'
@@ -49,24 +49,6 @@ export function Header() {
             >
               {contacts.companyName}
             </Link>
-
-            <button
-              type="button"
-              onClick={() => setDrawerOpen(true)}
-              className="hidden shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-sm text-ink-700 transition-colors hover:bg-sand-200 md:inline-flex"
-            >
-              Модели
-              <svg viewBox="0 0 12 12" aria-hidden="true" className="size-2.5 text-ink-400">
-                <path
-                  d="m3 5 3 3 3-3"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
 
             <nav className="hidden items-center gap-0.5 lg:flex">
               {homeSections.map((section) => (
@@ -126,6 +108,37 @@ export function Header() {
               </span>
             </button>
           </div>
+
+          <nav
+            aria-label="Модели"
+            className={`pointer-events-auto mx-auto mt-2 hidden w-fit max-w-full items-center gap-0.5 rounded-full bg-white/95 px-2 py-1.5 backdrop-blur transition-all duration-300 md:flex ${
+              scrolled ? 'shadow-lg shadow-ink-900/10' : 'shadow-md shadow-ink-900/5'
+            }`}
+          >
+            {modelRoutes.map((route) => (
+              <NavLink
+                key={route.path}
+                to={route.path}
+                className={({ isActive }) =>
+                  `rounded-full px-3 py-1.5 text-[0.8125rem] whitespace-nowrap transition-colors ${
+                    isActive
+                      ? 'bg-brand-500 text-white'
+                      : 'text-ink-600 hover:bg-sand-200 hover:text-ink-900'
+                  }`
+                }
+              >
+                {route.label}
+              </NavLink>
+            ))}
+
+            <button
+              type="button"
+              onClick={() => setDrawerOpen(true)}
+              className="ml-1 shrink-0 rounded-full bg-sand-200 px-3 py-1.5 text-[0.8125rem] text-ink-700 transition-colors hover:bg-sand-300"
+            >
+              Все модели
+            </button>
+          </nav>
 
           {menuOpen && (
             <nav className="pointer-events-auto mx-auto mt-2 max-h-[80dvh] w-full max-w-md overflow-y-auto rounded-panel bg-white p-5 shadow-xl shadow-ink-900/10 lg:hidden">
