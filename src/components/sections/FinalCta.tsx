@@ -17,7 +17,7 @@ export function FinalCta() {
               <ButtonLink to="/#calculator" variant="dark" size="lg">
                 Получить каталог
               </ButtonLink>
-              <ButtonLink to="/#contacts" variant="ghost" size="lg">
+              <ButtonLink to="/contacts" variant="ghost" size="lg">
                 Заказать звонок
               </ButtonLink>
             </div>

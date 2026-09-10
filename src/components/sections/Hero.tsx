@@ -53,7 +53,7 @@ export function Hero() {
             <ButtonLink to="/#calculator" size="lg">
               Рассчитать стоимость за 5 минут
             </ButtonLink>
-            <ButtonLink to="/#contacts" variant="ghost" size="lg">
+            <ButtonLink to="/contacts" variant="ghost" size="lg">
               Заказать звонок
             </ButtonLink>
           </div>

@@ -79,7 +79,7 @@ export function Customization() {
               })}
             </div>
 
-            <ButtonLink to="/#contacts" variant="light" size="lg" arrow className="mt-8">
+            <ButtonLink to="/contacts" variant="light" size="lg" arrow className="mt-8">
               Обсудить свой проект
             </ButtonLink>
           </div>

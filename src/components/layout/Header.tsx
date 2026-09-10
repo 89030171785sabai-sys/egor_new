@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { ModelDrawer } from './ModelDrawer'
-import { homeSections, modelRoutes } from '../../lib/routes'
+import { navItems, modelRoutes } from '../../lib/routes'
 import { contacts, hasContact } from '../../data/contacts'
 
 /**
@@ -51,18 +51,18 @@ export function Header() {
             </Link>
 
             <nav className="hidden items-center gap-0.5 lg:flex">
-              {homeSections.map((section) => (
-                <a
-                  key={section.id}
-                  href={`/#${section.id}`}
-                  // The secondary sections wait for the width to carry them,
-                  // so the pill never outgrows the viewport.
+              {navItems.map((item) => (
+                <NavItem
+                  key={item.to}
+                  to={item.to}
+                  // The secondary sections wait for the width to carry them, so
+                  // the pill never outgrows the viewport.
                   className={`rounded-full px-2.5 py-1.5 text-sm whitespace-nowrap text-ink-700 transition-colors hover:bg-sand-200 ${
-                    section.primary ? '' : 'hidden xl:block'
+                    item.primary ? '' : 'hidden xl:block'
                   }`}
                 >
-                  {section.label}
-                </a>
+                  {item.label}
+                </NavItem>
               ))}
             </nav>
 
@@ -75,12 +75,12 @@ export function Header() {
               </a>
             )}
 
-            <a
-              href="/#contacts"
+            <Link
+              to="/contacts"
               className="ml-1 hidden shrink-0 rounded-full bg-ink-900 px-4 py-2 text-sm text-white transition-colors hover:bg-ink-800 sm:block"
             >
               Связаться
-            </a>
+            </Link>
 
             <button
               type="button"
@@ -143,15 +143,15 @@ export function Header() {
           {menuOpen && (
             <nav className="pointer-events-auto mx-auto mt-2 max-h-[80dvh] w-full max-w-md overflow-y-auto rounded-panel bg-white p-5 shadow-xl shadow-ink-900/10 lg:hidden">
               <p className="mb-2 text-xs tracking-wider text-ink-400 uppercase">Разделы</p>
-              {homeSections.map((section) => (
-                <a
-                  key={section.id}
-                  href={`/#${section.id}`}
+              {navItems.map((item) => (
+                <NavItem
+                  key={item.to}
+                  to={item.to}
                   onClick={() => setMenuOpen(false)}
                   className="block border-b border-sand-200 py-2.5 text-base last:border-0"
                 >
-                  {section.label}
-                </a>
+                  {item.label}
+                </NavItem>
               ))}
 
               <p className="mt-5 mb-2 text-xs tracking-wider text-ink-400 uppercase">Модели</p>
@@ -178,5 +178,32 @@ export function Header() {
 
       <ModelDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
     </>
+  )
+}
+
+/** Renders a route as a router link and an in-page target as a plain anchor. */
+function NavItem({
+  to,
+  className,
+  onClick,
+  children,
+}: {
+  to: string
+  className: string
+  onClick?: () => void
+  children: React.ReactNode
+}) {
+  if (to.includes('#')) {
+    return (
+      <a href={to} className={className} onClick={onClick}>
+        {children}
+      </a>
+    )
+  }
+
+  return (
+    <Link to={to} className={className} onClick={onClick}>
+      {children}
+    </Link>
   )
 }

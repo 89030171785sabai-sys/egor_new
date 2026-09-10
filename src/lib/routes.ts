@@ -28,6 +28,54 @@ export const modelRoutes: RouteMeta[] = models.map((model) => ({
   description: model.seoDescription,
 }))
 
+/**
+ * Sections of the site that own a page of their own. The home page keeps a
+ * short version of each and links here for the full one.
+ */
+export const contentRoutes: RouteMeta[] = [
+  {
+    path: '/catalog',
+    label: 'Каталог',
+    title: 'Каталог банных чанов',
+    description:
+      'Модели банных чанов и купелей: форма чаши, тип печи, время нагрева, комплектация и цены от 180 000 ₽.',
+  },
+  {
+    path: '/production',
+    label: 'Производство',
+    title: 'Производство банных чанов',
+    description:
+      'Собственный цех полного цикла: отбор древесины, сушка, нержавеющая сталь AISI 304 и 430, современное оборудование.',
+  },
+  {
+    path: '/delivery',
+    label: 'Доставка и оплата',
+    title: 'Доставка и оплата',
+    description:
+      'Доставка банных чанов по всей России со своих площадок, зоны и сроки, способы оплаты и предоплата 10%.',
+  },
+  {
+    path: '/guarantees',
+    label: 'Гарантии',
+    title: 'Гарантии и документы',
+    description:
+      'Гарантия 13 лет на изделие, сертификат стали, паспорт изделия и работа по договору.',
+  },
+  {
+    path: '/faq',
+    label: 'Вопросы',
+    title: 'Вопросы и ответы',
+    description:
+      'Ответы на частые вопросы о выборе, доставке, установке и уходе за банным чаном.',
+  },
+  {
+    path: '/contacts',
+    label: 'Контакты',
+    title: 'Контакты',
+    description: 'Телефон, мессенджеры, почта и адреса производств «Дым и Пар».',
+  },
+]
+
 export const legalRoutes: RouteMeta[] = [
   {
     path: '/privacy',
@@ -43,20 +91,25 @@ export const legalRoutes: RouteMeta[] = [
   },
 ]
 
-export const routes: RouteMeta[] = [homeRoute, ...modelRoutes, ...legalRoutes]
+export const routes: RouteMeta[] = [
+  homeRoute,
+  ...contentRoutes,
+  ...modelRoutes,
+  ...legalRoutes,
+]
 
 /**
- * Sections of the home page that the navigation scrolls to. Anchors, not
- * routes — the home page is a single long document.
+ * Main navigation: the section pages, plus the configurator, which stays an
+ * anchor because it lives on the home page.
  */
-export const homeSections = [
-  { id: 'catalog', label: 'Каталог', primary: true },
-  { id: 'calculator', label: 'Расчёт', primary: true },
-  { id: 'production', label: 'Производство', primary: false },
-  { id: 'delivery', label: 'Доставка', primary: true },
-  { id: 'guarantees', label: 'Гарантии', primary: false },
-  { id: 'faq', label: 'Вопросы', primary: false },
-  { id: 'contacts', label: 'Контакты', primary: true },
+export const navItems = [
+  { to: '/catalog', label: 'Каталог', primary: true },
+  { to: '/#calculator', label: 'Расчёт', primary: true },
+  { to: '/production', label: 'Производство', primary: false },
+  { to: '/delivery', label: 'Доставка', primary: true },
+  { to: '/guarantees', label: 'Гарантии', primary: false },
+  { to: '/faq', label: 'Вопросы', primary: false },
+  { to: '/contacts', label: 'Контакты', primary: true },
 ] as const
 
 export const routeByPath = (path: string) => routes.find((route) => route.path === path)

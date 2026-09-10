@@ -133,7 +133,7 @@ export function Delivery() {
                 Не нашли свой город? Назовите — посчитаем доставку и сроки за 15 минут.
               </p>
               <div className="ml-auto flex flex-wrap items-center gap-5">
-                <ButtonLink to="/#contacts" size="lg">
+                <ButtonLink to="/contacts" size="lg">
                   Рассчитать доставку
                 </ButtonLink>
                 <p>

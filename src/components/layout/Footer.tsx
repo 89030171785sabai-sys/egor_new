@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { modelRoutes, legalRoutes } from '../../lib/routes'
+import { modelRoutes, legalRoutes, contentRoutes } from '../../lib/routes'
 import { contacts, hasContact } from '../../data/contacts'
 
 /** Light footer built as four rows separated by hairlines. */
@@ -17,12 +17,12 @@ export function Footer() {
             <a href={contacts.phone.href} className="font-semibold whitespace-nowrap">
               {contacts.phone.display}
             </a>
-            <a
-              href="#contacts"
+            <Link
+              to="/contacts"
               className="rounded-full bg-ink-800 px-5 py-2.5 text-sm text-white transition-colors hover:bg-ink-900"
             >
               Связаться
-            </a>
+            </Link>
             {hasContact(contacts.telegram) && (
               <a
                 href={contacts.telegram}
@@ -44,6 +44,15 @@ export function Footer() {
               </a>
             )}
           </div>
+        </div>
+
+        <div className="flex flex-wrap items-baseline gap-x-5 gap-y-2 border-b border-sand-300 py-5 text-sm">
+          <span className="text-ink-400">Разделы</span>
+          {contentRoutes.map((route) => (
+            <Link key={route.path} to={route.path} className="transition-colors hover:text-brand-600">
+              {route.label}
+            </Link>
+          ))}
         </div>
 
         <div className="flex flex-wrap items-baseline gap-x-5 gap-y-2 border-b border-sand-300 py-5 text-sm">

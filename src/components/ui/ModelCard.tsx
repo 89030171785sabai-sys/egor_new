@@ -52,7 +52,7 @@ export function ModelCard({ model }: { model: Model }) {
       </div>
 
       <div className="mt-5 flex flex-wrap items-center gap-4">
-        <ButtonLink to="/#contacts" size="lg" className="flex-1">
+        <ButtonLink to="/contacts" size="lg" className="flex-1">
           Обсудить детали
         </ButtonLink>
         <Link

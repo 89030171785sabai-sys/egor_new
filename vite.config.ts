@@ -4,6 +4,7 @@ import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { models } from './src/data/models'
+import { contentRoutes } from './src/lib/routes'
 
 const PRODUCTION_ORIGIN = 'https://xn----7sbnf7av3f.xn--p1ai'
 
@@ -23,7 +24,11 @@ function staticHostAssets(origin: string): Plugin {
     async closeBundle() {
       const dist = (file: string) => resolve(__dirname, 'dist', file)
       const today = new Date().toISOString().slice(0, 10)
-      const paths = ['/', ...models.map((model) => `/${model.slug}`)]
+      const paths = [
+        '/',
+        ...contentRoutes.map((route) => route.path),
+        ...models.map((model) => `/${model.slug}`),
+      ]
 
       const urls = paths
         .map(
