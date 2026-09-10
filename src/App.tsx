@@ -11,6 +11,7 @@ import {
   GuaranteesPage,
   ProductionPage,
 } from './pages/SectionPages'
+import { BlogPage, PostPage } from './pages/BlogPages'
 import { NotFoundPage } from './pages/NotFoundPage'
 import { legalRoutes, modelRoutes } from './lib/routes'
 
@@ -25,6 +26,8 @@ export function App() {
         <Route path="/guarantees" element={<GuaranteesPage />} />
         <Route path="/faq" element={<FaqPage />} />
         <Route path="/contacts" element={<ContactsPage />} />
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blog/:slug" element={<PostPage />} />
         {modelRoutes.map((route) => (
           <Route
             key={route.path}

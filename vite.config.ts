@@ -5,6 +5,7 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { models } from './src/data/models'
 import { contentRoutes } from './src/lib/routes'
+import { posts } from './src/data/posts'
 
 const PRODUCTION_ORIGIN = 'https://xn----7sbnf7av3f.xn--p1ai'
 
@@ -28,6 +29,7 @@ function staticHostAssets(origin: string): Plugin {
         '/',
         ...contentRoutes.map((route) => route.path),
         ...models.map((model) => `/${model.slug}`),
+        ...posts.map((post) => `/blog/${post.slug}`),
       ]
 
       const urls = paths

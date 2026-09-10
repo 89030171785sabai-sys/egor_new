@@ -69,6 +69,13 @@ export const contentRoutes: RouteMeta[] = [
       'Ответы на частые вопросы о выборе, доставке, установке и уходе за банным чаном.',
   },
   {
+    path: '/blog',
+    label: 'Блог',
+    title: 'Блог о банных чанах',
+    description:
+      'Как выбрать размер чана, сколько нужно дров, как ухаживать за нержавейкой и готовить площадку под установку.',
+  },
+  {
     path: '/contacts',
     label: 'Контакты',
     title: 'Контакты',
@@ -109,6 +116,7 @@ export const navItems = [
   { to: '/delivery', label: 'Доставка', primary: true },
   { to: '/guarantees', label: 'Гарантии', primary: false },
   { to: '/faq', label: 'Вопросы', primary: false },
+  { to: '/blog', label: 'Блог', primary: false },
   { to: '/contacts', label: 'Контакты', primary: true },
 ] as const
 
