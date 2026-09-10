@@ -20,7 +20,7 @@ export function SectionHeading({
   className?: string
 }) {
   const alignment = align === 'center' ? 'text-center mx-auto' : 'text-left'
-  const titleColor = tone === 'light' ? 'text-white' : 'text-ink-900'
+  const titleColor = tone === 'light' ? 'text-white' : 'text-navy-700'
   const subtitleColor = tone === 'light' ? 'text-white/70' : 'text-ink-500'
 
   return (

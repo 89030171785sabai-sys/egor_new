@@ -10,7 +10,7 @@ import { formatHours, formatPriceRange, type Model } from '../../data/models'
 export function ModelCard({ model }: { model: Model }) {
   return (
     <article className="flex flex-col rounded-panel bg-white p-5 shadow-sm shadow-ink-900/5 transition-shadow hover:shadow-lg hover:shadow-ink-900/10 sm:p-6">
-      <h3 className="text-xl font-bold tracking-tight uppercase">{model.name}</h3>
+      <h3 className="text-xl font-bold tracking-tight text-navy-700 uppercase">{model.name}</h3>
       <p className="mt-2 flex items-start gap-2 text-xs font-semibold tracking-wide text-brand-500 uppercase">
         <span aria-hidden="true" className="mt-1.5 size-1.5 shrink-0 rounded-full bg-brand-500" />
         {model.accent}

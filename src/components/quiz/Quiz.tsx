@@ -62,7 +62,7 @@ export function Quiz() {
         <p className="text-xs font-semibold tracking-[0.18em] text-brand-500 uppercase">
           Последний шаг
         </p>
-        <h3 className="mt-3 text-2xl font-bold">Куда прислать расчёт?</h3>
+        <h3 className="mt-3 text-2xl font-bold text-navy-700">Куда прислать расчёт?</h3>
         <p className="mt-2 text-sm text-ink-500">
           Менеджер посчитает стоимость по вашей комплектации и пришлёт в удобный канал.
         </p>
@@ -102,7 +102,7 @@ export function Quiz() {
     <div className="rounded-panel bg-white p-5 sm:p-8">
       <Progress index={index} total={quizSteps.length} />
 
-      <h3 className="mt-7 text-center text-xl font-bold sm:text-2xl">{step.title}</h3>
+      <h3 className="mt-7 text-center text-xl font-bold text-navy-700 sm:text-2xl">{step.title}</h3>
       {step.hint && (
         <p className="mx-auto mt-3 max-w-lg text-center text-sm text-brand-600">{step.hint}</p>
       )}

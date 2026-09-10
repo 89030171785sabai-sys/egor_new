@@ -106,7 +106,7 @@ function ModelDetail({ model }: { model: Model }) {
         <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
           <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-14">
             <div>
-              <h2 className="text-2xl font-bold">Характеристики</h2>
+              <h2 className="text-2xl font-bold text-navy-700">Характеристики</h2>
 
               <dl className="mt-6 divide-y divide-sand-200 border-y border-sand-200">
                 <Spec label="Тип печи" value={model.stove} />
@@ -120,7 +120,7 @@ function ModelDetail({ model }: { model: Model }) {
                 <Spec label="Отделка" value="Стандарт · Стандарт плюс · Премиум · Люкс" />
               </dl>
 
-              <h2 className="mt-14 text-2xl font-bold">Что входит в комплект</h2>
+              <h2 className="mt-14 text-2xl font-bold text-navy-700">Что входит в комплект</h2>
               <ul className="mt-6 grid gap-4 sm:grid-cols-2">
                 {model.includes.map((item) => (
                   <li key={item} className="flex items-start gap-3 rounded-card bg-white p-4 text-sm">

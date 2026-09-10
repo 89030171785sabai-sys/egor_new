@@ -76,7 +76,7 @@ export function Delivery() {
               <Reveal key={zone.label} delay={index * 80}>
                 <div className="h-full rounded-panel bg-white p-6">
                   <p className="text-xs tracking-[0.18em] text-ink-400 uppercase">{zone.label}</p>
-                  <h3 className="mt-3 text-xl font-bold">{zone.title}</h3>
+                  <h3 className="mt-3 text-xl font-bold text-navy-700">{zone.title}</h3>
                   <p className="font-display mt-3 text-2xl text-brand-600">
                     {zone.lead}
                     <span aria-hidden="true" className="ml-1 inline-block size-1.5 rounded-full bg-brand-500 align-super" />
@@ -93,7 +93,7 @@ export function Delivery() {
 
           <div className="mt-14">
             <div className="flex flex-wrap items-baseline gap-x-6 gap-y-3">
-              <h3 className="text-xl font-bold sm:text-2xl">Как чан доедет до участка</h3>
+              <h3 className="text-xl font-bold text-navy-700 sm:text-2xl">Как чан доедет до участка</h3>
               <p className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-ink-500">
                 <span className="flex items-center gap-2">
                   <span aria-hidden="true" className="size-2 rounded-full bg-brand-500" />
@@ -122,7 +122,7 @@ export function Delivery() {
                   <p className="mt-3 text-sm font-semibold text-brand-500">
                     {String(index + 1).padStart(2, '0')}
                   </p>
-                  <h4 className="mt-1 font-semibold">{step.title}</h4>
+                  <h4 className="mt-1 font-semibold text-navy-700">{step.title}</h4>
                   <p className="mt-2 text-sm leading-relaxed text-ink-500">{step.text}</p>
                 </li>
               ))}

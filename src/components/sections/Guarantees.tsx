@@ -80,7 +80,7 @@ export function Guarantees() {
                   <span className="grid size-11 place-items-center rounded-card bg-brand-100 text-brand-600">
                     <Icon name={item.icon} />
                   </span>
-                  <h3 className="mt-5 font-semibold">{item.title}</h3>
+                  <h3 className="mt-5 font-semibold text-navy-700">{item.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-ink-500">{item.text}</p>
                 </div>
               </Reveal>

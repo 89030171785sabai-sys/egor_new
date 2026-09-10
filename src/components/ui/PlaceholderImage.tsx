@@ -9,14 +9,14 @@ import type { ModelTheme } from '../../data/models'
 export type PlaceholderTone = ModelTheme | 'dusk' | 'studio'
 
 const tones: Record<PlaceholderTone, { from: string; to: string; glow: string; silhouette: string }> = {
-  ink: { from: '#2b2a28', to: '#121110', glow: '#d9642a', silhouette: '#ffffff' },
-  graphite: { from: '#3c3f42', to: '#1b1d1f', glow: '#8fa3ad', silhouette: '#ffffff' },
-  copper: { from: '#8e3d18', to: '#3a1809', glow: '#ec9a68', silhouette: '#ffffff' },
-  terracotta: { from: '#b84f1f', to: '#632a11', glow: '#f4c09e', silhouette: '#ffffff' },
-  olive: { from: '#4a4f3c', to: '#22261c', glow: '#b8c08f', silhouette: '#ffffff' },
-  sand: { from: '#d6c3ab', to: '#8e7b64', glow: '#fdf2ea', silhouette: '#3a1809' },
-  dusk: { from: '#4a3527', to: '#1a1310', glow: '#e37b40', silhouette: '#ffffff' },
-  studio: { from: '#f7f1ea', to: '#e6d8c8', glow: '#ffffff', silhouette: '#45413b' },
+  ink: { from: '#23262a', to: '#0b0b0b', glow: '#f1602e', silhouette: '#ffffff' },
+  graphite: { from: '#454b52', to: '#1b1e21', glow: '#93a0ad', silhouette: '#ffffff' },
+  copper: { from: '#a63715', to: '#431507', glow: '#ff9a73', silhouette: '#ffffff' },
+  terracotta: { from: '#d2481b', to: '#74260e', glow: '#ffbea3', silhouette: '#ffffff' },
+  olive: { from: '#3f4a44', to: '#1b211e', glow: '#a9b8ae', silhouette: '#ffffff' },
+  sand: { from: '#c3c9d1', to: '#7a828c', glow: '#f5f6f8', silhouette: '#131517' },
+  dusk: { from: '#3f3128', to: '#171310', glow: '#f97b4c', silhouette: '#ffffff' },
+  studio: { from: '#f5f6f8', to: '#dee1e6', glow: '#ffffff', silhouette: '#43484e' },
 }
 
 export function PlaceholderImage({

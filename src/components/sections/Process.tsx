@@ -21,7 +21,7 @@ export function Process() {
                 <span className="font-display grid size-11 place-items-center rounded-full bg-brand-500 text-lg text-white">
                   {index + 1}
                 </span>
-                <h3 className="mt-5 text-lg font-semibold">{step.title}</h3>
+                <h3 className="mt-5 text-lg font-semibold text-navy-700">{step.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-ink-500">{step.text}</p>
               </li>
             </Reveal>

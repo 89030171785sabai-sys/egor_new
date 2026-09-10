@@ -5,37 +5,44 @@
  * whole palette lives here and components never reach for a raw value.
  */
 @theme {
-  /* Terracotta — the accent: buttons, figures, markers. */
-  --color-brand-50: #fdf2ea;
-  --color-brand-100: #fae0ce;
-  --color-brand-200: #f4c09e;
-  --color-brand-300: #ec9a68;
-  --color-brand-400: #e37b40;
-  --color-brand-500: #d9642a;
-  --color-brand-600: #b84f1f;
-  --color-brand-700: #8e3d18;
-  --color-brand-800: #632a11;
-  --color-brand-900: #3a1809;
+  /* Coral — the accent: buttons, figures, markers. */
+  --color-brand-50: #fff2ed;
+  --color-brand-100: #ffdfd2;
+  --color-brand-200: #ffbea3;
+  --color-brand-300: #ff9a73;
+  --color-brand-400: #f97b4c;
+  --color-brand-500: #f1602e;
+  --color-brand-600: #d2481b;
+  --color-brand-700: #a63715;
+  --color-brand-800: #74260e;
+  --color-brand-900: #431507;
 
-  /* Charcoal — text and the dark sections. */
-  --color-ink-50: #f7f6f4;
-  --color-ink-100: #eae7e2;
-  --color-ink-200: #d6d1c9;
-  --color-ink-300: #b0aaa1;
-  --color-ink-400: #868076;
-  --color-ink-500: #625d55;
-  --color-ink-600: #45413b;
-  --color-ink-700: #2b2a28;
-  --color-ink-800: #1d1c1a;
-  --color-ink-900: #121110;
+  /* Deep blue — headings on light backgrounds. */
+  --color-navy-400: #4a6076;
+  --color-navy-500: #2e4459;
+  --color-navy-600: #263a4d;
+  --color-navy-700: #1f3247;
+  --color-navy-900: #14202e;
 
-  /* Warm neutrals — page and card backgrounds. */
-  --color-sand-50: #faf6f1;
-  --color-sand-100: #f7f1ea;
-  --color-sand-200: #f1e7dc;
-  --color-sand-300: #e6d8c8;
+  /* Cool neutrals — body text and the dark sections. */
+  --color-ink-50: #f7f8f8;
+  --color-ink-100: #eceeef;
+  --color-ink-200: #dcdfe2;
+  --color-ink-300: #b4b9bf;
+  --color-ink-400: #8a8f98;
+  --color-ink-500: #656b73;
+  --color-ink-600: #43484e;
+  --color-ink-700: #23262a;
+  --color-ink-800: #131517;
+  --color-ink-900: #0b0b0b;
 
-  --font-display: 'Prata', 'Times New Roman', serif;
+  /* Page and panel backgrounds — light and cool, never beige. */
+  --color-sand-50: #fafbfc;
+  --color-sand-100: #f5f6f8;
+  --color-sand-200: #eceef1;
+  --color-sand-300: #dee1e6;
+
+  --font-display: 'Manrope', ui-sans-serif, system-ui, sans-serif;
   --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
 
   --radius-card: 1.125rem;
@@ -52,7 +59,7 @@ html {
 
 body {
   background-color: var(--color-sand-100);
-  color: var(--color-ink-800);
+  color: var(--color-ink-700);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
@@ -63,8 +70,9 @@ body {
  */
 .font-display {
   font-family: var(--font-display);
-  letter-spacing: -0.01em;
-  line-height: 1.05;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.03;
 }
 
 /* Scroll reveal: elements start shifted and settle when they enter view. */

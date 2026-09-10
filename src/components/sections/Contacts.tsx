@@ -76,7 +76,7 @@ export function Contacts() {
           </dl>
 
           <div className="rounded-panel bg-white p-6 shadow-sm shadow-ink-900/5 sm:p-7">
-            <h3 className="text-xl font-bold">Остались вопросы?</h3>
+            <h3 className="text-xl font-bold text-navy-700">Остались вопросы?</h3>
             <p className="mt-2 text-sm text-ink-500">
               Оставьте заявку — свяжемся в ближайшее время.
             </p>

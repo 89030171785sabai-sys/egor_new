@@ -24,7 +24,7 @@ export function Faq() {
                     onClick={() => setOpenIndex(open ? null : index)}
                     className="flex w-full items-start justify-between gap-6 py-5 text-left transition-colors hover:text-brand-700"
                   >
-                    <span className="text-base sm:text-lg">{item.question}</span>
+                    <span className="text-base text-navy-700 sm:text-lg">{item.question}</span>
                     <span
                       aria-hidden="true"
                       className="relative mt-2 size-4 shrink-0 text-brand-500"
