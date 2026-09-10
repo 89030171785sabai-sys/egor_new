@@ -48,7 +48,7 @@ export function Production() {
           {stages.map((stage, index) => (
             <Reveal key={stage.title} delay={(index % 3) * 80}>
               <div className="h-full rounded-panel bg-sand-50 p-6 ring-1 ring-sand-200">
-                <span className="grid size-11 place-items-center rounded-card bg-brand-100 text-brand-600">
+                <span className="grid size-11 place-items-center rounded-card bg-sand-200 text-navy-700">
                   <Icon name={stage.icon} />
                 </span>
                 <h3 className="mt-5 font-semibold text-navy-700">{stage.title}</h3>

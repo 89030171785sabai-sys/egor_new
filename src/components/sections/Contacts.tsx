@@ -126,7 +126,7 @@ function Row({
 }) {
   return (
     <div className="flex items-start gap-4">
-      <span className="grid size-11 shrink-0 place-items-center rounded-card bg-brand-100 text-brand-600">
+      <span className="grid size-11 shrink-0 place-items-center rounded-card bg-sand-200 text-navy-700">
         <Icon name={icon} />
       </span>
       <div>

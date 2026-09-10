@@ -74,7 +74,7 @@ function QuizTeaser() {
   return (
     <aside className="fixed bottom-4 left-4 z-40 hidden w-[19rem] rounded-panel bg-white p-4 shadow-2xl shadow-ink-900/20 sm:block">
       <div className="flex items-start gap-3">
-        <span className="grid size-9 shrink-0 place-items-center rounded-full bg-brand-500 text-xs font-semibold text-white">
+        <span className="grid size-9 shrink-0 place-items-center rounded-full bg-ink-800 text-xs font-semibold text-white">
           ДП
         </span>
         <div className="min-w-0">

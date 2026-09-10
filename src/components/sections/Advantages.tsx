@@ -34,7 +34,7 @@ export function Advantages() {
                 className="absolute top-9 bottom-9 -left-px hidden w-px bg-white/12 lg:block"
               />
             )}
-            <span className="grid size-11 place-items-center rounded-xl bg-brand-500 text-white">
+            <span className="grid size-11 place-items-center rounded-xl bg-white/10 text-white">
               <Icon name={advantage.icon} />
             </span>
             <h3 className="mt-5 text-lg font-semibold text-white">{advantage.title}</h3>

@@ -51,7 +51,7 @@ export function Guarantees() {
           {documents.map((item, index) => (
             <Reveal key={item.title} delay={index * 80}>
               <div className="h-full rounded-panel bg-ink-800 p-7">
-                <span className="text-brand-400">
+                <span className="text-white/70">
                   <Icon name={item.icon} />
                 </span>
                 <h3 className="mt-5 text-lg font-semibold text-white">{item.title}</h3>
@@ -77,7 +77,7 @@ export function Guarantees() {
             {deal.map((item, index) => (
               <Reveal key={item.title} delay={index * 70}>
                 <div className="h-full rounded-panel bg-white p-6">
-                  <span className="grid size-11 place-items-center rounded-card bg-brand-100 text-brand-600">
+                  <span className="grid size-11 place-items-center rounded-card bg-sand-200 text-navy-700">
                     <Icon name={item.icon} />
                   </span>
                   <h3 className="mt-5 font-semibold text-navy-700">{item.title}</h3>

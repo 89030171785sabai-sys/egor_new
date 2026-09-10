@@ -18,7 +18,7 @@ export function Process() {
           {steps.map((step, index) => (
             <Reveal key={step.title} delay={index * 80}>
               <li className="h-full rounded-panel bg-white p-6">
-                <span className="font-display grid size-11 place-items-center rounded-full bg-brand-500 text-lg text-white">
+                <span className="font-display grid size-11 place-items-center rounded-full bg-ink-900 text-lg text-white">
                   {index + 1}
                 </span>
                 <h3 className="mt-5 text-lg font-semibold text-navy-700">{step.title}</h3>

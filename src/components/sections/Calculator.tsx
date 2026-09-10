@@ -24,7 +24,7 @@ export function Calculator() {
 
           <aside className="rounded-panel bg-white p-6 lg:sticky lg:top-28">
             <div className="flex items-center gap-4">
-              <span className="font-display grid size-12 shrink-0 place-items-center rounded-full bg-brand-500 text-lg text-white">
+              <span className="font-display grid size-12 shrink-0 place-items-center rounded-full bg-ink-800 text-lg text-white">
                 ЖД
               </span>
               <div>
@@ -49,7 +49,7 @@ export function Calculator() {
               <ul className="mt-4 space-y-3">
                 {promises.map((promise) => (
                   <li key={promise} className="flex items-start gap-3 text-sm">
-                    <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-brand-500 text-white">
+                    <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-navy-700 text-white">
                       <svg viewBox="0 0 12 12" aria-hidden="true" className="size-2.5">
                         <path
                           d="m2 6.4 2.6 2.6L10 3.4"
