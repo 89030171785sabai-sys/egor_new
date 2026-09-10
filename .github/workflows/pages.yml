@@ -1,0 +1,57 @@
+name: Публикация на GitHub Pages
+
+on:
+  push:
+    branches: [claude/practical-dijkstra-a0c9pq, main]
+  workflow_dispatch:
+
+# The deploy job needs these to publish; read access is enough to check out.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a running deploy finish rather than cancelling it mid-publish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Проверка типов
+        run: npm run typecheck
+
+      - name: Сборка
+        run: npm run build
+        env:
+          # The site lives under the repository name on Pages, so assets,
+          # routes, canonicals and the sitemap all need that prefix.
+          VITE_BASE_PATH: /${{ github.event.repository.name }}/
+          VITE_SITE_ORIGIN: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
