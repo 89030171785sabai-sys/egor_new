@@ -41,6 +41,10 @@ jobs:
           VITE_SITE_ORIGIN: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
 
       - uses: actions/configure-pages@v5
+        with:
+          # Creates the Pages site on the first run instead of failing when it
+          # has not been enabled in the repository settings yet.
+          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
