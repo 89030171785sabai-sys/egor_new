@@ -50,13 +50,13 @@ export const routes: RouteMeta[] = [homeRoute, ...modelRoutes, ...legalRoutes]
  * routes — the home page is a single long document.
  */
 export const homeSections = [
-  { id: 'catalog', label: 'Каталог' },
-  { id: 'calculator', label: 'Расчёт' },
-  { id: 'production', label: 'Производство' },
-  { id: 'delivery', label: 'Доставка' },
-  { id: 'guarantees', label: 'Гарантии' },
-  { id: 'faq', label: 'Вопросы' },
-  { id: 'contacts', label: 'Контакты' },
+  { id: 'catalog', label: 'Каталог', primary: true },
+  { id: 'calculator', label: 'Расчёт', primary: true },
+  { id: 'production', label: 'Производство', primary: false },
+  { id: 'delivery', label: 'Доставка', primary: true },
+  { id: 'guarantees', label: 'Гарантии', primary: false },
+  { id: 'faq', label: 'Вопросы', primary: false },
+  { id: 'contacts', label: 'Контакты', primary: true },
 ] as const
 
 export const routeByPath = (path: string) => routes.find((route) => route.path === path)
