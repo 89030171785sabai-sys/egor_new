@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { quizSteps } from '../../data/quiz'
-import { contacts, hasContact } from '../../data/contacts'
+import { contacts } from '../../data/contacts'
 
 /** Carries a first answer from the teaser into the configurator. */
 export const QUIZ_PRESELECT_EVENT = 'quiz:preselect'
@@ -122,43 +122,39 @@ function QuizTeaser() {
 }
 
 function MessengerDock() {
-  const links = [
-    hasContact(contacts.whatsapp) && {
-      href: contacts.whatsapp,
-      label: 'WhatsApp',
-      icon: 'whatsapp' as const,
-    },
-    hasContact(contacts.telegram) && {
-      href: contacts.telegram,
-      label: 'Telegram',
-      icon: 'telegram' as const,
-    },
-  ].filter(Boolean) as Array<{ href: string; label: string; icon: 'whatsapp' | 'telegram' }>
-
-  if (links.length === 0) return null
+  if (contacts.messengers.length === 0) return null
 
   return (
     <div className="fixed right-4 bottom-4 z-40 flex items-center gap-2 rounded-full bg-white py-2 pr-4 pl-2 shadow-xl shadow-ink-900/15">
-      {links.map((link) => (
+      {contacts.messengers.map((messenger) => (
         <a
-          key={link.label}
-          href={link.href}
+          key={messenger.id}
+          href={messenger.href}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={`Написать в ${link.label}`}
+          aria-label={`Написать в ${messenger.label}`}
+          title={`${messenger.label} — ${messenger.display}`}
           className="grid size-9 place-items-center rounded-full bg-brand-500 text-white transition-colors hover:bg-brand-600"
         >
-          <Icon name={link.icon} />
+          <Icon name={messenger.id} />
         </a>
       ))}
       <span className="hidden text-sm whitespace-nowrap text-ink-600 sm:block">
-        Мне только спросить
+        Напишите нам
       </span>
     </div>
   )
 }
 
-function Icon({ name }: { name: 'whatsapp' | 'telegram' }) {
+function Icon({ name }: { name: 'whatsapp' | 'telegram' | 'max' }) {
+  if (name === 'max') {
+    return (
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="size-4">
+        <path d="M4 19V5h2.6l5.4 7.2L17.4 5H20v14h-2.6v-9.4L12 16.6 6.6 9.6V19H4Z" />
+      </svg>
+    )
+  }
+
   if (name === 'telegram') {
     return (
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="size-4">

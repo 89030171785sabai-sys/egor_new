@@ -4,6 +4,12 @@ import { BrowserRouter } from 'react-router-dom'
 import { App } from './App'
 import './styles/index.css'
 
+// Otherwise a reload restores the last scroll position, and the home page
+// opens partway down instead of at the top.
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual'
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     {/* Served from a sub-path on preview deployments, from the root in production. */}

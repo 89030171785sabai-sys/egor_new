@@ -1,6 +1,6 @@
 import { SectionHeading } from '../ui/SectionHeading'
 import { LeadForm } from '../forms/LeadForm'
-import { contacts, hasContact } from '../../data/contacts'
+import { contacts, MESSENGER_NOTE } from '../../data/contacts'
 
 const mapsUrl = (query: string) =>
   `https://yandex.ru/maps/?text=${encodeURIComponent(query)}`
@@ -19,58 +19,48 @@ export function Contacts() {
               </Row>
             ))}
 
-            <Row icon="phone" caption="звонок и WhatsApp">
+            <Row icon="phone" caption="звонок — этот номер отвечает голосом">
               <a href={contacts.phone.href} className="transition-colors hover:text-brand-600">
                 {contacts.phone.display}
               </a>
             </Row>
 
-            <Row icon="mail" caption="почта">
-              <a
-                href={`mailto:${contacts.email}`}
-                className="transition-colors hover:text-brand-600"
-              >
-                {contacts.email}
-              </a>
+            <Row icon="chat" caption={MESSENGER_NOTE}>
+              <span className="block">Мессенджеры</span>
+              <span className="mt-3 grid gap-2">
+                {contacts.messengers.map((messenger) => (
+                  <a
+                    key={messenger.id}
+                    href={messenger.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between gap-4 rounded-card bg-white px-4 py-3 text-sm font-medium shadow-sm transition-shadow hover:shadow-md"
+                  >
+                    <span>{messenger.label}</span>
+                    <span className="font-normal text-ink-500">{messenger.display}</span>
+                  </a>
+                ))}
+              </span>
             </Row>
 
             <Row icon="clock" caption="часы работы">
               {contacts.workingHours}
             </Row>
 
-            <Row icon="chat" caption="">
-              <span className="block">Мы в мессенджерах</span>
+            <Row icon="social" caption="">
+              <span className="block">Мы в соцсетях</span>
               <span className="mt-3 flex flex-wrap gap-3">
-                {hasContact(contacts.whatsapp) && (
+                {contacts.social.map((item) => (
                   <a
-                    href={contacts.whatsapp}
+                    key={item.id}
+                    href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="rounded-full bg-ink-800 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-ink-900"
+                    className="rounded-full bg-ink-900 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-ink-800"
                   >
-                    WhatsApp
+                    {item.label}
                   </a>
-                )}
-                {hasContact(contacts.telegram) && (
-                  <a
-                    href={contacts.telegram}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="rounded-full bg-ink-800 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-ink-900"
-                  >
-                    Telegram
-                  </a>
-                )}
-                {hasContact(contacts.vk) && (
-                  <a
-                    href={contacts.vk}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="rounded-full bg-ink-800 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-ink-900"
-                  >
-                    VK
-                  </a>
-                )}
+                ))}
               </span>
             </Row>
           </dl>
@@ -120,7 +110,7 @@ function Row({
   caption,
   children,
 }: {
-  icon: 'pin' | 'phone' | 'mail' | 'clock' | 'chat'
+  icon: 'pin' | 'phone' | 'social' | 'clock' | 'chat'
   caption: string
   children: React.ReactNode
 }) {
@@ -137,7 +127,7 @@ function Row({
   )
 }
 
-function Icon({ name }: { name: 'pin' | 'phone' | 'mail' | 'clock' | 'chat' }) {
+function Icon({ name }: { name: 'pin' | 'phone' | 'social' | 'clock' | 'chat' }) {
   const common = {
     fill: 'none',
     stroke: 'currentColor',
@@ -160,10 +150,10 @@ function Icon({ name }: { name: 'pin' | 'phone' | 'mail' | 'clock' | 'chat' }) {
           {...common}
         />
       )}
-      {name === 'mail' && (
+      {name === 'social' && (
         <>
-          <rect x="3" y="5.5" width="18" height="13" rx="2" {...common} />
-          <path d="m4 7 8 6 8-6" {...common} />
+          <circle cx="12" cy="12" r="8.5" {...common} />
+          <path d="M3.5 12h17M12 3.5c2.5 2.6 2.5 14.4 0 17M12 3.5c-2.5 2.6-2.5 14.4 0 17" {...common} />
         </>
       )}
       {name === 'clock' && (

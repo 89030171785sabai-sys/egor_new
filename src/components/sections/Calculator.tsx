@@ -1,6 +1,6 @@
 import { Quiz } from '../quiz/Quiz'
 import { SectionHeading } from '../ui/SectionHeading'
-import { contacts, hasContact } from '../../data/contacts'
+import { contacts } from '../../data/contacts'
 
 const promises = [
   'Точную стоимость вашей комплектации',
@@ -33,14 +33,14 @@ export function Calculator() {
               </div>
             </div>
 
-            {hasContact(contacts.whatsapp) && (
+            {contacts.messengers[0] && (
               <a
-                href={contacts.whatsapp}
+                href={contacts.messengers[0].href}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-5 block rounded-full bg-ink-800 px-5 py-3 text-center text-sm font-medium text-white transition-colors hover:bg-ink-900"
               >
-                Задать вопрос
+                Написать в {contacts.messengers[0].label}
               </a>
             )}
 

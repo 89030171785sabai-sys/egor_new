@@ -23,26 +23,17 @@ export function Footer() {
             >
               Связаться
             </Link>
-            {hasContact(contacts.telegram) && (
+            {contacts.social.map((item) => (
               <a
-                href={contacts.telegram}
+                key={item.id}
+                href={item.href}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rounded-full border border-sand-300 px-4 py-2.5 text-sm transition-colors hover:bg-sand-200"
               >
-                Telegram
+                {item.label}
               </a>
-            )}
-            {hasContact(contacts.vk) && (
-              <a
-                href={contacts.vk}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full border border-sand-300 px-4 py-2.5 text-sm transition-colors hover:bg-sand-200"
-              >
-                VK
-              </a>
-            )}
+            ))}
           </div>
         </div>
 

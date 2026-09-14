@@ -7,12 +7,12 @@ import { submitLead, type LeadSource } from '../../lib/leads'
 
 export type FieldName = 'name' | 'phone' | 'city' | 'budget' | 'channel'
 
-export type Channel = 'phone' | 'telegram' | 'email'
+export type Channel = 'phone' | 'telegram' | 'whatsapp'
 
 const channelOptions: Array<{ id: Channel; label: string }> = [
   { id: 'phone', label: 'Телефон' },
   { id: 'telegram', label: 'Telegram' },
-  { id: 'email', label: 'Почта' },
+  { id: 'whatsapp', label: 'WhatsApp' },
 ]
 
 const budgets = ['до 300 000 ₽', 'до 500 000 ₽', 'до 800 000 ₽', 'более 800 000 ₽']
@@ -71,7 +71,7 @@ export function LeadForm({
     setErrors((current) => ({ ...current, [key]: undefined }))
   }
 
-  const usesHandle = has('channel') && values.channel !== 'phone'
+  const usesHandle = has('channel') && values.channel === 'telegram'
 
   function validate() {
     const found: Partial<Record<keyof Values, string>> = {}
@@ -79,12 +79,7 @@ export function LeadForm({
     if (has('name') && values.name.trim().length < 2) found.name = 'Укажите имя'
 
     if (usesHandle) {
-      if (values.channel === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(values.handle)) {
-        found.handle = 'Укажите почту в формате name@mail.ru'
-      }
-      if (values.channel === 'telegram' && values.handle.trim().length < 3) {
-        found.handle = 'Укажите ник в Telegram'
-      }
+      if (values.handle.trim().length < 3) found.handle = 'Укажите ник в Telegram'
     } else if (has('phone') || has('channel')) {
       if (!isPhoneComplete(values.phone)) found.phone = 'Укажите телефон полностью'
     }
@@ -102,8 +97,12 @@ export function LeadForm({
       source,
       name: has('name') ? values.name.trim() : undefined,
       phone: usesHandle ? '' : values.phone,
-      email: values.channel === 'email' ? values.handle.trim() : undefined,
-      message: values.channel === 'telegram' ? `Telegram: ${values.handle.trim()}` : undefined,
+      message:
+        values.channel === 'telegram'
+          ? `Telegram: ${values.handle.trim()}`
+          : has('channel')
+            ? `Канал связи: ${values.channel === 'whatsapp' ? 'WhatsApp' : 'звонок'}`
+            : undefined,
       payload: {
         ...payload,
         ...(has('city') && values.city ? { Город: values.city } : {}),
@@ -162,23 +161,22 @@ export function LeadForm({
         )}
 
         {usesHandle ? (
-          <Field
-            label={values.channel === 'telegram' ? 'Ник в Telegram' : 'Электронная почта'}
-            error={errors.handle}
-            className="sm:col-span-2"
-          >
+          <Field label="Ник в Telegram" error={errors.handle} className="sm:col-span-2">
             <Input
-              name={values.channel === 'telegram' ? 'telegram' : 'email'}
-              inputMode={values.channel === 'email' ? 'email' : 'text'}
-              autoComplete={values.channel === 'email' ? 'email' : 'off'}
-              placeholder={values.channel === 'telegram' ? '@nickname' : 'name@mail.ru'}
+              name="telegram"
+              autoComplete="off"
+              placeholder="@nickname"
               value={values.handle}
               onChange={(event) => set('handle', event.target.value)}
             />
           </Field>
         ) : (
           (has('phone') || has('channel')) && (
-            <Field label="Введите телефон" error={errors.phone} className="sm:col-span-2">
+            <Field
+              label={values.channel === 'whatsapp' ? 'Номер в WhatsApp' : 'Введите телефон'}
+              error={errors.phone}
+              className="sm:col-span-2"
+            >
               <Input
                 name="phone"
                 inputMode="tel"
