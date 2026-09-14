@@ -5,17 +5,17 @@
  * whole palette lives here and components never reach for a raw value.
  */
 @theme {
-  /* Deep teal — the accent: buttons, figures, markers. */
-  --color-brand-50: #eef7f6;
-  --color-brand-100: #cfeae7;
-  --color-brand-200: #9dd5cf;
-  --color-brand-300: #63b9b1;
-  --color-brand-400: #2f9a92;
-  --color-brand-500: #12807a;
-  --color-brand-600: #0c6763;
-  --color-brand-700: #0a504e;
-  --color-brand-800: #073836;
-  --color-brand-900: #04211f;
+  /* Coral — the accent: buttons, figures, markers. */
+  --color-brand-50: #fff2ed;
+  --color-brand-100: #ffdfd2;
+  --color-brand-200: #ffbea3;
+  --color-brand-300: #ff9a73;
+  --color-brand-400: #f97b4c;
+  --color-brand-500: #f1602e;
+  --color-brand-600: #d2481b;
+  --color-brand-700: #a63715;
+  --color-brand-800: #74260e;
+  --color-brand-900: #431507;
 
   /* Deep blue — headings on light backgrounds. */
   --color-navy-400: #4a6076;
