@@ -69,9 +69,10 @@ export const contacts = {
   ] satisfies Address[],
 
   legal: {
-    entity: 'ИП Вырышев Егор Максимович',
-    inn: '745307026884',
-    ogrnip: '323745600126642',
+    entity: 'ИП Вырышева Ю. А.',
+    inn: '745301208415',
+    // Not supplied yet — the footer and the legal pages hide it while empty.
+    ogrnip: '',
   },
 } as const
 
