@@ -39,6 +39,7 @@ export const heatingTypes: HeatingType[] = [
     title: 'Стационарная печь',
     text: 'Печь служит основанием чану. Внутри — чугунный колосник и выдвижной зольный ящик, корпус из жаропрочной стали 09Г2С.',
     slug: 'cherny-brilliant',
+    photo: { grey: 'stove-stationary-grey.webp', color: 'stove-stationary-color.webp' },
   },
   {
     id: 'demountable',
