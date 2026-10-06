@@ -264,6 +264,7 @@ export const models: Model[] = [
     bowlShape: 'faceted',
     theme: 'terracotta',
     badge: 'Решение 4 в 1',
+    photos: { hero: 'oniks-pro-hero.webp' },
     offers: [
       { cm: 210, price: 294000 },
       { cm: 235, price: 353000 },
