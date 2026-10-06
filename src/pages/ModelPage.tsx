@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 import { NotFoundPage } from './NotFoundPage'
 import { ButtonLink } from '../components/ui/Button'
@@ -49,10 +50,26 @@ export function ModelPage({ slug }: { slug: string }) {
  *
  * A studio shot of a whole tub cannot be cropped to the shape of a hero
  * without losing its chimney and its base, so the photograph is contained and
- * set to the right at a little over half the width — large, whole, and clear
- * of the headline. A model still waiting for its photograph keeps the
- * full-bleed stand-in, which has nothing to lose by being cropped.
+ * set to the right, at a width that is its own — see `heroWidthVars`. A model
+ * still waiting for its photograph keeps the full-bleed stand-in, which has
+ * nothing to lose by being cropped.
  */
+/**
+ * Width of the hero shot, as CSS custom properties.
+ *
+ * The large-screen figure is per model and comes from the photograph itself
+ * (see `ModelPhotos.heroWidth`); the small-screen one keeps the same ratios on
+ * a wider base, capped so nothing runs past the edge.
+ */
+function heroWidthVars(model: Model): CSSProperties {
+  const lg = model.photos?.heroWidth ?? 0.64
+  const sm = Math.min(lg * 1.25, 1)
+  return {
+    '--hero-lg': `${(lg * 100).toFixed(1)}%`,
+    '--hero-sm': `${(sm * 100).toFixed(1)}%`,
+  } as CSSProperties
+}
+
 function HeroBackdrop({ model }: { model: Model }) {
   if (!model.photos?.hero) {
     return (
@@ -79,7 +96,10 @@ function HeroBackdrop({ model }: { model: Model }) {
         The fade is on the left edge only: a fade from the top dims the
         chimney, which is the first thing the eye lands on.
       */}
-      <div className="pointer-events-none absolute right-0 bottom-0 -z-20 w-[94%] [mask-image:linear-gradient(to_right,transparent,black_24%)] lg:w-[64%]">
+      <div
+        style={heroWidthVars(model)}
+        className="pointer-events-none absolute right-0 bottom-0 -z-20 w-(--hero-sm) [mask-image:linear-gradient(to_right,transparent,black_24%)] lg:w-(--hero-lg)"
+      >
         <ModelShot model={model} slot="hero" contain className="w-full" />
       </div>
       <div

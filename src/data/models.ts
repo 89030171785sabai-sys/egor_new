@@ -75,6 +75,16 @@ export interface ModelPhotos {
   hero?: string
   /** Product shot on the catalogue card. */
   card?: string
+  /**
+   * Width of the hero shot on a large screen, as a share of the viewport.
+   *
+   * Every photograph was taken at its own distance, so the same render width
+   * would show one tub twice the size of another. These numbers are computed
+   * by `scripts/normalise-hero-photos.py` from the measured rim of each bowl,
+   * so that rim x width lands on one figure for the whole line. Re-run the
+   * script after adding a photograph rather than guessing a value.
+   */
+  heroWidth?: number
 }
 
 export interface Model {
@@ -135,7 +145,7 @@ export const models: Model[] = [
     ],
     // Only the model page's own hero: the home page and the catalogue card
     // are waiting for their own shots.
-    photos: { hero: 'grafit-hero.webp' },
+    photos: { hero: 'grafit-hero.webp', heroWidth: 0.542 },
     includes: [...commonIncludes, 'Ветрозащита', 'Дымоход 3 м и защитный экран'],
     seoTitle: 'Банный чан «Графит»',
     seoDescription:
@@ -153,7 +163,7 @@ export const models: Model[] = [
     stove: 'Увеличенная, жаропрочная сталь 09Г2С',
     bowlShape: 'faceted',
     theme: 'ink',
-    photos: { hero: 'cherny-brilliant-hero.webp' },
+    photos: { hero: 'cherny-brilliant-hero.webp', heroWidth: 0.528 },
     offers: [
       { cm: 175, price: 133000 },
       { cm: 210, price: 155500 },
@@ -207,7 +217,7 @@ export const models: Model[] = [
     bowlShape: 'faceted',
     theme: 'jade',
     badge: 'Хит продаж',
-    photos: { hero: 'nefrit-hero.webp' },
+    photos: { hero: 'nefrit-hero.webp', heroWidth: 0.511 },
     offers: [
       { cm: 175, price: 187000 },
       { cm: 210, price: 195990 },
@@ -235,7 +245,7 @@ export const models: Model[] = [
     stove: 'Выносная, водяной контур и теплосъёмные трубы',
     bowlShape: 'faceted',
     theme: 'olive',
-    photos: { hero: 'oniks-hero.webp' },
+    photos: { hero: 'oniks-hero.webp', heroWidth: 0.767 },
     offers: [
       { cm: 175, price: 188000 },
       { cm: 210, price: 199000 },
@@ -264,7 +274,7 @@ export const models: Model[] = [
     bowlShape: 'faceted',
     theme: 'terracotta',
     badge: 'Решение 4 в 1',
-    photos: { hero: 'oniks-pro-hero.webp' },
+    photos: { hero: 'oniks-pro-hero.webp', heroWidth: 0.677 },
     offers: [
       { cm: 210, price: 294000 },
       { cm: 235, price: 353000 },
@@ -291,7 +301,7 @@ export const models: Model[] = [
     stove: 'Боковая приварная расширенная, водяной контур и теплосъёмные трубы',
     bowlShape: 'faceted',
     theme: 'copper',
-    photos: { hero: 'grant-hero.webp' },
+    photos: { hero: 'grant-hero.webp', heroWidth: 0.8 },
     offers: [
       { cm: 235, price: 459000 },
       { cm: 250, price: 588000 },
