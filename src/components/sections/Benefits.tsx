@@ -2,6 +2,7 @@ import { SectionHeading } from '../ui/SectionHeading'
 import { Reveal } from '../ui/Reveal'
 import { PlaceholderImage } from '../ui/PlaceholderImage'
 import { photoUrl } from '../../lib/photos'
+import { useInView } from '../../lib/in-view'
 import { benefits, type Benefit } from '../../data/benefits'
 
 /**
@@ -75,18 +76,18 @@ export function Benefits() {
 
 function BenefitDrawing({ benefit }: { benefit: Benefit }) {
   const { image, title, wanted } = benefit
+  const { ref, seen } = useInView<HTMLSpanElement>()
 
-  // Everything in this slot sits in silver and comes to colour under the
-  // pointer, whether it is a render or drawn here.
-  const skin =
-    'relative block w-full bg-white transition duration-500 motion-reduce:transition-none [@media(hover:hover)]:grayscale [@media(hover:hover)]:group-hover:grayscale-0'
+  // Silver until it is asked for: under the pointer on a desktop, and on a
+  // touch screen once the card has been scrolled into view.
+  const skin = `tint-on-view${seen ? ' tint-seen' : ''} relative block w-full bg-white transition duration-500 motion-reduce:transition-none [@media(hover:hover)]:grayscale [@media(hover:hover)]:group-hover:grayscale-0`
 
   if (!image) {
     return <PlaceholderImage tone="studio" ratio="4/3" label={`Схема: ${wanted ?? ''}`} />
   }
 
   return (
-    <span className={skin} style={{ aspectRatio: `${image.width} / ${image.height}` }}>
+    <span ref={ref} className={skin} style={{ aspectRatio: `${image.width} / ${image.height}` }}>
       <img
         src={photoUrl(image.color)}
         alt={title}

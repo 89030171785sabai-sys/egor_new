@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import { PlaceholderImage } from './PlaceholderImage'
 import { photoUrl } from '../../lib/photos'
 import type { Model } from '../../data/models'
@@ -19,6 +20,7 @@ export function ModelShot({
   slot,
   ratio,
   className = '',
+  style,
   fill = false,
   contain = false,
   label,
@@ -28,6 +30,8 @@ export function ModelShot({
   /** Ignored when `fill` is set — the shot then takes the parent's box. */
   ratio?: '4/3' | '16/10'
   className?: string
+  /** Lets a caller size the shot, as the hero does per model. */
+  style?: CSSProperties
   /** Lays the shot over the whole parent, for full-bleed hero backdrops. */
   fill?: boolean
   /**
@@ -62,6 +66,7 @@ export function ModelShot({
         src={photoUrl(name)}
         alt={alt}
         loading="eager"
+        style={style}
         className={`object-contain ${className}`}
       />
     )

@@ -91,6 +91,16 @@ export interface ModelPhotos {
    * chimney going black against the page. Reported by the same script.
    */
   heroTone?: string
+  /**
+   * The nudge `heroWidth` carries over the formula, where it has one.
+   *
+   * Графит is framed far more tightly than the rest, so matching bowl rims
+   * alone left its whole picture looking small behind the headline — the wide
+   * screen needs it a fifth larger. On a phone the shot sits in the flow
+   * rather than behind the copy, so there the nudge only makes its tub bigger
+   * than everyone else's, and the width is divided back out.
+   */
+  heroBoost?: number
 }
 
 export interface Model {
@@ -151,7 +161,7 @@ export const models: Model[] = [
     ],
     // Only the model page's own hero: the home page and the catalogue card
     // are waiting for their own shots.
-    photos: { hero: 'grafit-hero.webp', heroWidth: 0.596, heroTone: '#263b44' },
+    photos: { hero: 'grafit-hero.webp', heroWidth: 0.596, heroTone: '#263b44', heroBoost: 1.18 },
     includes: [...commonIncludes, 'Ветрозащита без дна', 'Дымоход 3 м и защитный экран'],
     seoTitle: 'Банный чан «Графит»',
     seoDescription:

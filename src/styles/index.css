@@ -129,3 +129,24 @@ body {
     animation: none;
   }
 }
+
+/*
+ * Drawings that come to colour. A pointer does it on hover; a touch screen has
+ * none, so there they come to colour once they are scrolled into view.
+ */
+@media (hover: none) {
+  .tint-on-view {
+    filter: grayscale(1);
+    transition: filter 700ms ease;
+  }
+
+  .tint-on-view.tint-seen {
+    filter: grayscale(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tint-on-view {
+    transition: none;
+  }
+}

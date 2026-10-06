@@ -65,7 +65,8 @@ export function ModelPage({ slug }: { slug: string }) {
  */
 function heroWidthVars(model: Model): CSSProperties {
   const lg = model.photos?.heroWidth ?? 0.64
-  const sm = Math.min(lg * 1.25, 1)
+  // The phone shows the shot in the flow, so it wants the plain formula width.
+  const sm = Math.min((lg / (model.photos?.heroBoost ?? 1)) * 1.25, 1)
   // The glow reaches past the picture on both sides, so the fade at its edges
   // runs out over colour rather than stopping on it.
   const glowLg = Math.min(lg * 1.35, 1)
@@ -284,7 +285,8 @@ function ModelDetail({ model }: { model: Model }) {
               model={model}
               slot="hero"
               contain
-              className="mt-6 w-full lg:hidden"
+              style={heroWidthVars(model)}
+              className="mt-6 w-(--hero-sm) mx-auto lg:hidden"
             />
           )}
 
