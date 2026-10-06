@@ -291,6 +291,7 @@ export const models: Model[] = [
     stove: 'Боковая приварная расширенная, водяной контур и теплосъёмные трубы',
     bowlShape: 'faceted',
     theme: 'copper',
+    photos: { hero: 'grant-hero.webp' },
     offers: [
       { cm: 235, price: 459000 },
       { cm: 250, price: 588000 },
