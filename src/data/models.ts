@@ -65,6 +65,18 @@ export const promo = {
   note: 'Малый чан «Графит» 175 см — 99 000 ₽ вместо 119 000 ₽',
 } as const
 
+/**
+ * Real photographs, by file name in `public/photos`. A model without an entry
+ * keeps the procedural stand-in, so the line can be photographed one model at
+ * a time without touching any component.
+ */
+export interface ModelPhotos {
+  /** Full-bleed shot behind the model page's opening screen. */
+  hero?: string
+  /** Product shot on the catalogue card. */
+  card?: string
+}
+
 export interface Model {
   slug: string
   name: string
@@ -88,6 +100,7 @@ export interface Model {
   /** Shown on the card as a ribbon. */
   badge?: string
   offers: Offer[]
+  photos?: ModelPhotos
   /** Kit contents, as the catalogue lists them. */
   includes: string[]
   seoTitle: string
@@ -120,6 +133,7 @@ export const models: Model[] = [
       { cm: 210, price: 135500 },
       { cm: 235, price: 176500 },
     ],
+    photos: { hero: 'grafit-hero.webp', card: 'grafit-hero.webp' },
     includes: [...commonIncludes, 'Ветрозащита', 'Дымоход 3 м и защитный экран'],
     seoTitle: 'Банный чан «Графит»',
     seoDescription:

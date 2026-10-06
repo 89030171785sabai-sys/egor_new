@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { ButtonLink } from './Button'
-import { PlaceholderImage } from './PlaceholderImage'
+import { ModelShot } from './ModelShot'
 import {
   formatHours,
   formatPrice,
@@ -31,7 +31,7 @@ export function ModelCard({ model }: { model: Model }) {
       </p>
 
       <div className="relative mt-5 overflow-hidden rounded-card">
-        <PlaceholderImage tone="studio" ratio="4/3" label={`${model.name} — товарное фото`} />
+        <ModelShot model={model} slot="card" ratio="4/3" />
         <span className="absolute top-3 right-3 rounded-full bg-brand-500 px-3.5 py-1.5 text-sm font-semibold text-white">
           Нагрев {formatHours(model.heatingHours)}
         </span>

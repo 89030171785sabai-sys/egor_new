@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { NotFoundPage } from './NotFoundPage'
 import { ButtonLink } from '../components/ui/Button'
 import { PlaceholderImage } from '../components/ui/PlaceholderImage'
+import { ModelShot } from '../components/ui/ModelShot'
 import { SectionHeading } from '../components/ui/SectionHeading'
 import { Reveal } from '../components/ui/Reveal'
 import { LeadForm } from '../components/forms/LeadForm'
@@ -92,13 +93,11 @@ function ModelDetail({ model }: { model: Model }) {
   return (
     <>
       <section className="relative isolate flex min-h-[38rem] items-end overflow-hidden lg:min-h-[42rem]">
-        <PlaceholderImage
-          tone={model.theme}
-          ratio="auto"
-          className="absolute inset-0 -z-20 size-full"
-          label={`${model.name} — крупный кадр изделия`}
+        <ModelShot model={model} slot="hero" fill className="-z-20" />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 -z-10 bg-gradient-to-r from-ink-900/85 via-ink-900/55 to-ink-900/25"
         />
-        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-ink-900/35" />
 
         <div className="mx-auto w-full max-w-(--container-content) px-4 pt-32 pb-12 sm:px-6 lg:pt-40">
           <nav aria-label="Хлебные крошки" className="text-sm text-white/70">
