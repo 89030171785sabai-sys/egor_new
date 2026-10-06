@@ -37,7 +37,7 @@ DST = 'public/photos'
 # page, since the shot is anchored to the right edge.
 SHOTS = {
     'grafit':           dict(left=0.00, right=1.00, rim=(0.120, 0.780), boost=1.18),
-    'valtsovavich':     dict(left=0.16, right=0.76, rim=(0.405, 0.685), top=0.12, bottom=0.08),
+    'valtsovavich':     dict(left=0.16, right=0.72, rim=(0.405, 0.685), top=0.12, bottom=0.08),
     'cherny-brilliant': dict(left=0.22, right=0.84, rim=(0.300, 0.720)),
     'nefrit':           dict(left=0.20, right=0.80, rim=(0.290, 0.710)),
     'oniks':            dict(left=0.20, right=0.80, rim=(0.240, 0.520)),
