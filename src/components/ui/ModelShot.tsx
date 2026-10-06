@@ -62,7 +62,7 @@ export function ModelShot({
         src={photoUrl(name)}
         alt={alt}
         loading="eager"
-        className={`w-full object-contain ${className}`}
+        className={`object-contain ${className}`}
       />
     )
   }

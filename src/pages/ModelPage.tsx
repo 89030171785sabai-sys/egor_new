@@ -45,12 +45,51 @@ export function ModelPage({ slug }: { slug: string }) {
 }
 
 /**
- * The facts a buyer scans for before reading anything — sizes, steel, stove
- * and the entry price — set beside the product shot.
+ * Behind the opening screen.
+ *
+ * A studio shot of a whole tub cannot be cropped to the shape of a hero
+ * without losing its chimney and its base, so the photograph is contained and
+ * set to the right at a little over half the width — large, whole, and clear
+ * of the headline. A model still waiting for its photograph keeps the
+ * full-bleed stand-in, which has nothing to lose by being cropped.
+ */
+function HeroBackdrop({ model }: { model: Model }) {
+  if (!model.photos?.hero) {
+    return (
+      <>
+        <ModelShot model={model} slot="hero" fill className="-z-20" />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 -z-10 bg-gradient-to-r from-ink-900/85 via-ink-900/55 to-ink-900/25"
+        />
+      </>
+    )
+  }
+
+  return (
+    <>
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-30 bg-gradient-to-b from-ink-800 to-ink-900"
+      />
+      <div className="absolute inset-y-10 right-0 -z-20 w-[78%] lg:inset-y-14 lg:w-[56%]">
+        <ModelShot model={model} slot="hero" contain className="size-full object-right" />
+      </div>
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 bg-gradient-to-r from-ink-900 via-ink-900/70 to-transparent"
+      />
+    </>
+  )
+}
+
+/**
+ * The card the reference floats over the hero shot: the facts a buyer scans
+ * for before reading anything — sizes, steel, stove and the entry price.
  */
 function HeroSpecCard({ model }: { model: Model }) {
   return (
-    <aside className="rounded-panel bg-white/95 p-5 backdrop-blur">
+    <aside className="absolute right-6 bottom-12 hidden w-72 rounded-panel bg-white/95 p-5 backdrop-blur lg:block xl:right-[max(1.5rem,calc((100vw-80rem)/2))]">
       <p className="text-xs tracking-wider text-ink-400 uppercase">Размеры чаши</p>
       <ul className="mt-2.5 flex flex-wrap gap-1.5">
         {modelSizes(model).map((size) => (
@@ -92,17 +131,10 @@ function ModelDetail({ model }: { model: Model }) {
 
   return (
     <>
-      <section className="relative isolate overflow-hidden bg-ink-900 pt-32 pb-14 lg:pt-40 lg:pb-20">
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 -z-20 bg-gradient-to-b from-ink-800 to-ink-900"
-        />
-        <div
-          aria-hidden="true"
-          className="absolute -top-40 -right-24 -z-10 size-[42rem] rounded-full bg-brand-500/12 blur-3xl"
-        />
+      <section className="relative isolate flex min-h-[38rem] items-end overflow-hidden lg:min-h-[42rem]">
+        <HeroBackdrop model={model} />
 
-        <div className="mx-auto w-full max-w-(--container-content) px-4 sm:px-6">
+        <div className="mx-auto w-full max-w-(--container-content) px-4 pt-32 pb-12 sm:px-6 lg:pt-40">
           <nav aria-label="Хлебные крошки" className="text-sm text-white/70">
             <Link to="/" className="transition-colors hover:text-white">
               Главная
@@ -110,7 +142,7 @@ function ModelDetail({ model }: { model: Model }) {
             <span aria-hidden="true" className="mx-2">
               /
             </span>
-            <Link to="/catalog" className="transition-colors hover:text-white">
+            <Link to="/#catalog" className="transition-colors hover:text-white">
               Каталог
             </Link>
             <span aria-hidden="true" className="mx-2">
@@ -119,65 +151,49 @@ function ModelDetail({ model }: { model: Model }) {
             <span className="text-white">{model.name}</span>
           </nav>
 
-          <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,32rem)] lg:items-center lg:gap-14">
-            <div>
-              <p className="flex flex-wrap items-center gap-3">
-                <span className="flex items-center gap-2 text-sm text-white/85">
-                  <span aria-hidden="true" className="size-1.5 rounded-full bg-brand-400" />
-                  Время нагрева всего {formatHours(model.heatingHours)}
-                </span>
-                {model.badge && (
-                  <span className="rounded-full bg-brand-500 px-3 py-1 text-xs font-medium text-white">
-                    {model.badge}
-                  </span>
-                )}
-              </p>
+          <p className="mt-6 flex flex-wrap items-center gap-3">
+            <span className="flex items-center gap-2 text-sm text-white/85">
+              <span aria-hidden="true" className="size-1.5 rounded-full bg-brand-400" />
+              Время нагрева всего {formatHours(model.heatingHours)}
+            </span>
+            {model.badge && (
+              <span className="rounded-full bg-brand-500 px-3 py-1 text-xs font-medium text-white">
+                {model.badge}
+              </span>
+            )}
+          </p>
 
-              <h1 className="mt-4 text-white">
-                <span className="block text-xl sm:text-2xl">{model.kind}</span>
-                <span className="font-display mt-1 block text-[2.75rem] sm:text-[4rem] lg:text-[5rem]">
-                  {model.name}
-                </span>
-              </h1>
+          <h1 className="mt-4 text-white">
+            <span className="block text-xl sm:text-2xl">{model.kind}</span>
+            <span className="font-display mt-1 block text-[2.75rem] sm:text-[4rem] lg:text-[5rem]">
+              {model.name}
+            </span>
+          </h1>
 
-              {/* The product sits here on wide screens; on a phone it belongs
-                  between the name and the sales copy, where it is actually
-                  looked at. */}
-              <div className="mt-8 lg:hidden">
-                <ModelShot model={model} slot="hero" contain ratio="4/3" className="rounded-card" />
-              </div>
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-white/85 sm:text-lg">
+            {model.accent}. {model.description}
+          </p>
 
-              <p className="mt-6 max-w-xl text-base leading-relaxed text-white/85 sm:text-lg">
-                {model.accent}. {model.description}
-              </p>
-
-              <div className="mt-8 flex flex-wrap items-center gap-3">
-                <ButtonLink to="/calculator" size="lg">
-                  Рассчитать стоимость
-                </ButtonLink>
-                <ButtonLink to="#request" variant="ghost" size="lg">
-                  Задать вопрос
-                </ButtonLink>
-              </div>
-
-              <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-2 text-sm text-white/75">
-                {claimsFor(model).map((claim) => (
-                  <li key={claim} className="flex items-center gap-2">
-                    <span aria-hidden="true" className="size-1.5 rounded-full bg-brand-400" />
-                    {claim}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="space-y-6">
-              <div className="hidden lg:block">
-                <ModelShot model={model} slot="hero" contain ratio="4/3" className="rounded-panel" />
-              </div>
-              <HeroSpecCard model={model} />
-            </div>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <ButtonLink to="/calculator" size="lg">
+              Рассчитать стоимость
+            </ButtonLink>
+            <ButtonLink to="#request" variant="ghost" size="lg">
+              Задать вопрос
+            </ButtonLink>
           </div>
+
+          <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-2 text-sm text-white/75">
+            {claimsFor(model).map((claim) => (
+              <li key={claim} className="flex items-center gap-2">
+                <span aria-hidden="true" className="size-1.5 rounded-full bg-brand-400" />
+                {claim}
+              </li>
+            ))}
+          </ul>
         </div>
+
+        <HeroSpecCard model={model} />
       </section>
 
       <section className="py-16 lg:py-24">
