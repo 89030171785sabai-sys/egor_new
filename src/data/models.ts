@@ -196,7 +196,7 @@ export const models: Model[] = [
     stove: 'Разборная, жаропрочная сталь 09Г2С',
     bowlShape: 'rolled',
     theme: 'sand',
-    photos: { hero: 'valtsovavich-hero.webp', heroWidth: 0.85, heroTone: '#36414e' },
+    photos: { hero: 'valtsovavich-hero.webp', heroWidth: 0.751, heroTone: '#3b4855' },
     offers: [
       { cm: 175, price: 135000 },
       { cm: 210, price: 159000 },
@@ -252,7 +252,7 @@ export const models: Model[] = [
     stove: 'Выносная, водяной контур и теплосъёмные трубы',
     bowlShape: 'faceted',
     theme: 'olive',
-    photos: { hero: 'oniks-hero.webp', heroWidth: 0.75, heroTone: '#1a3935' },
+    photos: { hero: 'oniks-hero.webp', heroWidth: 0.751, heroTone: '#1a3935' },
     offers: [
       { cm: 175, price: 188000 },
       { cm: 210, price: 199000 },
@@ -281,7 +281,7 @@ export const models: Model[] = [
     bowlShape: 'faceted',
     theme: 'terracotta',
     badge: 'Решение 4 в 1',
-    photos: { hero: 'oniks-pro-hero.webp', heroWidth: 0.662, heroTone: '#692713' },
+    photos: { hero: 'oniks-pro-hero.webp', heroWidth: 0.663, heroTone: '#692713' },
     offers: [
       { cm: 210, price: 294000 },
       { cm: 235, price: 353000 },
@@ -308,7 +308,7 @@ export const models: Model[] = [
     stove: 'Боковая приварная расширенная, водяной контур и теплосъёмные трубы',
     bowlShape: 'faceted',
     theme: 'copper',
-    photos: { hero: 'grant-hero.webp', heroWidth: 0.782, heroTone: '#60220b' },
+    photos: { hero: 'grant-hero.webp', heroWidth: 0.783, heroTone: '#60220b' },
     offers: [
       { cm: 235, price: 459000 },
       { cm: 250, price: 588000 },

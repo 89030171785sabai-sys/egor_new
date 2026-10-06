@@ -21,26 +21,35 @@ from PIL import Image
 SRC = 'assets/photos-src'
 DST = 'public/photos'
 
-# name: (crop_left, crop_right, rim_left, rim_right, crop_top, boost) — the
-# first four are fractions of the original width, crop_top of its height.
-# `boost` nudges a model off the formula: matching bowl rims is right for all
-# but Графит, whose flat top rim is far wider than its body, so the formula
-# leaves the whole picture looking smaller than its neighbours. A tall crop is
-# what makes a shot overflow the hero, so a frame with empty sky above the
-# chimney has it taken off here.
+# Per shot: where to crop, where the bowl's rim is, and whether to nudge the
+# result off the formula.
+#
+#   left/right  — crop, as fractions of the original width
+#   rim         — the widest point of the bowl, same units; what gets matched
+#   top/bottom  — crop, as fractions of the original height. Sky above the
+#                 chimney makes a shot overflow the hero; floor below it reads
+#                 as empty space on the page.
+#   boost       — matching bowl rims is right for every model but Графит,
+#                 whose flat top rim is far wider than its body, so the
+#                 formula leaves the whole picture looking small.
+#
+# Cropping the right-hand side also carries the product further right on the
+# page, since the shot is anchored to the right edge.
 SHOTS = {
-    'grafit':           (0.00, 1.00, 0.120, 0.780, 0.00, 1.18),
-    'valtsovavich':     (0.16, 0.84, 0.405, 0.685, 0.12),
-    'cherny-brilliant': (0.22, 0.84, 0.300, 0.720),
-    'nefrit':           (0.20, 0.80, 0.290, 0.710),
-    'oniks':            (0.20, 0.80, 0.240, 0.520),
-    'oniks-pro':        (0.14, 0.84, 0.230, 0.600),
-    'grant':            (0.12, 0.88, 0.190, 0.530),
+    'grafit':           dict(left=0.00, right=1.00, rim=(0.120, 0.780), boost=1.18),
+    'valtsovavich':     dict(left=0.16, right=0.76, rim=(0.405, 0.685), top=0.12, bottom=0.08),
+    'cherny-brilliant': dict(left=0.22, right=0.84, rim=(0.300, 0.720)),
+    'nefrit':           dict(left=0.20, right=0.80, rim=(0.290, 0.710)),
+    'oniks':            dict(left=0.20, right=0.80, rim=(0.240, 0.520)),
+    'oniks-pro':        dict(left=0.14, right=0.84, rim=(0.230, 0.600)),
+    'grant':            dict(left=0.12, right=0.88, rim=(0.190, 0.530)),
 }
 
-# Width of the shot on a large screen, as a share of the viewport, before the
-# per-model correction. The correction is capped so no shot runs past 80%.
-MAX_LG = 0.85
+# Ceiling on how wide a shot may run. It also sets the scale of the whole set:
+# the most loosely framed model takes it, and the rest come down to match. Kept
+# where it is so that tightening one model's crop does not enlarge every other
+# model's picture along with it.
+MAX_LG = 0.783
 
 
 def tone(image: Image.Image) -> str:
@@ -64,16 +73,16 @@ def tone(image: Image.Image) -> str:
 
 
 rims = {}
-for name, geometry in SHOTS.items():
-    cl, cr, rl, rr = geometry[:4]
-    ct = geometry[4] if len(geometry) > 4 else 0.0
-    boost = geometry[5] if len(geometry) > 5 else 1.0
+for name, shot in SHOTS.items():
+    cl, cr = shot['left'], shot['right']
+    rl, rr = shot['rim']
+    ct, cb = shot.get('top', 0.0), shot.get('bottom', 0.0)
     original = Image.open(f'{SRC}/{name}-hero.webp').convert('RGB')
     w, h = original.size
-    cropped = original.crop((round(w * cl), round(h * ct), round(w * cr), h))
+    cropped = original.crop((round(w * cl), round(h * ct), round(w * cr), round(h * (1 - cb))))
     cropped.save(f'{DST}/{name}-hero.webp', 'WEBP', quality=90, method=6)
     rims[name] = {'rim': (rr - rl) / (cr - cl), 'tone': tone(cropped),
-                  'size': cropped.size, 'boost': boost}
+                  'size': cropped.size, 'boost': shot.get('boost', 1.0)}
 
 # The most loosely framed shot sets the ceiling; the rest scale down to match.
 target = MAX_LG * min(info['rim'] for info in rims.values())
