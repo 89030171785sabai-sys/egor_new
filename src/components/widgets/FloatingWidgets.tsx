@@ -1,129 +1,17 @@
-import { useEffect, useState } from 'react'
-import { quizSteps } from '../../data/quiz'
+import { QuizPopup } from '../quiz/QuizPopup'
 import { contacts } from '../../data/contacts'
 
-/** Carries a first answer from the teaser into the configurator. */
-export const QUIZ_PRESELECT_EVENT = 'quiz:preselect'
-
-export interface QuizPreselect {
-  stepId: string
-  optionId: string
-}
-
-const DISMISSED_KEY = 'quiz-teaser-dismissed'
-
 /**
- * The two floating elements the reference carries: a picker that opens by
- * itself once past the first screen on the left, and the messenger dock on the
- * right.
+ * The two floating elements the reference carries: the consultant quiz on the
+ * left, which opens by itself once past the first screen, and the messenger
+ * dock on the right.
  */
 export function FloatingWidgets() {
   return (
     <>
-      <QuizTeaser />
+      <QuizPopup />
       <MessengerDock />
     </>
-  )
-}
-
-function QuizTeaser() {
-  const [open, setOpen] = useState(false)
-  const [dismissed, setDismissed] = useState(true)
-  const step = quizSteps[0]
-
-  useEffect(() => {
-    // A visitor who closed it should not be nagged again this visit.
-    try {
-      setDismissed(sessionStorage.getItem(DISMISSED_KEY) === '1')
-    } catch {
-      setDismissed(false)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (dismissed) return
-
-    const onScroll = () => {
-      const scrolled = window.scrollY > 700
-      // Near the end of the page the card would sit on top of the footer.
-      const nearBottom =
-        window.scrollY + window.innerHeight > document.documentElement.scrollHeight - 420
-      setOpen(scrolled && !nearBottom)
-    }
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [dismissed])
-
-  function close() {
-    setOpen(false)
-    setDismissed(true)
-    try {
-      sessionStorage.setItem(DISMISSED_KEY, '1')
-    } catch {
-      // A blocked storage is no reason to keep the card on screen.
-    }
-  }
-
-  function choose(optionId: string) {
-    window.dispatchEvent(
-      new CustomEvent<QuizPreselect>(QUIZ_PRESELECT_EVENT, {
-        detail: { stepId: step.id, optionId },
-      }),
-    )
-    document.querySelector('#calculator')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    close()
-  }
-
-  if (dismissed || !open) return null
-
-  return (
-    <aside className="fixed bottom-4 left-4 z-40 hidden w-[19rem] rounded-panel bg-white p-4 shadow-2xl shadow-ink-900/20 sm:block">
-      <div className="flex items-start gap-3">
-        <span className="grid size-9 shrink-0 place-items-center rounded-full bg-ink-800 text-xs font-semibold text-white">
-          HT
-        </span>
-        <div className="min-w-0">
-          <p className="text-sm font-semibold">{contacts.companyName}</p>
-          <p className="text-xs text-ink-400">консультант</p>
-        </div>
-        <button
-          type="button"
-          onClick={close}
-          aria-label="Закрыть подбор"
-          className="ml-auto grid size-7 shrink-0 place-items-center rounded-full text-ink-400 transition-colors hover:bg-sand-200 hover:text-ink-700"
-        >
-          <svg viewBox="0 0 12 12" aria-hidden="true" className="size-3">
-            <path
-              d="m2 2 8 8M10 2l-8 8"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.6"
-              strokeLinecap="round"
-            />
-          </svg>
-        </button>
-      </div>
-
-      <p className="mt-4 text-sm font-semibold">{step.title}</p>
-      <p className="mt-1 text-xs leading-relaxed text-ink-400">
-        От количества человек зависит размер чана.
-      </p>
-
-      <div className="mt-3 space-y-1.5">
-        {step.options.map((option) => (
-          <button
-            key={option.id}
-            type="button"
-            onClick={() => choose(option.id)}
-            className="flex w-full items-center gap-2.5 rounded-card px-3 py-2.5 text-left text-sm ring-1 ring-sand-200 transition-colors hover:bg-brand-50 hover:ring-brand-300"
-          >
-            <span aria-hidden="true" className="size-3.5 shrink-0 rounded-full ring-1 ring-sand-300" />
-            {option.title}
-          </button>
-        ))}
-      </div>
-    </aside>
   )
 }
 

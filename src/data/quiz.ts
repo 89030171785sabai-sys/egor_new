@@ -33,10 +33,10 @@ export const quizSteps: QuizStep[] = [
     hint: 'Совет: берите с запасом — свободное пространство делает парение комфортнее.',
     mode: 'single',
     options: [
-      { id: 'small', title: 'Маленький', note: 'до 4 человек — компактный вариант для семьи или пары' },
-      { id: 'medium', title: 'Средний', note: 'до 6 человек — оптимально для дружеских посиделок' },
-      { id: 'large', title: 'Большой', note: 'до 9 человек — просторный чан для большой компании' },
-      { id: 'maxi', title: 'Макси', note: 'до 12 человек — максимум для мероприятий и банных комплексов' },
+      { id: 'small', title: 'Малый — 175 см', note: 'до 4 человек: компактный вариант для семьи или пары' },
+      { id: 'medium', title: 'Средний — 210 см', note: 'до 6 человек: оптимально для дружеских посиделок' },
+      { id: 'large', title: 'Большой — 235 см', note: 'до 9 человек: просторный чан для большой компании' },
+      { id: 'maxi', title: 'Огромный — 250 см', note: 'до 14 человек: для мероприятий и банных комплексов' },
     ],
   },
   {
@@ -47,12 +47,12 @@ export const quizSteps: QuizStep[] = [
       {
         id: 'aisi-430',
         title: 'Нержавеющая сталь AISI 430',
-        note: 'прочная и надёжная, отлично держит тепло. Проверенный выбор по разумной цене',
+        note: 'техническая марка, срок службы 20–25 лет. Проверенный выбор по разумной цене',
       },
       {
         id: 'aisi-304',
         title: 'Нержавеющая сталь AISI 304',
-        note: 'премиальная марка, повышенная стойкость к коррозии. Служит дольше и сохраняет вид на десятилетия',
+        note: 'пищевая марка, срок службы 45–50 лет. Не ржавеет и сохраняет вид десятилетиями',
       },
     ],
   },
@@ -62,10 +62,10 @@ export const quizSteps: QuizStep[] = [
     mode: 'single',
     withImages: true,
     options: [
-      { id: 'standard', title: 'Стандарт', note: 'аккуратная базовая отделка — всё для комфортного парения', tone: 'studio' },
-      { id: 'standard-plus', title: 'Стандарт плюс', note: 'улучшенная обработка поверхности, приятнее тактильно и визуально', tone: 'sand' },
-      { id: 'premium', title: 'Премиум', note: 'качественные материалы и тщательная отделка, повышенный комфорт', tone: 'copper' },
-      { id: 'lux', title: 'Люкс', note: 'максимальный уровень: премиальные материалы и безупречный вид', tone: 'ink' },
+      { id: 'standard', title: 'Лиственница — базовая отделка', note: 'входит в комплект: чаша с отделкой и спинки под углом 67°', tone: 'sand' },
+      { id: 'thermo', title: 'Термодерево', note: 'тёмный тон, устойчиво к влаге и перепадам температур', tone: 'ink' },
+      { id: 'painted', title: 'Термостойкая покраска', note: 'матовый чёрный по металлу, без деревянной обшивки', tone: 'graphite' },
+      { id: 'undecided', title: 'Пока не определились', note: 'подберём вместе с менеджером', tone: 'studio' },
     ],
   },
   {
@@ -74,10 +74,11 @@ export const quizSteps: QuizStep[] = [
     mode: 'single',
     withImages: true,
     options: [
-      { id: 'stationary', title: 'Стационарная печь', note: 'классика, внутри чана — быстрый нагрев', tone: 'ink' },
-      { id: 'base', title: 'Печь-подставка', note: 'располагается под чашей, экономит внутреннее пространство', tone: 'graphite' },
-      { id: 'water-circuit', title: 'Печь с водяным контуром', note: 'равномерный прогрев воды по всему объёму', tone: 'copper' },
-      { id: 'external', title: 'Печь выносная', note: 'топка снаружи — внутри больше места и меньше дыма', tone: 'terracotta' },
+      { id: 'hearth', title: 'Открытый очаг с ветрозащитой', note: 'базовое решение «Графита», нагрев 5 часов', tone: 'graphite' },
+      { id: 'enlarged', title: 'Увеличенная или разборная печь', note: 'чугунный колосник и зольный ящик, нагрев 3 часа', tone: 'ink' },
+      { id: 'water-circuit', title: 'Печь с водяным контуром', note: 'змеевик и ускоренный нагрев за 1,5 часа', tone: 'jade' },
+      { id: 'external', title: 'Выносная печь', note: 'топка в стороне от чаши, подключение шлангами', tone: 'olive' },
+      { id: 'side', title: 'Боковая приварная расширенная', note: 'теплосъёмные трубы, низкий борт, вертикальная загрузка', tone: 'terracotta' },
     ],
   },
   {
@@ -86,8 +87,9 @@ export const quizSteps: QuizStep[] = [
     mode: 'single',
     withImages: true,
     options: [
-      { id: 'three-meters', title: 'Дымоход 3 м + защитный экран', note: 'высокая тяга и защита от случайных ожогов', tone: 'studio' },
-      { id: 'sandwich', title: 'Дымоход 2 м + сэндвич-вставка 1 м', note: 'утеплённая вставка снижает нагрев трубы — безопаснее и аккуратнее', tone: 'studio' },
+      { id: 'three-meters', title: 'Дымоход 3 м и защитный экран', note: 'высокая тяга и защита от случайных ожогов', tone: 'studio' },
+      { id: 'two-meters', title: 'Дымоход 2 м', note: 'комплектация моделей с выносной печью', tone: 'studio' },
+      { id: 'sandwich', title: 'Дымоход 1 м и 1 м сэндвич-трубы', note: 'утеплённая вставка снижает нагрев трубы — безопаснее', tone: 'studio' },
     ],
   },
   {
@@ -134,6 +136,21 @@ export const quizSteps: QuizStep[] = [
     ],
   },
 ]
+
+/**
+ * Discount the pop-up quiz accrues as the visitor answers, in per cent of the
+ * kit price. The figure is a commercial promise, so it lives here on its own
+ * and needs the client's sign-off before the site goes live — see
+ * docs/placeholders.md.
+ */
+export const quizDiscount = {
+  max: 5,
+  label: 'Скидка',
+}
+
+/** How much is unlocked after `answered` of `total` steps. */
+export const discountFor = (answered: number, total: number) =>
+  total === 0 ? 0 : Math.round((answered / total) * quizDiscount.max)
 
 /** Turns the collected answers into readable lines for the lead. */
 export function summariseAnswers(answers: Record<string, string[]>) {
