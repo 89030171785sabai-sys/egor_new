@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { PlaceholderImage } from '../ui/PlaceholderImage'
+import { ModelShot } from '../ui/ModelShot'
 import { formatHours, models, modelSizes } from '../../data/models'
 
 /** Slide-out list of the whole model line, opened from the header. */
@@ -59,12 +59,12 @@ export function ModelDrawer({ open, onClose }: { open: boolean; onClose: () => v
             {models.map((model) => (
               <li key={model.slug}>
                 <Link to={`/${model.slug}`} onClick={onClose} className="group block">
-                  <PlaceholderImage
-                    tone={model.theme}
+                  <ModelShot
+                    model={model}
+                    slot="hero"
                     ratio="16/10"
                     className="rounded-card"
                     label={model.name}
-                    showLabel={false}
                   />
                   <p className="mt-3 font-semibold group-hover:text-brand-600">{model.name}</p>
                   <p className="mt-1 text-sm text-ink-400">Нагрев {formatHours(model.heatingHours)}</p>
