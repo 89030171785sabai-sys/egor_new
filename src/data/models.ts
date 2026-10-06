@@ -151,7 +151,7 @@ export const models: Model[] = [
     ],
     // Only the model page's own hero: the home page and the catalogue card
     // are waiting for their own shots.
-    photos: { hero: 'grafit-hero.webp', heroWidth: 0.626, heroTone: '#181f26' },
+    photos: { hero: 'grafit-hero.webp', heroWidth: 0.596, heroTone: '#263b44' },
     includes: [...commonIncludes, 'Ветрозащита без дна', 'Дымоход 3 м и защитный экран'],
     seoTitle: 'Банный чан «Графит»',
     seoDescription:
