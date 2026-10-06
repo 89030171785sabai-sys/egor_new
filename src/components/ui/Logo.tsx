@@ -51,9 +51,9 @@ export function Logo({
 /** Emblem and wordmark side by side, for the header. */
 export function LogoLockup({ className = '' }: { className?: string }) {
   return (
-    <span className={`inline-flex items-center gap-2.5 ${className}`} role="img" aria-label="HOTTUB">
-      <Logo crop="emblem" title="" className="h-8 w-auto" />
-      <Logo crop="wordmark" title="" className="h-3.5 w-auto" />
+    <span className={`inline-flex items-center gap-3 ${className}`} role="img" aria-label="HOTTUB">
+      <Logo crop="emblem" title="" className="h-9 w-auto lg:h-11" />
+      <Logo crop="wordmark" title="" className="h-4 w-auto lg:h-5" />
     </span>
   )
 }

@@ -3,7 +3,7 @@ import { Reveal } from '../ui/Reveal'
 const advantages = [
   {
     title: 'Качество стали',
-    text: 'Пищевая нержавейка AISI 304 и 430 — служит более 50 лет',
+    text: 'Нержавейка AISI 430 служит 20–25 лет, пищевая AISI 304 — 45–50 лет',
     icon: 'shield' as const,
   },
   {

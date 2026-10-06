@@ -3,7 +3,7 @@ import { PlaceholderImage } from '../ui/PlaceholderImage'
 import { formatPrice, priceFrom } from '../../data/models'
 
 const promises = [
-  'Служит более 50 лет',
+  'Сталь служит до 50 лет',
   'Доставка по всей РФ',
   '2 подарка при заказе',
   'Расчёт за 5 минут в Telegram',
@@ -68,7 +68,7 @@ export function Hero() {
           <aside className="rounded-panel bg-white/12 p-5 backdrop-blur lg:absolute lg:top-1/2 lg:left-6 lg:w-64 lg:-translate-y-1/2 xl:left-12">
             <OctagonMark />
             <dl className="mt-4 space-y-4">
-              <Figure value="50" unit="лет" caption="Прослужит чан" tone="light" />
+              <Figure value="45–50" unit="лет" caption="Служит сталь AISI 304" tone="light" />
               <Figure value="13" unit="лет" caption="Гарантия на изделие" tone="light" />
             </dl>
           </aside>

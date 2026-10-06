@@ -10,7 +10,7 @@ export function Footer() {
       <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
         <div className="flex flex-wrap items-center gap-4 border-b border-sand-300 py-6">
           <Link to="/" aria-label={`${contacts.companyName} — на главную`}>
-            <Logo crop="full" className="h-16 w-auto" />
+            <Logo crop="full" className="h-24 w-auto" />
           </Link>
           <p className="text-sm text-ink-400">Банные чаны от производителя</p>
 
