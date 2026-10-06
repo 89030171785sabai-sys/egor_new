@@ -75,10 +75,11 @@ function HeroBackdrop({ model }: { model: Model }) {
       {/*
         The box takes the photograph's own height rather than the section's, so
         its edges are the photograph's edges — which is what lets the mask fade
-        the actual picture into the page instead of leaving a visible seam
-        where a letterboxed image began.
+        the actual picture into the page instead of leaving a visible seam.
+        The fade is on the left edge only: a fade from the top dims the
+        chimney, which is the first thing the eye lands on.
       */}
-      <div className="pointer-events-none absolute right-0 bottom-0 -z-20 w-[86%] [mask-composite:intersect] [mask-image:linear-gradient(to_right,transparent,black_26%),linear-gradient(to_bottom,transparent,black_30%)] lg:w-[54%]">
+      <div className="pointer-events-none absolute right-0 bottom-0 -z-20 w-[94%] [mask-image:linear-gradient(to_right,transparent,black_24%)] lg:w-[64%]">
         <ModelShot model={model} slot="hero" contain className="w-full" />
       </div>
       <div
