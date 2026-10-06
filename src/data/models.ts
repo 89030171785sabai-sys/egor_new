@@ -235,6 +235,7 @@ export const models: Model[] = [
     stove: 'Выносная, водяной контур и теплосъёмные трубы',
     bowlShape: 'faceted',
     theme: 'olive',
+    photos: { hero: 'oniks-hero.webp' },
     offers: [
       { cm: 175, price: 188000 },
       { cm: 210, price: 199000 },
