@@ -133,7 +133,9 @@ export const models: Model[] = [
       { cm: 210, price: 135500 },
       { cm: 235, price: 176500 },
     ],
-    photos: { hero: 'grafit-hero.webp', card: 'grafit-hero.webp' },
+    // Only the model page's own hero: the home page and the catalogue card
+    // are waiting for their own shots.
+    photos: { hero: 'grafit-hero.webp' },
     includes: [...commonIncludes, 'Ветрозащита', 'Дымоход 3 м и защитный экран'],
     seoTitle: 'Банный чан «Графит»',
     seoDescription:
