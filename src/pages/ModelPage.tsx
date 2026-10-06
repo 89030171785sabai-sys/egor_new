@@ -45,12 +45,12 @@ export function ModelPage({ slug }: { slug: string }) {
 }
 
 /**
- * The card the reference floats over the hero shot: the facts a buyer scans
- * for before reading anything — sizes, steel, stove and the entry price.
+ * The facts a buyer scans for before reading anything — sizes, steel, stove
+ * and the entry price — set beside the product shot.
  */
 function HeroSpecCard({ model }: { model: Model }) {
   return (
-    <aside className="absolute right-6 bottom-12 hidden w-72 rounded-panel bg-white/95 p-5 backdrop-blur lg:block xl:right-[max(1.5rem,calc((100vw-80rem)/2))]">
+    <aside className="rounded-panel bg-white/95 p-5 backdrop-blur">
       <p className="text-xs tracking-wider text-ink-400 uppercase">Размеры чаши</p>
       <ul className="mt-2.5 flex flex-wrap gap-1.5">
         {modelSizes(model).map((size) => (
@@ -92,14 +92,17 @@ function ModelDetail({ model }: { model: Model }) {
 
   return (
     <>
-      <section className="relative isolate flex min-h-[38rem] items-end overflow-hidden lg:min-h-[42rem]">
-        <ModelShot model={model} slot="hero" fill className="-z-20" />
+      <section className="relative isolate overflow-hidden bg-ink-900 pt-32 pb-14 lg:pt-40 lg:pb-20">
         <div
           aria-hidden="true"
-          className="absolute inset-0 -z-10 bg-gradient-to-r from-ink-900/85 via-ink-900/55 to-ink-900/25"
+          className="absolute inset-0 -z-20 bg-gradient-to-b from-ink-800 to-ink-900"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute -top-40 -right-24 -z-10 size-[42rem] rounded-full bg-brand-500/12 blur-3xl"
         />
 
-        <div className="mx-auto w-full max-w-(--container-content) px-4 pt-32 pb-12 sm:px-6 lg:pt-40">
+        <div className="mx-auto w-full max-w-(--container-content) px-4 sm:px-6">
           <nav aria-label="Хлебные крошки" className="text-sm text-white/70">
             <Link to="/" className="transition-colors hover:text-white">
               Главная
@@ -107,7 +110,7 @@ function ModelDetail({ model }: { model: Model }) {
             <span aria-hidden="true" className="mx-2">
               /
             </span>
-            <Link to="/#catalog" className="transition-colors hover:text-white">
+            <Link to="/catalog" className="transition-colors hover:text-white">
               Каталог
             </Link>
             <span aria-hidden="true" className="mx-2">
@@ -116,49 +119,65 @@ function ModelDetail({ model }: { model: Model }) {
             <span className="text-white">{model.name}</span>
           </nav>
 
-          <p className="mt-6 flex flex-wrap items-center gap-3">
-            <span className="flex items-center gap-2 text-sm text-white/85">
-              <span aria-hidden="true" className="size-1.5 rounded-full bg-brand-400" />
-              Время нагрева всего {formatHours(model.heatingHours)}
-            </span>
-            {model.badge && (
-              <span className="rounded-full bg-brand-500 px-3 py-1 text-xs font-medium text-white">
-                {model.badge}
-              </span>
-            )}
-          </p>
+          <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,32rem)] lg:items-center lg:gap-14">
+            <div>
+              <p className="flex flex-wrap items-center gap-3">
+                <span className="flex items-center gap-2 text-sm text-white/85">
+                  <span aria-hidden="true" className="size-1.5 rounded-full bg-brand-400" />
+                  Время нагрева всего {formatHours(model.heatingHours)}
+                </span>
+                {model.badge && (
+                  <span className="rounded-full bg-brand-500 px-3 py-1 text-xs font-medium text-white">
+                    {model.badge}
+                  </span>
+                )}
+              </p>
 
-          <h1 className="mt-4 text-white">
-            <span className="block text-xl sm:text-2xl">{model.kind}</span>
-            <span className="font-display mt-1 block text-[2.75rem] sm:text-[4rem] lg:text-[5rem]">
-              {model.name}
-            </span>
-          </h1>
+              <h1 className="mt-4 text-white">
+                <span className="block text-xl sm:text-2xl">{model.kind}</span>
+                <span className="font-display mt-1 block text-[2.75rem] sm:text-[4rem] lg:text-[5rem]">
+                  {model.name}
+                </span>
+              </h1>
 
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-white/85 sm:text-lg">
-            {model.accent}. {model.description}
-          </p>
+              {/* The product sits here on wide screens; on a phone it belongs
+                  between the name and the sales copy, where it is actually
+                  looked at. */}
+              <div className="mt-8 lg:hidden">
+                <ModelShot model={model} slot="hero" contain ratio="4/3" className="rounded-card" />
+              </div>
 
-          <div className="mt-8 flex flex-wrap items-center gap-3">
-            <ButtonLink to="/calculator" size="lg">
-              Рассчитать стоимость
-            </ButtonLink>
-            <ButtonLink to="#request" variant="ghost" size="lg">
-              Задать вопрос
-            </ButtonLink>
+              <p className="mt-6 max-w-xl text-base leading-relaxed text-white/85 sm:text-lg">
+                {model.accent}. {model.description}
+              </p>
+
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                <ButtonLink to="/calculator" size="lg">
+                  Рассчитать стоимость
+                </ButtonLink>
+                <ButtonLink to="#request" variant="ghost" size="lg">
+                  Задать вопрос
+                </ButtonLink>
+              </div>
+
+              <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-2 text-sm text-white/75">
+                {claimsFor(model).map((claim) => (
+                  <li key={claim} className="flex items-center gap-2">
+                    <span aria-hidden="true" className="size-1.5 rounded-full bg-brand-400" />
+                    {claim}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="space-y-6">
+              <div className="hidden lg:block">
+                <ModelShot model={model} slot="hero" contain ratio="4/3" className="rounded-panel" />
+              </div>
+              <HeroSpecCard model={model} />
+            </div>
           </div>
-
-          <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-2 text-sm text-white/75">
-            {claimsFor(model).map((claim) => (
-              <li key={claim} className="flex items-center gap-2">
-                <span aria-hidden="true" className="size-1.5 rounded-full bg-brand-400" />
-                {claim}
-              </li>
-            ))}
-          </ul>
         </div>
-
-        <HeroSpecCard model={model} />
       </section>
 
       <section className="py-16 lg:py-24">

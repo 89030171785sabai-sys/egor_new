@@ -20,6 +20,7 @@ export function ModelShot({
   ratio,
   className = '',
   fill = false,
+  contain = false,
   label,
 }: {
   model: Model
@@ -29,11 +30,18 @@ export function ModelShot({
   className?: string
   /** Lays the shot over the whole parent, for full-bleed hero backdrops. */
   fill?: boolean
+  /**
+   * Shows the whole product rather than filling a box with it. A studio shot
+   * of a tub gets its chimney and its base cropped off by `object-cover`, so
+   * anywhere the product is the subject it is contained, not covered.
+   */
+  contain?: boolean
   /** Overrides the description of the shot the slot is waiting for. */
   label?: string
 }) {
   const name = model.photos?.[slot] ?? (slot === 'card' ? model.photos?.hero : undefined)
   const described = label ?? `${model.name} — ${slot === 'hero' ? 'крупный кадр изделия' : 'товарное фото'}`
+  const alt = `Банный чан «${model.name}»`
 
   if (!name) {
     return (
@@ -48,7 +56,16 @@ export function ModelShot({
     )
   }
 
-  const alt = `Банный чан «${model.name}»`
+  if (contain) {
+    return (
+      <img
+        src={photoUrl(name)}
+        alt={alt}
+        loading="eager"
+        className={`w-full object-contain ${className}`}
+      />
+    )
+  }
 
   if (fill) {
     return (
