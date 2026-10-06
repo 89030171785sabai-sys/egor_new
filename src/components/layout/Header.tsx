@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import { ModelDrawer } from './ModelDrawer'
 import { LogoLockup } from '../ui/Logo'
 import { navItems, modelRoutes } from '../../lib/routes'
 import { contacts, hasContact } from '../../data/contacts'
@@ -12,7 +11,6 @@ import { contacts, hasContact } from '../../data/contacts'
  */
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [drawerOpen, setDrawerOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const { pathname } = useLocation()
 
@@ -25,7 +23,6 @@ export function Header() {
 
   useEffect(() => {
     setMenuOpen(false)
-    setDrawerOpen(false)
   }, [pathname])
 
   useEffect(() => {
@@ -128,14 +125,6 @@ export function Header() {
                 {route.label}
               </NavLink>
             ))}
-
-            <button
-              type="button"
-              onClick={() => setDrawerOpen(true)}
-              className="ml-1 shrink-0 rounded-full bg-sand-200 px-3 py-1.5 text-[0.8125rem] text-ink-700 transition-colors hover:bg-sand-300"
-            >
-              Все модели
-            </button>
           </nav>
 
           {menuOpen && (
@@ -174,7 +163,6 @@ export function Header() {
         </div>
       </header>
 
-      <ModelDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
     </>
   )
 }

@@ -25,8 +25,14 @@ export interface Benefit {
   /** Ticked points, as the catalogue prints them. */
   points?: string[]
   image?: BenefitImage
+  /**
+   * Carries its point in words alone. The catalogue illustrates this one with
+   * two circles, but without the two areas it compares the drawing asserts a
+   * difference it cannot show — so it stays text until the figures exist.
+   */
+  textOnly?: boolean
   /** What the drawing has to show, until it is drawn. */
-  wanted: string
+  wanted?: string
 }
 
 export const benefits: Benefit[] = [
@@ -51,7 +57,6 @@ export const benefits: Benefit[] = [
     id: 'heat-area',
     title: 'Площадь теплосъёма',
     lead: 'Важнейшая характеристика печи — напрямую влияет на КПД и скорость нагрева воды в чане.',
-    // Drawn in the page rather than generated: two circles and some type.
-    wanted: 'нарисована кодом, файл не нужен',
+    textOnly: true,
   },
 ]
