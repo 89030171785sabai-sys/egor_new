@@ -7,19 +7,26 @@ import { Reveal } from '../components/ui/Reveal'
 import { LeadForm } from '../components/forms/LeadForm'
 import { useSeo } from '../lib/seo'
 import {
+  modelPriceFrom,
   modelSizes,
   sizeTier,
   steelGrades,
   formatHours,
+  formatPrice,
   formatPriceRange,
   modelBySlug,
   models,
   type Model,
 } from '../data/models'
 
-const claims = [
+/**
+ * Hero claims. The service life is the one that moves per model — AISI 430
+ * and AISI 304 are not the same promise, so it is read off the model rather
+ * than written into a shared list.
+ */
+const claimsFor = (model: Model) => [
+  `Сталь служит ${steelGrades[model.steel].life}`,
   'Гарантия 13 лет',
-  'Служит более 50 лет',
   'Под ключ за 8 дней',
   'Предоплата 10%',
 ]
@@ -34,6 +41,43 @@ export function ModelPage({ slug }: { slug: string }) {
   if (!model) return <NotFoundPage />
 
   return <ModelDetail model={model} />
+}
+
+/**
+ * The card the reference floats over the hero shot: the facts a buyer scans
+ * for before reading anything — sizes, steel, stove and the entry price.
+ */
+function HeroSpecCard({ model }: { model: Model }) {
+  return (
+    <aside className="absolute right-6 bottom-12 hidden w-72 rounded-panel bg-white/95 p-5 backdrop-blur lg:block xl:right-[max(1.5rem,calc((100vw-80rem)/2))]">
+      <p className="text-xs tracking-wider text-ink-400 uppercase">Размеры чаши</p>
+      <ul className="mt-2.5 flex flex-wrap gap-1.5">
+        {modelSizes(model).map((size) => (
+          <li key={size} className="rounded-full bg-sand-100 px-2.5 py-1 text-xs text-ink-600">
+            {size} см · до {sizeTier(size)?.people}
+          </li>
+        ))}
+      </ul>
+
+      <dl className="mt-4 space-y-2.5 border-t border-sand-200 pt-4 text-sm">
+        <div>
+          <dt className="text-xs text-ink-400">Сталь</dt>
+          <dd className="font-medium">
+            {model.steel} · {steelGrades[model.steel].life}
+          </dd>
+        </div>
+        <div>
+          <dt className="text-xs text-ink-400">Печь</dt>
+          <dd className="leading-snug font-medium">{model.stove}</dd>
+        </div>
+      </dl>
+
+      <p className="mt-4 border-t border-sand-200 pt-4">
+        <span className="text-xs text-ink-400">Цена от</span>
+        <span className="mt-0.5 block text-xl font-bold">{formatPrice(modelPriceFrom(model))}</span>
+      </p>
+    </aside>
+  )
 }
 
 function ModelDetail({ model }: { model: Model }) {
@@ -73,7 +117,19 @@ function ModelDetail({ model }: { model: Model }) {
             <span className="text-white">{model.name}</span>
           </nav>
 
-          <h1 className="mt-6 text-white">
+          <p className="mt-6 flex flex-wrap items-center gap-3">
+            <span className="flex items-center gap-2 text-sm text-white/85">
+              <span aria-hidden="true" className="size-1.5 rounded-full bg-brand-400" />
+              Время нагрева всего {formatHours(model.heatingHours)}
+            </span>
+            {model.badge && (
+              <span className="rounded-full bg-brand-500 px-3 py-1 text-xs font-medium text-white">
+                {model.badge}
+              </span>
+            )}
+          </p>
+
+          <h1 className="mt-4 text-white">
             <span className="block text-xl sm:text-2xl">{model.kind}</span>
             <span className="font-display mt-1 block text-[2.75rem] sm:text-[4rem] lg:text-[5rem]">
               {model.name}
@@ -94,7 +150,7 @@ function ModelDetail({ model }: { model: Model }) {
           </div>
 
           <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-2 text-sm text-white/75">
-            {claims.map((claim) => (
+            {claimsFor(model).map((claim) => (
               <li key={claim} className="flex items-center gap-2">
                 <span aria-hidden="true" className="size-1.5 rounded-full bg-brand-400" />
                 {claim}
@@ -102,6 +158,8 @@ function ModelDetail({ model }: { model: Model }) {
             ))}
           </ul>
         </div>
+
+        <HeroSpecCard model={model} />
       </section>
 
       <section className="py-16 lg:py-24">
