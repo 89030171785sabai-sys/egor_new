@@ -1,23 +1,23 @@
 /**
  * Heating layouts across the line.
  *
- * Every entry points at the model that carries it, so the card can borrow that
- * model's photograph and link to its page — no new photography needed, and the
- * section cannot drift from the catalogue.
+ * Every entry names the model it belongs to, so a model page can show how its
+ * own water gets hot without the explanation drifting from the catalogue. Two
+ * models share the welded side stove, hence the extra lookup below.
  */
 /**
- * A close-up of the stove itself, supplied as a pair: the card shows the grey
- * version and crossfades to the colour one under the pointer. Both are the
- * client's own renders, so the grey is a deliberate silver treatment rather
- * than a filter — which is why it is a second file and not a CSS effect.
+ * A close-up of the stove, supplied as a pair: silver at rest, colour under
+ * the pointer. The client's silver is a deliberate high-key treatment rather
+ * than a filter, which is why it is a second file and not a CSS effect; where
+ * the two takes do not line up, only the colour one is given and the page
+ * desaturates it.
+ *
+ * Nothing carries one at the moment — the first three close-ups are archived
+ * in assets/photos-src and can be brought back by naming them here again, but
+ * the client is shooting a different set for these.
  */
 export interface StovePhoto {
   color: string
-  /**
-   * The client's own silver take. Where the two renders do not line up — one
-   * stove has its removed parts laid out on opposite sides in each — it is
-   * left out and the page desaturates the colour take instead.
-   */
   grey?: string
 }
 
@@ -37,21 +37,18 @@ export const heatingTypes: HeatingType[] = [
     title: 'Открытый очаг с ветрозащитой',
     text: 'Дрова горят на земле прямо под чашей, а корпус закрыт ветрозащитой. Самое простое и самое доступное решение в линейке.',
     slug: 'grafit',
-    photo: { grey: 'stove-hearth-grey.webp', color: 'stove-hearth-color.webp' },
   },
   {
     id: 'enlarged',
     title: 'Стационарная печь',
     text: 'Печь служит основанием чану. Внутри — чугунный колосник и выдвижной зольный ящик, корпус из жаропрочной стали 09Г2С.',
     slug: 'cherny-brilliant',
-    photo: { grey: 'stove-stationary-grey.webp', color: 'stove-stationary-color.webp' },
   },
   {
     id: 'demountable',
     title: 'Разборная печь',
     text: 'Та же жаропрочная сталь, но печь разбирается — есть доступ к любому узлу, обслуживать проще.',
     slug: 'valtsovavich',
-    photo: { color: 'stove-demountable-color.webp' },
   },
   {
     id: 'water-circuit',
@@ -72,3 +69,11 @@ export const heatingTypes: HeatingType[] = [
     slug: 'oniks-pro',
   },
 ]
+
+/** Models that share a layout with the one the entry names. */
+const alsoFits: Record<string, string[]> = {
+  side: ['grant'],
+}
+
+export const heatingForModel = (slug: string) =>
+  heatingTypes.find((type) => type.slug === slug || alsoFits[type.id]?.includes(slug))

@@ -4,9 +4,11 @@ import { NotFoundPage } from './NotFoundPage'
 import { ButtonLink } from '../components/ui/Button'
 import { PlaceholderImage } from '../components/ui/PlaceholderImage'
 import { ModelShot } from '../components/ui/ModelShot'
+import { StoveShot } from '../components/ui/StoveShot'
 import { SectionHeading } from '../components/ui/SectionHeading'
 import { Reveal } from '../components/ui/Reveal'
 import { LeadForm } from '../components/forms/LeadForm'
+import { heatingForModel } from '../data/heating'
 import { useSeo } from '../lib/seo'
 import {
   modelPriceFrom,
@@ -183,6 +185,45 @@ function HeroSpecCard({ model }: { model: Model }) {
   )
 }
 
+/**
+ * How this model's water gets hot.
+ *
+ * The line used to explain its six stove layouts in a section of its own on
+ * the home page. The explanation belongs with the model it describes, so it
+ * lives here now — with the stove's own close-up where one has been shot.
+ */
+function HowItHeats({ model }: { model: Model }) {
+  const heating = heatingForModel(model.slug)
+  if (!heating) return null
+
+  return (
+    <section className="group mt-14">
+      <h2 className="text-2xl font-bold text-navy-700">Как греется вода</h2>
+      <div className="mt-6 grid gap-6 sm:grid-cols-[minmax(0,1fr)_minmax(0,20rem)] sm:items-center">
+        <div>
+          <p className="text-lg font-semibold text-navy-700">{heating.title}</p>
+          <p className="mt-3 leading-relaxed text-ink-500">{heating.text}</p>
+          <p className="mt-4 flex items-center gap-2 text-sm text-ink-400">
+            <span aria-hidden="true" className="size-1.5 rounded-full bg-brand-500" />
+            Нагрев {formatHours(model.heatingHours)} · {model.stove}
+          </p>
+        </div>
+
+        {heating.photo ? (
+          <StoveShot photo={heating.photo} title={`${heating.title} — ${model.name}`} />
+        ) : (
+          <PlaceholderImage
+            tone="studio"
+            ratio="4/3"
+            className="rounded-panel"
+            label={`${heating.title} — крупный план печи`}
+          />
+        )}
+      </div>
+    </section>
+  )
+}
+
 function ModelDetail({ model }: { model: Model }) {
   useSeo({
     title: model.seoTitle,
@@ -301,6 +342,8 @@ function ModelDetail({ model }: { model: Model }) {
                 ))}
               </ul>
 
+              <HowItHeats model={model} />
+
               <div className="mt-10 grid gap-5 sm:grid-cols-2">
                 <PlaceholderImage
                   tone={model.theme}
@@ -312,7 +355,7 @@ function ModelDetail({ model }: { model: Model }) {
                   tone="studio"
                   ratio="4/3"
                   className="rounded-panel"
-                  label={`${model.name} — печь и дымоход`}
+                  label={`${model.name} — дымоход и защитный экран`}
                 />
               </div>
             </div>

@@ -2,7 +2,7 @@ import { Hero } from '../components/sections/Hero'
 import { Advantages } from '../components/sections/Advantages'
 import { Catalog } from '../components/sections/Catalog'
 import { ModelShowcase } from '../components/sections/ModelShowcase'
-import { HeatingTypes } from '../components/sections/HeatingTypes'
+import { Benefits } from '../components/sections/Benefits'
 import { Calculator } from '../components/sections/Calculator'
 import { Customization } from '../components/sections/Customization'
 import { Ritual } from '../components/sections/Ritual'
@@ -30,7 +30,7 @@ export function HomePage() {
       <Advantages />
       <Catalog />
       <ModelShowcase />
-      <HeatingTypes />
+      <Benefits />
       <Calculator />
       <Customization />
       <Ritual />

@@ -1,7 +1,7 @@
 import { PageFigures, PageHeader } from '../components/ui/PageHeader'
 import { Catalog } from '../components/sections/Catalog'
 import { ModelShowcase } from '../components/sections/ModelShowcase'
-import { HeatingTypes } from '../components/sections/HeatingTypes'
+import { Benefits } from '../components/sections/Benefits'
 import { Production } from '../components/sections/Production'
 import { Process } from '../components/sections/Process'
 import { Customization } from '../components/sections/Customization'
@@ -47,7 +47,7 @@ export function CatalogPage() {
 
       <Catalog />
       <ModelShowcase />
-      <HeatingTypes />
+      <Benefits />
       <FinalCta />
     </>
   )
