@@ -89,33 +89,51 @@ function HeroBackdrop({ model }: { model: Model }) {
  */
 function HeroSpecCard({ model }: { model: Model }) {
   return (
-    <aside className="absolute right-6 bottom-12 hidden w-72 rounded-panel bg-white/95 p-5 backdrop-blur lg:block xl:right-[max(1.5rem,calc((100vw-80rem)/2))]">
-      <p className="text-xs tracking-wider text-ink-400 uppercase">Размеры чаши</p>
-      <ul className="mt-2.5 flex flex-wrap gap-1.5">
-        {modelSizes(model).map((size) => (
-          <li key={size} className="rounded-full bg-sand-100 px-2.5 py-1 text-xs text-ink-600">
-            {size} см · до {sizeTier(size)?.people}
-          </li>
-        ))}
-      </ul>
+    <aside className="absolute right-6 bottom-12 hidden w-72 overflow-hidden rounded-panel border border-white/20 bg-ink-900/40 p-5 text-white shadow-2xl shadow-ink-900/60 backdrop-blur-2xl backdrop-saturate-150 lg:block xl:right-[max(1.5rem,calc((100vw-80rem)/2))]">
+      {/* The two things that make glass read as glass: a lit top edge and a
+          soft specular bloom in one corner. Both are decorative only. */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-white/60 to-transparent"
+      />
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-14 -left-10 size-36 rounded-full bg-white/20 blur-2xl"
+      />
 
-      <dl className="mt-4 space-y-2.5 border-t border-sand-200 pt-4 text-sm">
-        <div>
-          <dt className="text-xs text-ink-400">Сталь</dt>
-          <dd className="font-medium">
-            {model.steel} · {steelGrades[model.steel].life}
-          </dd>
-        </div>
-        <div>
-          <dt className="text-xs text-ink-400">Печь</dt>
-          <dd className="leading-snug font-medium">{model.stove}</dd>
-        </div>
-      </dl>
+      <div className="relative">
+        <p className="text-xs tracking-wider text-white/55 uppercase">Размеры чаши</p>
+        <ul className="mt-2.5 flex flex-wrap gap-1.5">
+          {modelSizes(model).map((size) => (
+            <li
+              key={size}
+              className="rounded-full border border-white/10 bg-white/12 px-2.5 py-1 text-xs text-white/85"
+            >
+              {size} см · до {sizeTier(size)?.people}
+            </li>
+          ))}
+        </ul>
 
-      <p className="mt-4 border-t border-sand-200 pt-4">
-        <span className="text-xs text-ink-400">Цена от</span>
-        <span className="mt-0.5 block text-xl font-bold">{formatPrice(modelPriceFrom(model))}</span>
-      </p>
+        <dl className="mt-4 space-y-2.5 border-t border-white/15 pt-4 text-sm">
+          <div>
+            <dt className="text-xs text-white/55">Сталь</dt>
+            <dd className="font-medium">
+              {model.steel} · {steelGrades[model.steel].life}
+            </dd>
+          </div>
+          <div>
+            <dt className="text-xs text-white/55">Печь</dt>
+            <dd className="leading-snug font-medium">{model.stove}</dd>
+          </div>
+        </dl>
+
+        <p className="mt-4 border-t border-white/15 pt-4">
+          <span className="text-xs text-white/55">Цена от</span>
+          <span className="mt-0.5 block text-xl font-bold">
+            {formatPrice(modelPriceFrom(model))}
+          </span>
+        </p>
+      </div>
     </aside>
   )
 }
