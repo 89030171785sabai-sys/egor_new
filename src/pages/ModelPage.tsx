@@ -72,8 +72,14 @@ function HeroBackdrop({ model }: { model: Model }) {
         aria-hidden="true"
         className="absolute inset-0 -z-30 bg-gradient-to-b from-ink-800 to-ink-900"
       />
-      <div className="absolute inset-y-10 right-0 -z-20 w-[78%] lg:inset-y-14 lg:w-[56%]">
-        <ModelShot model={model} slot="hero" contain className="size-full object-right" />
+      {/*
+        The box takes the photograph's own height rather than the section's, so
+        its edges are the photograph's edges — which is what lets the mask fade
+        the actual picture into the page instead of leaving a visible seam
+        where a letterboxed image began.
+      */}
+      <div className="pointer-events-none absolute right-0 bottom-0 -z-20 w-[86%] [mask-composite:intersect] [mask-image:linear-gradient(to_right,transparent,black_26%),linear-gradient(to_bottom,transparent,black_30%)] lg:w-[54%]">
+        <ModelShot model={model} slot="hero" contain className="w-full" />
       </div>
       <div
         aria-hidden="true"
@@ -84,12 +90,13 @@ function HeroBackdrop({ model }: { model: Model }) {
 }
 
 /**
- * The card the reference floats over the hero shot: the facts a buyer scans
- * for before reading anything — sizes, steel, stove and the entry price.
+ * The facts a buyer scans for before reading anything — sizes, steel, stove
+ * and the entry price. Kept in the text column rather than floated over the
+ * shot: wherever it floated, it covered the product at some screen width.
  */
 function HeroSpecCard({ model }: { model: Model }) {
   return (
-    <aside className="absolute right-6 bottom-12 hidden w-72 overflow-hidden rounded-panel border border-white/20 bg-ink-900/40 p-5 text-white shadow-2xl shadow-ink-900/60 backdrop-blur-2xl backdrop-saturate-150 lg:block xl:right-[max(1.5rem,calc((100vw-80rem)/2))]">
+    <aside className="relative mt-10 w-full max-w-md overflow-hidden rounded-panel border border-white/20 bg-ink-900/40 p-5 text-white shadow-2xl shadow-ink-900/60 backdrop-blur-2xl backdrop-saturate-150">
       {/* The two things that make glass read as glass: a lit top edge and a
           soft specular bloom in one corner. Both are decorative only. */}
       <span
@@ -114,7 +121,7 @@ function HeroSpecCard({ model }: { model: Model }) {
           ))}
         </ul>
 
-        <dl className="mt-4 space-y-2.5 border-t border-white/15 pt-4 text-sm">
+        <dl className="mt-4 grid gap-2.5 border-t border-white/15 pt-4 text-sm sm:grid-cols-2">
           <div>
             <dt className="text-xs text-white/55">Сталь</dt>
             <dd className="font-medium">
@@ -181,7 +188,7 @@ function ModelDetail({ model }: { model: Model }) {
             )}
           </p>
 
-          <h1 className="mt-4 text-white">
+          <h1 className="mt-4 max-w-xl text-white lg:max-w-2xl">
             <span className="block text-xl sm:text-2xl">{model.kind}</span>
             <span className="font-display mt-1 block text-[2.75rem] sm:text-[4rem] lg:text-[5rem]">
               {model.name}
@@ -209,9 +216,9 @@ function ModelDetail({ model }: { model: Model }) {
               </li>
             ))}
           </ul>
-        </div>
 
-        <HeroSpecCard model={model} />
+          <HeroSpecCard model={model} />
+        </div>
       </section>
 
       <section className="py-16 lg:py-24">

@@ -153,6 +153,7 @@ export const models: Model[] = [
     stove: 'Увеличенная, жаропрочная сталь 09Г2С',
     bowlShape: 'faceted',
     theme: 'ink',
+    photos: { hero: 'cherny-brilliant-hero.webp' },
     offers: [
       { cm: 175, price: 133000 },
       { cm: 210, price: 155500 },
