@@ -75,37 +75,66 @@ function BenefitDrawing({ benefit }: { benefit: Benefit }) {
   const { image, title, wanted } = benefit
 
   if (!image) {
-    return (
-      <PlaceholderImage tone="studio" ratio="4/3" label={`Схема: ${wanted}`} />
-    )
-  }
-
-  if (!image.grey) {
-    return (
-      <img
-        src={photoUrl(image.color)}
-        alt={title}
-        loading="lazy"
-        className="aspect-4/3 w-full bg-white object-contain transition duration-500 motion-reduce:transition-none [@media(hover:hover)]:grayscale [@media(hover:hover)]:group-hover:grayscale-0"
-      />
-    )
+    return <PlaceholderImage tone="studio" ratio="4/3" label={`Схема: ${wanted}`} />
   }
 
   return (
-    <span className="relative block aspect-4/3 w-full bg-white">
-      <img
-        src={photoUrl(image.grey)}
-        alt=""
-        loading="lazy"
-        aria-hidden="true"
-        className="absolute inset-0 size-full object-contain opacity-0 [@media(hover:hover)]:opacity-100"
-      />
+    <span
+      className="relative block w-full bg-white transition duration-500 motion-reduce:transition-none [@media(hover:hover)]:grayscale [@media(hover:hover)]:group-hover:grayscale-0"
+      style={{ aspectRatio: `${image.width} / ${image.height}` }}
+    >
       <img
         src={photoUrl(image.color)}
         alt={title}
         loading="lazy"
-        className="absolute inset-0 size-full object-contain transition-opacity duration-500 motion-reduce:transition-none [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100"
+        className="absolute inset-0 size-full object-contain"
       />
+      {image.arrows === 'circuit' && <CirculationArrows height={(image.height / image.width) * 100} />}
     </span>
+  )
+}
+
+/**
+ * The circulation, drawn over the render rather than baked into it.
+ *
+ * Vector keeps the arrows crisp at any size and in the brand's own colours,
+ * and the wording stays editable. The coordinates are percentages of the
+ * drawing, so the overlay follows it however the card is sized.
+ */
+function CirculationArrows({ height }: { height: number }) {
+  const cold = 'var(--color-navy-700)'
+  const hot = 'var(--color-brand-500)'
+
+  return (
+    <svg
+      viewBox={`0 0 100 ${height}`}
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 size-full"
+    >
+      <defs>
+        <marker id="circuit-cold" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4"
+          markerHeight="4" markerUnits="userSpaceOnUse" orient="auto">
+          <path d="M0 0.5 10 5 0 9.5z" fill={cold} />
+        </marker>
+        <marker id="circuit-hot" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4"
+          markerHeight="4" markerUnits="userSpaceOnUse" orient="auto">
+          <path d="M0 0.5 10 5 0 9.5z" fill={hot} />
+        </marker>
+      </defs>
+
+      <g fill="none" strokeWidth="1.3" strokeLinecap="round">
+        {/* Cold water falls along the walls into the jacket round the firebox. */}
+        <path className="circuit-flow" d="M22 40C23 48 24 55 25 61" stroke={cold}
+          markerEnd="url(#circuit-cold)" />
+        <path className="circuit-flow" d="M78 40C77 48 76 55 75 61" stroke={cold}
+          markerEnd="url(#circuit-cold)" />
+
+        {/* Heated water rises back out of the jacket to the surface. */}
+        <path className="circuit-flow" d="M41 72C40 62 39 52 38 43" stroke={hot}
+          markerEnd="url(#circuit-hot)" style={{ animationDelay: '-0.9s' }} />
+        <path className="circuit-flow" d="M59 72C60 62 61 52 62 43" stroke={hot}
+          markerEnd="url(#circuit-hot)" style={{ animationDelay: '-0.9s' }} />
+      </g>
+    </svg>
   )
 }

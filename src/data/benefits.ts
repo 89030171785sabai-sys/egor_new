@@ -10,6 +10,11 @@ export interface BenefitImage {
   color: string
   /** Omitted where no matching silver take exists; the page desaturates then. */
   grey?: string
+  /** The drawing's own proportions, so an overlay can line up with it. */
+  width: number
+  height: number
+  /** Which set of circulation arrows to lay over it, if any. */
+  arrows?: 'circuit'
 }
 
 export interface Benefit {
@@ -34,6 +39,12 @@ export const benefits: Benefit[] = [
       'Циркуляция воды внутри печи',
       'Сливной кран в самой нижней части водяного контура',
     ],
+    image: {
+      color: 'benefit-water-circuit.webp',
+      width: 942,
+      height: 893,
+      arrows: 'circuit',
+    },
     wanted: 'прозрачный чан в разрезе: контур печи и стрелки циркуляции воды',
   },
   {

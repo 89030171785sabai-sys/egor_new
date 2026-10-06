@@ -107,3 +107,25 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/*
+ * Circulation arrows on the water-circuit drawing. The dashes travel along
+ * each path, so the line itself reads as flow rather than as a static arrow.
+ */
+@keyframes circuit-flow {
+  to {
+    stroke-dashoffset: -12;
+  }
+}
+
+.circuit-flow {
+  stroke-dasharray: 5 7;
+  animation: circuit-flow 1.6s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .circuit-flow {
+    stroke-dasharray: none;
+    animation: none;
+  }
+}
