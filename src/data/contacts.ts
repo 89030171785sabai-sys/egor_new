@@ -18,7 +18,7 @@ export interface Messenger {
 }
 
 export interface Social {
-  id: 'telegram' | 'vk'
+  id: 'telegram' | 'vk' | 'rutube'
   label: string
   href: string
 }
@@ -59,6 +59,7 @@ export const contacts = {
   social: [
     { id: 'telegram', label: 'Telegram-канал', href: 'https://t.me/HOTTUB_Chan' },
     { id: 'vk', label: 'ВКонтакте', href: 'https://vk.ru/hottub_hotchan' },
+    { id: 'rutube', label: 'RuTube', href: 'https://rutube.ru/channel/58967609/' },
   ] satisfies Social[],
 
   workingHours: 'Ежедневно, 9:00–20:00',

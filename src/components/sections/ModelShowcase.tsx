@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { Slider } from '../ui/Slider'
 import { SectionHeading } from '../ui/SectionHeading'
 import { PlaceholderImage } from '../ui/PlaceholderImage'
-import { capacityLabel, models, type Model } from '../../data/models'
+import { models, modelSizes, sizeTier, type Model } from '../../data/models'
 
 /**
  * Lifestyle banners, one per model: the tub in a real setting with the name set
@@ -63,12 +63,12 @@ function Banner({ model, withCopy }: { model: Model; withCopy: boolean }) {
             Смотреть чан подробнее ↗
           </Link>
           <ul className="flex flex-wrap gap-2">
-            {model.sizes.map((size) => (
+            {modelSizes(model).map((size) => (
               <li
                 key={size}
                 className="rounded-full bg-white/15 px-3 py-1.5 text-xs text-white backdrop-blur"
               >
-                {capacityLabel(size)}
+                {size} см · до {sizeTier(size)?.people}
               </li>
             ))}
           </ul>

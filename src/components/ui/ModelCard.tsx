@@ -1,7 +1,14 @@
 import { Link } from 'react-router-dom'
 import { ButtonLink } from './Button'
 import { PlaceholderImage } from './PlaceholderImage'
-import { formatHours, formatPriceRange, type Model } from '../../data/models'
+import {
+  formatHours,
+  formatPrice,
+  formatPriceRange,
+  promo,
+  steelGrades,
+  type Model,
+} from '../../data/models'
 
 /**
  * Catalogue card: name, accent line, product shot with the heating badge, kit
@@ -10,7 +17,14 @@ import { formatHours, formatPriceRange, type Model } from '../../data/models'
 export function ModelCard({ model }: { model: Model }) {
   return (
     <article className="flex flex-col rounded-panel bg-white p-5 shadow-sm shadow-ink-900/5 transition-shadow hover:shadow-lg hover:shadow-ink-900/10 sm:p-6">
-      <h3 className="text-xl font-bold tracking-tight text-navy-700 uppercase">{model.name}</h3>
+      <div className="flex flex-wrap items-center gap-3">
+        <h3 className="text-xl font-bold tracking-tight text-navy-700 uppercase">{model.name}</h3>
+        {model.badge && (
+          <span className="rounded-full bg-brand-500 px-3 py-1 text-xs font-semibold text-white">
+            {model.badge}
+          </span>
+        )}
+      </div>
       <p className="mt-2 flex items-start gap-2 text-xs font-semibold tracking-wide text-brand-500 uppercase">
         <span aria-hidden="true" className="mt-1.5 size-1.5 shrink-0 rounded-full bg-brand-500" />
         {model.accent}
@@ -48,7 +62,16 @@ export function ModelCard({ model }: { model: Model }) {
 
       <div className="mt-6 border-t border-sand-200 pt-5">
         <p className="text-xs tracking-wider text-ink-400 uppercase">Цена</p>
-        <p className="mt-1 text-xl font-bold">{formatPriceRange(model.price)}</p>
+        <p className="mt-1 text-xl font-bold">{formatPriceRange(model)}</p>
+        {model.slug === promo.modelSlug && (
+          <p className="mt-1.5 text-sm text-brand-600">
+            {promo.cm} см — {formatPrice(promo.price)}{' '}
+            <span className="text-ink-400 line-through">{formatPrice(promo.was)}</span>
+          </p>
+        )}
+        <p className="mt-1.5 text-xs text-ink-400">
+          {steelGrades[model.steel].title} · срок службы {steelGrades[model.steel].life}
+        </p>
       </div>
 
       <div className="mt-5 flex flex-wrap items-center gap-4">

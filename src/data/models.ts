@@ -1,29 +1,69 @@
 /**
- * The model line. One object per model drives its card in the catalogue, its
- * own page, the metadata and the sitemap — the way the reference site drives
- * eight near-identical pages from data.
+ * The model line, from the client's own catalogue.
  *
- * `theme` is the signature backdrop of the model's hero.
+ * One object per model drives its card, its page, its metadata and the
+ * sitemap. Prices are per size and are the client's own figures — the only
+ * computed one is the promotional opening price, which is held in `promo`
+ * below rather than written into a size.
  */
-export type ModelTheme = 'graphite' | 'copper' | 'terracotta' | 'olive' | 'sand' | 'ink'
+export type ModelTheme = 'graphite' | 'copper' | 'terracotta' | 'olive' | 'sand' | 'ink' | 'jade'
 
-export interface ModelPrice {
-  from: number
-  /** Absent when the model has a single fixed price. */
-  to?: number
+/** Bowl diameter in centimetres — the catalogue's own size grid. */
+export type SizeCm = 175 | 210 | 235 | 250
+
+export interface SizeTier {
+  cm: SizeCm
+  /** Bathers the size is sold for. */
+  people: number
+  name: string
+}
+
+export const sizeTiers: SizeTier[] = [
+  { cm: 175, people: 4, name: 'Малый' },
+  { cm: 210, people: 6, name: 'Средний' },
+  { cm: 235, people: 9, name: 'Большой' },
+  { cm: 250, people: 14, name: 'Огромный' },
+]
+
+export const sizeTier = (cm: SizeCm) => sizeTiers.find((tier) => tier.cm === cm)
+
+export const sizeLabel = (cm: SizeCm) => {
+  const tier = sizeTier(cm)
+  return tier ? `${cm} см · до ${tier.people}` : `${cm} см`
+}
+
+export type SteelGrade = 'AISI 430' | 'AISI 304'
+
+export const steelGrades: Record<SteelGrade, { title: string; life: string; note: string }> = {
+  'AISI 430': {
+    title: 'Техническая нержавеющая сталь AISI 430',
+    life: '20–25 лет',
+    note: 'Ферритная сталь: держит высокую температуру, стоит дешевле пищевой.',
+  },
+  'AISI 304': {
+    title: 'Пищевая нержавеющая сталь AISI 304',
+    life: '45–50 лет',
+    note: 'Аустенитная сталь с никелем: не ржавеет, допущена к контакту с пищей.',
+  },
+}
+
+export interface Offer {
+  cm: SizeCm
+  price: number
 }
 
 /**
- * Sizes a model is built in, as the maximum number of people. The catalogue
- * filter works off these. Confirm the real availability per model with the
- * client — for now every tub carries the full size range and the tub-shaped
- * bath carries the two it makes sense in.
+ * Opening offer: the smallest Графит at a promotional price. Kept in one place
+ * so the badge, the hero figure and the configurator can never drift apart.
  */
-export type Capacity = 4 | 6 | 9 | 12
-
-export const capacities: Capacity[] = [4, 6, 9, 12]
-
-export const capacityLabel = (capacity: Capacity) => `до ${capacity}`
+export const promo = {
+  modelSlug: 'grafit',
+  cm: 175 as SizeCm,
+  price: 99000,
+  was: 119000,
+  label: 'Стартовая цена',
+  note: 'Малый чан «Графит» 175 см — 99 000 ₽ вместо 119 000 ₽',
+} as const
 
 export interface Model {
   slug: string
@@ -35,173 +75,269 @@ export interface Model {
   description: string
   /** Hours to heat from cold to bathing temperature. */
   heatingHours: number
+  steel: SteelGrade
   /** Stove layout — the trait that separates the models. */
   stove: string
-  /** Shape of the bowl. */
-  bowl: string
+  /**
+   * Bowl shape, for the 3D configurator. Only «Вальцовавич» is known from the
+   * catalogue (the name is the rolled forming process); the rest are assumed
+   * faceted and need confirming with the client.
+   */
+  bowlShape: 'faceted' | 'rolled'
   theme: ModelTheme
-  sizes: Capacity[]
-  /** Kit contents, as listed on the catalogue card. */
+  /** Shown on the card as a ribbon. */
+  badge?: string
+  offers: Offer[]
+  /** Kit contents, as the catalogue lists them. */
   includes: string[]
-  price?: ModelPrice
   seoTitle: string
   seoDescription: string
 }
 
+/** Fitted to every model: the catalogue repeats these for the whole line. */
+const commonIncludes = [
+  'Чаша с отделкой из лиственницы',
+  'Спинки под углом 67°',
+  'Шаровый сливной кран',
+]
+
 export const models: Model[] = [
+  {
+    slug: 'grafit',
+    name: 'Графит',
+    accent: 'Открытый очаг с ветрозащитой',
+    kind: 'Банный чан',
+    description:
+      'Базовая модель на техническом металле: чаша без дна над открытым очагом, вокруг — ветрозащита.',
+    heatingHours: 5,
+    steel: 'AISI 430',
+    stove: 'Открытый очаг под чашей, ветрозащита (чаша без дна)',
+    bowlShape: 'faceted',
+    theme: 'graphite',
+    badge: 'Стартовая цена',
+    offers: [
+      { cm: 175, price: 119000 },
+      { cm: 210, price: 135500 },
+      { cm: 235, price: 176500 },
+    ],
+    includes: [...commonIncludes, 'Ветрозащита', 'Дымоход 3 м и защитный экран'],
+    seoTitle: 'Банный чан «Графит»',
+    seoDescription:
+      'Банный чан на открытом очаге с ветрозащитой, сталь AISI 430, отделка лиственницей. Цена от 99 000 ₽ по стартовому предложению.',
+  },
   {
     slug: 'cherny-brilliant',
     name: 'Чёрный бриллиант',
-    accent: 'Гранёная чаша — спина скажет спасибо',
+    accent: 'Увеличенная печь с чугунным колосником',
     kind: 'Банный чан',
-    description: 'Гранёная чаша на стационарной печи с внутренней топкой.',
-    heatingHours: 3.5,
-    stove: 'Стационарная, с внутренней топкой',
-    bowl: 'Гранёная',
+    description:
+      'Увеличенная печь из жаропрочной стали 09Г2С с чугунным колосником и выдвижным зольным ящиком.',
+    heatingHours: 3,
+    steel: 'AISI 304',
+    stove: 'Увеличенная, жаропрочная сталь 09Г2С',
+    bowlShape: 'faceted',
     theme: 'ink',
-    sizes: [4, 6, 9, 12],
+    offers: [
+      { cm: 175, price: 133000 },
+      { cm: 210, price: 155500 },
+      { cm: 235, price: 206500 },
+    ],
     includes: [
-      'Чаша из пищевой нержавейки',
-      'Отделка «стандарт»',
-      'Стационарная печь с внутренней топкой',
-      'Дымоход с защитным экраном',
-      'Лестница на металлокаркасе с площадкой и поручнем',
+      ...commonIncludes,
+      'Увеличенная печь: чугунный колосник, выдвижной зольный ящик',
+      'Дымоход 3 м и защитный экран',
     ],
     seoTitle: 'Банный чан «Чёрный бриллиант»',
     seoDescription:
-      'Гранёная чаша на стационарной печи с внутренней топкой. Нагрев 3,5 часа, изготовление и доставка под ключ за 8 дней.',
+      'Увеличенная печь с чугунным колосником и зольным ящиком, пищевая сталь AISI 304, нагрев 3 часа. Цена от 133 000 ₽.',
   },
   {
-    slug: 'valtsovovich',
-    name: 'Вальцовович',
-    accent: 'Вальцованная форма чаши',
-    kind: 'Банный чан',
-    description: 'Вальцованная форма чаши на печи-подставке.',
-    heatingHours: 3.5,
-    stove: 'Печь-подставка под чашей',
-    bowl: 'Вальцованная',
-    theme: 'graphite',
-    sizes: [4, 6, 9, 12],
-    includes: [
-      'Чаша из пищевой нержавейки',
-      'Отделка «стандарт»',
-      'Печь-подставка под чашей',
-      'Дымоход с защитным экраном',
-      'Лестница на металлокаркасе с площадкой и поручнем',
-    ],
-    seoTitle: 'Банный чан «Вальцовович»',
-    seoDescription:
-      'Вальцованная форма чаши на печи-подставке. Нагрев 3,5 часа, изготовление и доставка под ключ за 8 дней.',
-  },
-  {
-    slug: 'vodyanoy-kontur',
-    name: 'Водяной контур',
-    accent: 'Водяной контур — КПД топки вдвое выше',
-    kind: 'Банный чан',
-    description: 'Гранёная чаша на печи с водяным контуром — для ускоренного нагрева.',
-    heatingHours: 2,
-    stove: 'С водяным контуром и подставкой',
-    bowl: 'Гранёная',
-    theme: 'copper',
-    sizes: [4, 6, 9, 12],
-    includes: [
-      'Чаша из пищевой нержавейки',
-      'Отделка «стандарт»',
-      'Печь с водяным контуром и подставка',
-      'Дымоход 3 м с защитным экраном',
-      'Лестница на металлокаркасе с площадкой и поручнем',
-    ],
-    price: { from: 225000, to: 336000 },
-    seoTitle: 'Банный чан с водяным контуром',
-    seoDescription:
-      'Гранёная чаша на печи с водяным контуром: нагрев за 2 часа, КПД топки вдвое выше. Цена от 225 000 ₽.',
-  },
-  {
-    slug: 's-vynosnoy-pechyu',
-    name: 'С выносной печью',
-    accent: 'Для монтажа в террасу',
-    kind: 'Банный чан',
-    description: 'Печь можно расположить в 1,5–2 м от чаши — удобно для монтажа в террасу.',
-    heatingHours: 2.5,
-    stove: 'Выносная, в 1,5–2 м от чаши',
-    bowl: 'Гранёная',
-    theme: 'sand',
-    sizes: [4, 6, 9, 12],
-    includes: [
-      'Чаша из пищевой нержавейки',
-      'Отделка «стандарт»',
-      'Выносная печь и штанги для подключения',
-      'Дымоход 2 м',
-    ],
-    price: { from: 200000, to: 340000 },
-    seoTitle: 'Банный чан с выносной печью',
-    seoDescription:
-      'Печь в 1,5–2 м от чаши — решение для монтажа в террасу. Нагрев 2,5 часа, цена от 200 000 ₽.',
-  },
-  {
-    // Name to be confirmed with the client — described by its stove on the
-    // current site, without a model name in view.
-    slug: 'bokovaya-pech',
-    name: 'Боковая печь',
-    accent: 'Самый быстрый нагрев в линейке',
+    slug: 'valtsovavich',
+    name: 'Вальцовавич',
+    accent: 'Разборная печь — легко обслуживать',
     kind: 'Банный чан',
     description:
-      'Печь с водяным контуром и теплосъёмными трубами. Вертикальная загрузка дров, низкий борт для безопасности.',
-    heatingHours: 1.5,
-    stove: 'Приварная боковая с водяным контуром',
-    bowl: 'Гранёная, низкий борт',
-    theme: 'terracotta',
-    sizes: [4, 6, 9, 12],
-    includes: [
-      'Чаша из пищевой нержавейки',
-      'Отделка «стандарт»',
-      'Печь приварная боковая',
-      'Дымоход 2 м с сэндвич-вставкой 1 м',
-      'Лестница на металлокаркасе с площадкой и поручнем',
+      'Разборная печь из жаропрочной стали 09Г2С: чугунный колосник и выдвижной зольный ящик, доступ к любому узлу.',
+    heatingHours: 3,
+    steel: 'AISI 304',
+    stove: 'Разборная, жаропрочная сталь 09Г2С',
+    bowlShape: 'rolled',
+    theme: 'sand',
+    offers: [
+      { cm: 175, price: 135000 },
+      { cm: 210, price: 159000 },
+      { cm: 235, price: 211000 },
     ],
-    price: { from: 310000, to: 480000 },
-    seoTitle: 'Банный чан с приварной боковой печью',
+    includes: [
+      ...commonIncludes,
+      'Разборная печь: чугунный колосник, выдвижной зольный ящик',
+      'Дымоход 3 м и защитный экран',
+    ],
+    seoTitle: 'Банный чан «Вальцовавич»',
     seoDescription:
-      'Водяной контур и теплосъёмные трубы: нагрев за 1,5 часа. Вертикальная загрузка дров, низкий борт. Цена от 310 000 ₽.',
+      'Разборная печь с чугунным колосником, вальцованная чаша из пищевой стали AISI 304, нагрев 3 часа. Цена от 135 000 ₽.',
   },
   {
-    // Name to be confirmed with the client.
-    slug: 'kupel-premium',
-    name: 'Купель премиум',
-    accent: 'Прямоугольная форма и встроенный дровник',
-    kind: 'Купель',
-    description: 'Прямоугольная купель со встроенной печью и дровником. Премиальное решение.',
-    heatingHours: 2,
-    stove: 'Встроенная, с дровником',
-    bowl: 'Прямоугольная',
-    theme: 'olive',
-    sizes: [6, 9],
-    includes: [
-      'Купель из пищевой нержавейки',
-      'Встроенная печь и дровник',
-      'Дымоход с искрогасителем',
-      'Ступени и площадка',
+    slug: 'nefrit',
+    name: 'Нефрит',
+    accent: 'Водяной контур — нагрев за 1,5 часа',
+    kind: 'Банный чан',
+    description:
+      'Печь ускоренного нагрева с водяным контуром и змеевиком. Самый быстрый выход на температуру в линейке.',
+    heatingHours: 1.5,
+    steel: 'AISI 304',
+    stove: 'Ускоренного нагрева, водяной контур и змеевик',
+    bowlShape: 'faceted',
+    theme: 'jade',
+    badge: 'Хит продаж',
+    offers: [
+      { cm: 175, price: 187000 },
+      { cm: 210, price: 195990 },
+      { cm: 235, price: 240000 },
     ],
-    price: { from: 800000 },
-    seoTitle: 'Прямоугольная купель со встроенной печью',
+    includes: [
+      ...commonIncludes,
+      'Печь ускоренного нагрева: водяной контур и змеевик',
+      'Чугунный колосник и выдвижной зольный ящик',
+      'Дымоход 3 м и защитный экран',
+    ],
+    seoTitle: 'Банный чан «Нефрит» — нагрев за 1,5 часа',
     seoDescription:
-      'Купель со встроенной печью и дровником, ступенями и площадкой. Премиальное решение, цена 800 000 ₽.',
+      'Хит продаж: печь с водяным контуром и змеевиком, нагрев за 1,5 часа, пищевая сталь AISI 304. Цена от 187 000 ₽.',
+  },
+  {
+    slug: 'oniks',
+    name: 'Оникс',
+    accent: 'Выносная печь — для монтажа в террасу',
+    kind: 'Банный чан',
+    description:
+      'Выносная печь с водяным контуром и теплосъёмными трубами, подключение шлангами 1,5 м — печь можно отнести от чаши.',
+    heatingHours: 2,
+    steel: 'AISI 304',
+    stove: 'Выносная, водяной контур и теплосъёмные трубы',
+    bowlShape: 'faceted',
+    theme: 'olive',
+    offers: [
+      { cm: 175, price: 188000 },
+      { cm: 210, price: 199000 },
+      { cm: 235, price: 231000 },
+    ],
+    includes: [
+      ...commonIncludes,
+      'Выносная печь: водяной контур и теплосъёмные трубы',
+      'Шланги для подключения 1,5 м',
+      'Дымоход 2 м',
+    ],
+    seoTitle: 'Банный чан «Оникс» с выносной печью',
+    seoDescription:
+      'Выносная печь с водяным контуром и теплосъёмными трубами, шланги 1,5 м, нагрев 2 часа. Цена от 188 000 ₽.',
+  },
+  {
+    slug: 'oniks-pro',
+    name: 'Оникс про',
+    accent: 'Решение 4 в 1 — боковая приварная печь',
+    kind: 'Банный чан',
+    description:
+      'Расширенная боковая приварная печь с водяным контуром и теплосъёмными трубами. Низкая чаша, вертикальная загрузка дров, лестница-подиум в комплекте.',
+    heatingHours: 1.5,
+    steel: 'AISI 304',
+    stove: 'Боковая приварная расширенная, водяной контур и теплосъёмные трубы',
+    bowlShape: 'faceted',
+    theme: 'terracotta',
+    badge: 'Решение 4 в 1',
+    offers: [
+      { cm: 210, price: 294000 },
+      { cm: 235, price: 353000 },
+    ],
+    includes: [
+      ...commonIncludes,
+      'Боковая приварная расширенная печь: водяной контур и теплосъёмные трубы',
+      'Дымоход 1 м и 1 м сэндвич-трубы',
+      'Металлическая лестница-подиум',
+    ],
+    seoTitle: 'Банный чан «Оникс про» — решение 4 в 1',
+    seoDescription:
+      'Боковая приварная печь с водяным контуром, низкая чаша для монтажа в террасу, вертикальная загрузка дров, нагрев 1,5 часа. Цена от 294 000 ₽.',
+  },
+  {
+    slug: 'grant',
+    name: 'Грант',
+    accent: 'Нержавеющие лавочки и максимальный размер',
+    kind: 'Банный чан',
+    description:
+      'Старшая модель: лавочки из нержавеющей стали, отделка лиственницей по полу и верхней окантовке. Единственный размер на 14 человек.',
+    heatingHours: 2,
+    steel: 'AISI 304',
+    stove: 'Боковая приварная расширенная, водяной контур и теплосъёмные трубы',
+    bowlShape: 'faceted',
+    theme: 'copper',
+    offers: [
+      { cm: 235, price: 459000 },
+      { cm: 250, price: 588000 },
+    ],
+    includes: [
+      'Отделка лиственницей: пол и верхняя окантовка',
+      'Лавочки из нержавеющей стали',
+      'Шаровый сливной кран',
+      'Боковая приварная расширенная печь: водяной контур и теплосъёмные трубы',
+      'Дымоход 1 м и 1 м сэндвич-трубы',
+      'Металлическая лестница-подиум',
+    ],
+    seoTitle: 'Банный чан «Грант» до 14 человек',
+    seoDescription:
+      'Старшая модель с нержавеющими лавочками и размером 250 см до 14 человек, боковая приварная печь с водяным контуром. Цена от 459 000 ₽.',
   },
 ]
 
 export const modelBySlug = (slug: string) => models.find((model) => model.slug === slug)
 
-/** Lowest entry price across the line, used in the headline offer. */
-export const priceFrom = 180000
+export const modelSizes = (model: Model): SizeCm[] => model.offers.map((offer) => offer.cm)
+
+export const offerFor = (model: Model, cm: SizeCm) =>
+  model.offers.find((offer) => offer.cm === cm)
+
+/** True where the opening promotional price applies. */
+export const isPromo = (model: Model, cm: SizeCm) =>
+  model.slug === promo.modelSlug && cm === promo.cm
+
+/** What the customer actually pays for this size, promotion included. */
+export const effectivePrice = (model: Model, cm: SizeCm) => {
+  const offer = offerFor(model, cm)
+  if (!offer) return undefined
+  return isPromo(model, cm) ? promo.price : offer.price
+}
+
+export const modelPriceFrom = (model: Model) =>
+  Math.min(...model.offers.map((offer) => effectivePrice(model, offer.cm) ?? offer.price))
+
+export const modelPriceTo = (model: Model) =>
+  Math.max(...model.offers.map((offer) => offer.price))
+
+/** Lowest price on the site — the promotional one. */
+export const priceFrom = promo.price
+
+/** What the line starts at without the promotion. */
+export const regularPriceFrom = Math.min(
+  ...models.flatMap((model) => model.offers.map((offer) => offer.price)),
+)
 
 export const formatPrice = (value: number) => `${value.toLocaleString('ru-RU')} ₽`
 
-export const formatPriceRange = (price?: ModelPrice) => {
-  if (!price) return 'по запросу'
-  if (price.to === undefined) return formatPrice(price.from)
-  return `от ${formatPrice(price.from)} до ${formatPrice(price.to)}`
+export const formatPriceRange = (model: Model) => {
+  const from = modelPriceFrom(model)
+  const to = modelPriceTo(model)
+  if (from === to) return formatPrice(from)
+  return `от ${formatPrice(from)} до ${formatPrice(to)}`
 }
 
 /** «3,5 ч» — a comma decimal separator, as Russian typography wants. */
 export const formatHours = (hours: number) =>
   `${hours.toString().replace('.', ',')} ч`
+
+/** Fastest and slowest heating in the line, for the comparison figures. */
+export const fastestHeating = Math.min(...models.map((model) => model.heatingHours))
+
+/** Largest party the line seats. */
+export const maxPeople = Math.max(
+  ...models.flatMap((model) => modelSizes(model).map((cm) => sizeTier(cm)?.people ?? 0)),
+)

@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 import { Layout } from './components/layout/Layout'
 import { HomePage } from './pages/HomePage'
+import { CalculatorPage } from './pages/CalculatorPage'
 import { ModelPage } from './pages/ModelPage'
 import { LegalPage } from './pages/LegalPage'
 import {
@@ -20,6 +21,7 @@ export function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route index element={<HomePage />} />
+        <Route path="/calculator" element={<CalculatorPage />} />
         <Route path="/catalog" element={<CatalogPage />} />
         <Route path="/production" element={<ProductionPage />} />
         <Route path="/delivery" element={<DeliveryPage />} />

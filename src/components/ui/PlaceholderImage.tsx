@@ -10,6 +10,7 @@ export type PlaceholderTone = ModelTheme | 'dusk' | 'studio'
 
 const tones: Record<PlaceholderTone, { from: string; to: string; glow: string; silhouette: string }> = {
   ink: { from: '#23262a', to: '#0b0b0b', glow: '#f1602e', silhouette: '#ffffff' },
+  jade: { from: '#2f5c52', to: '#122320', glow: '#7fd8bd', silhouette: '#ffffff' },
   graphite: { from: '#454b52', to: '#1b1e21', glow: '#93a0ad', silhouette: '#ffffff' },
   copper: { from: '#a63715', to: '#431507', glow: '#ff9a73', silhouette: '#ffffff' },
   terracotta: { from: '#d2481b', to: '#74260e', glow: '#ffbea3', silhouette: '#ffffff' },

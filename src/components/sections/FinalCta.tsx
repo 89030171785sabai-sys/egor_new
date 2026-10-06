@@ -14,7 +14,7 @@ export function FinalCta() {
               Оставьте заявку — пришлём каталог, рассчитаем стоимость и ответим на вопросы.
             </p>
             <div className="mt-9 flex flex-wrap justify-center gap-3">
-              <ButtonLink to="/#calculator" size="lg">
+              <ButtonLink to="/calculator" size="lg">
                 Получить каталог
               </ButtonLink>
               <ButtonLink to="/contacts" variant="ghost" size="lg">

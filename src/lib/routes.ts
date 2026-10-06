@@ -16,9 +16,17 @@ export interface RouteMeta {
 export const homeRoute: RouteMeta = {
   path: '/',
   label: 'Главная',
-  title: 'Банный чан под ключ от 180 000 ₽',
+  title: 'Банный чан под ключ от 99 000 ₽',
   description:
     'Собственный цех полного цикла: изготовим и доставим банный чан под ключ за 8 дней. Предоплата 10%, работа по договору, гарантия 13 лет.',
+}
+
+export const calculatorRoute: RouteMeta = {
+  path: '/calculator',
+  label: 'Калькулятор',
+  title: '3D-калькулятор банного чана',
+  description:
+    'Соберите банный чан онлайн: модель, размер, отделка, дымоход и опции — 3D-модель перестраивается на каждом шаге, цена считается сразу.',
 }
 
 export const modelRoutes: RouteMeta[] = models.map((model) => ({
@@ -38,7 +46,7 @@ export const contentRoutes: RouteMeta[] = [
     label: 'Каталог',
     title: 'Каталог банных чанов',
     description:
-      'Модели банных чанов и купелей: форма чаши, тип печи, время нагрева, комплектация и цены от 180 000 ₽.',
+      'Семь моделей банных чанов: тип печи, время нагрева, марка стали, комплектация и цены от 99 000 ₽.',
   },
   {
     path: '/production',
@@ -100,6 +108,7 @@ export const legalRoutes: RouteMeta[] = [
 
 export const routes: RouteMeta[] = [
   homeRoute,
+  calculatorRoute,
   ...contentRoutes,
   ...modelRoutes,
   ...legalRoutes,
@@ -111,7 +120,7 @@ export const routes: RouteMeta[] = [
  */
 export const navItems = [
   { to: '/catalog', label: 'Каталог', primary: true },
-  { to: '/#calculator', label: 'Расчёт', primary: true },
+  { to: '/calculator', label: 'Калькулятор', primary: true },
   { to: '/production', label: 'Производство', primary: false },
   { to: '/delivery', label: 'Доставка', primary: true },
   { to: '/guarantees', label: 'Гарантии', primary: false },

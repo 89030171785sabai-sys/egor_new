@@ -11,7 +11,7 @@ import { Contacts } from '../components/sections/Contacts'
 import { FinalCta } from '../components/sections/FinalCta'
 import { useSeo } from '../lib/seo'
 import { contentRoutes } from '../lib/routes'
-import { formatPrice, models, priceFrom } from '../data/models'
+import { fastestHeating, formatPrice, maxPeople, models, priceFrom } from '../data/models'
 
 /** Metadata for a section page, looked up by its path. */
 function useSectionSeo(path: string) {
@@ -32,14 +32,14 @@ export function CatalogPage() {
         title="Каталог банных чанов"
         tone="dusk"
         photo="несколько чанов линейки на площадке"
-        lead="Шесть моделей: разная форма чаши, своя печь и своё время нагрева. Любую делаем под ваш размер и отделку."
+        lead="Семь моделей: своя печь, своё время нагрева и своя марка стали. Любую собираем под ваш размер и отделку."
       >
         <PageFigures
           items={[
             { value: String(models.length), caption: 'моделей в линейке' },
-            { value: formatPrice(priceFrom), caption: 'за полный комплект' },
-            { value: '1,5', unit: 'ч', caption: 'самый быстрый нагрев' },
-            { value: '12', unit: 'чел.', caption: 'максимальная вместимость' },
+            { value: formatPrice(priceFrom), caption: 'стартовая цена' },
+            { value: String(fastestHeating).replace('.', ','), unit: 'ч', caption: 'самый быстрый нагрев' },
+            { value: String(maxPeople), unit: 'чел.', caption: 'максимальная вместимость' },
           ]}
         />
       </PageHeader>

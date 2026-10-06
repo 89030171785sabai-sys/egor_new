@@ -7,7 +7,9 @@ import { Reveal } from '../components/ui/Reveal'
 import { LeadForm } from '../components/forms/LeadForm'
 import { useSeo } from '../lib/seo'
 import {
-  capacityLabel,
+  modelSizes,
+  sizeTier,
+  steelGrades,
   formatHours,
   formatPriceRange,
   modelBySlug,
@@ -83,7 +85,7 @@ function ModelDetail({ model }: { model: Model }) {
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <ButtonLink to="/#calculator" size="lg">
+            <ButtonLink to="/calculator" size="lg">
               Рассчитать стоимость
             </ButtonLink>
             <ButtonLink to="#request" variant="ghost" size="lg">
@@ -110,14 +112,17 @@ function ModelDetail({ model }: { model: Model }) {
 
               <dl className="mt-6 divide-y divide-sand-200 border-y border-sand-200">
                 <Spec label="Тип печи" value={model.stove} />
-                <Spec label="Форма чаши" value={model.bowl} />
+                <Spec label="Форма чаши" value={model.bowlShape === 'rolled' ? 'Вальцованная' : 'Гранёная'} />
                 <Spec label="Время нагрева" value={formatHours(model.heatingHours)} />
                 <Spec
                   label="Размеры"
-                  value={model.sizes.map((size) => `${capacityLabel(size)} человек`).join(' · ')}
+                  value={modelSizes(model)
+                    .map((size) => `${size} см — до ${sizeTier(size)?.people} человек`)
+                    .join(' · ')}
                 />
-                <Spec label="Материал чаши" value="Пищевая нержавейка AISI 304 или 430 — на выбор" />
-                <Spec label="Отделка" value="Стандарт · Стандарт плюс · Премиум · Люкс" />
+                <Spec label="Материал чаши" value={steelGrades[model.steel].title} />
+                <Spec label="Срок службы стали" value={steelGrades[model.steel].life} />
+                <Spec label="Отделка" value="Лиственница, спинки под углом 67°" />
               </dl>
 
               <h2 className="mt-14 text-2xl font-bold text-navy-700">Что входит в комплект</h2>
@@ -160,7 +165,7 @@ function ModelDetail({ model }: { model: Model }) {
             <aside id="request" className="scroll-mt-28 lg:sticky lg:top-28">
               <div className="rounded-panel bg-white p-6 shadow-sm shadow-ink-900/5">
                 <p className="text-sm text-ink-500">Цена за комплект</p>
-                <p className="mt-1 text-2xl font-bold">{formatPriceRange(model.price)}</p>
+                <p className="mt-1 text-2xl font-bold">{formatPriceRange(model)}</p>
                 <p className="mt-3 border-t border-sand-200 pt-3 text-sm leading-relaxed text-ink-500">
                   Итоговая стоимость зависит от размера, отделки и типа печи. Посчитаем под ваш
                   участок и пришлём в удобный канал.

@@ -3,19 +3,19 @@ import { SectionHeading } from '../ui/SectionHeading'
 import { ModelCard } from '../ui/ModelCard'
 import { Reveal } from '../ui/Reveal'
 import {
-  capacities,
-  capacityLabel,
   formatPrice,
   models,
+  modelSizes,
   priceFrom,
-  type Capacity,
+  sizeTiers,
+  type SizeCm,
 } from '../../data/models'
 
 export function Catalog() {
-  const [size, setSize] = useState<Capacity | 'all'>('all')
+  const [size, setSize] = useState<SizeCm | 'all'>('all')
 
   const shown = useMemo(
-    () => (size === 'all' ? models : models.filter((model) => model.sizes.includes(size))),
+    () => (size === 'all' ? models : models.filter((model) => modelSizes(model).includes(size))),
     [size],
   )
 
@@ -30,19 +30,19 @@ export function Catalog() {
 
         <div
           role="radiogroup"
-          aria-label="Фильтр по вместимости"
+          aria-label="Фильтр по размеру чаши"
           className="mt-8 flex flex-wrap gap-2"
         >
           <FilterChip active={size === 'all'} onClick={() => setSize('all')}>
             Все размеры
           </FilterChip>
-          {capacities.map((capacity) => (
+          {sizeTiers.map((tier) => (
             <FilterChip
-              key={capacity}
-              active={size === capacity}
-              onClick={() => setSize(capacity)}
+              key={tier.cm}
+              active={size === tier.cm}
+              onClick={() => setSize(tier.cm)}
             >
-              {capacityLabel(capacity)}
+              {tier.cm} см · до {tier.people}
               <PersonIcon />
             </FilterChip>
           ))}

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { PlaceholderImage } from '../ui/PlaceholderImage'
-import { capacityLabel, formatHours, models } from '../../data/models'
+import { formatHours, models, modelSizes } from '../../data/models'
 
 /** Slide-out list of the whole model line, opened from the header. */
 export function ModelDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -69,12 +69,12 @@ export function ModelDrawer({ open, onClose }: { open: boolean; onClose: () => v
                   <p className="mt-3 font-semibold group-hover:text-brand-600">{model.name}</p>
                   <p className="mt-1 text-sm text-ink-400">Нагрев {formatHours(model.heatingHours)}</p>
                   <ul className="mt-2 flex flex-wrap gap-1.5">
-                    {model.sizes.map((size) => (
+                    {modelSizes(model).map((size) => (
                       <li
                         key={size}
                         className="rounded-full bg-sand-200 px-2.5 py-1 text-xs text-ink-600"
                       >
-                        {capacityLabel(size)}
+                        {size} см
                       </li>
                     ))}
                   </ul>

@@ -50,7 +50,7 @@ export function Hero() {
           </ul>
 
           <div className="mt-9 flex flex-wrap justify-center gap-3">
-            <ButtonLink to="/#calculator" size="lg">
+            <ButtonLink to="/calculator" size="lg">
               Рассчитать стоимость за 5 минут
             </ButtonLink>
             <ButtonLink to="/contacts" variant="ghost" size="lg">
