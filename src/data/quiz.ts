@@ -74,7 +74,7 @@ export const quizSteps: QuizStep[] = [
     mode: 'single',
     withImages: true,
     options: [
-      { id: 'hearth', title: 'Открытый очаг с ветрозащитой', note: 'базовое решение «Графита», нагрев 5 часов', tone: 'graphite' },
+      { id: 'hearth', title: 'Открытый очаг с ветрозащитой', note: 'дрова на земле под чашей, корпус закрыт ветрозащитой. Базовое решение «Графита», нагрев 5 часов', tone: 'graphite' },
       { id: 'enlarged', title: 'Увеличенная или разборная печь', note: 'чугунный колосник и зольный ящик, нагрев 3 часа', tone: 'ink' },
       { id: 'water-circuit', title: 'Печь с водяным контуром', note: 'змеевик и ускоренный нагрев за 1,5 часа', tone: 'jade' },
       { id: 'external', title: 'Выносная печь', note: 'топка в стороне от чаши, подключение шлангами', tone: 'olive' },
