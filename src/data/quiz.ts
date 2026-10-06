@@ -137,21 +137,6 @@ export const quizSteps: QuizStep[] = [
   },
 ]
 
-/**
- * Discount the pop-up quiz accrues as the visitor answers, in per cent of the
- * kit price. The figure is a commercial promise, so it lives here on its own
- * and needs the client's sign-off before the site goes live — see
- * docs/placeholders.md.
- */
-export const quizDiscount = {
-  max: 5,
-  label: 'Скидка',
-}
-
-/** How much is unlocked after `answered` of `total` steps. */
-export const discountFor = (answered: number, total: number) =>
-  total === 0 ? 0 : Math.round((answered / total) * quizDiscount.max)
-
 /** Turns the collected answers into readable lines for the lead. */
 export function summariseAnswers(answers: Record<string, string[]>) {
   return quizSteps.reduce<Record<string, string>>((summary, step) => {

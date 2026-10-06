@@ -2,13 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Logo } from '../ui/Logo'
 import { LeadForm } from '../forms/LeadForm'
 import { contacts } from '../../data/contacts'
-import {
-  discountFor,
-  quizDiscount,
-  quizSteps,
-  summariseAnswers,
-  type QuizOption,
-} from '../../data/quiz'
+import { quizSteps, summariseAnswers, type QuizOption } from '../../data/quiz'
 
 type Answers = Record<string, string[]>
 
@@ -19,9 +13,8 @@ const FOOTER_GUARD = 420
 
 /**
  * The floating quiz: a consultant card that opens by itself past the first
- * screen, walks through the configurator one question at a time and accrues a
- * discount as it goes. Closing it collapses the card to a tab rather than
- * throwing the answers away.
+ * screen and walks through the configurator one question at a time. Closing it
+ * collapses the card to a tab rather than throwing the answers away.
  */
 export function QuizPopup() {
   const [visible, setVisible] = useState(false)
@@ -34,8 +27,6 @@ export function QuizPopup() {
   const step = quizSteps[index]!
   const picked = answers[step.id] ?? []
   const isLast = index === quizSteps.length - 1
-  const answered = quizSteps.filter((item) => (answers[item.id] ?? []).length > 0).length
-  const discount = discountFor(answered, quizSteps.length)
   const progress = finished ? 95 : Math.round((index / quizSteps.length) * 100)
 
   const summary = useMemo(() => summariseAnswers(answers), [answers])
@@ -190,7 +181,7 @@ export function QuizPopup() {
             source="quiz"
             fields={['phone']}
             submitLabel="Получить результаты"
-            payload={{ ...summary, Скидка: `${discount}%` }}
+            payload={summary}
             className="mt-4"
           />
         </div>
@@ -255,13 +246,12 @@ export function QuizPopup() {
           </ul>
 
           <div className="flex items-center gap-3 px-5 pt-4 pb-5">
-            <DiscountBadge value={discount} />
             <button
               type="button"
               onClick={back}
               disabled={index === 0}
               aria-label="Назад"
-              className="ml-auto grid size-9 shrink-0 place-items-center rounded-full border border-sand-200 text-ink-500 transition-colors enabled:hover:border-ink-300 disabled:opacity-40"
+              className="grid size-9 shrink-0 place-items-center rounded-full border border-sand-200 text-ink-500 transition-colors enabled:hover:border-ink-300 disabled:opacity-40"
             >
               <svg viewBox="0 0 12 12" aria-hidden="true" className="size-3">
                 <path
@@ -278,7 +268,7 @@ export function QuizPopup() {
               type="button"
               onClick={forward}
               disabled={!canAdvance}
-              className="rounded-full bg-brand-500 px-6 py-2.5 text-sm font-medium text-white transition-colors enabled:hover:bg-brand-600 disabled:opacity-40"
+              className="ml-auto rounded-full bg-brand-500 px-6 py-2.5 text-sm font-medium text-white transition-colors enabled:hover:bg-brand-600 disabled:opacity-40"
             >
               {isLast ? 'Готово' : 'Далее'}
             </button>
@@ -286,24 +276,6 @@ export function QuizPopup() {
         </>
       )}
     </aside>
-  )
-}
-
-function DiscountBadge({ value }: { value: number }) {
-  return (
-    <span className="flex shrink-0 items-center gap-1.5 rounded-full bg-brand-50 px-3 py-1.5 text-xs whitespace-nowrap text-ink-600">
-      <svg viewBox="0 0 12 12" aria-hidden="true" className="size-2.5 text-brand-500">
-        <path
-          d="M6 10V2m0 0L2.5 5.5M6 2l3.5 3.5"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-      {quizDiscount.label} <strong className="font-semibold text-brand-600">{value}%</strong>
-    </span>
   )
 }
 
