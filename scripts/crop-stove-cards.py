@@ -20,12 +20,22 @@ RATIO = 4 / 3
 # then trimmed to the card's ratio about the same centre.
 CROPS = {
     'stove-stationary': (0.152, 0.768, 0.58, 0.95),
+    'stove-demountable': (0.253, 0.887, 0.55, 0.93),
+}
+
+# Which takes exist for each stove. Вальцовавич's two renders put the removed
+# grate and ash drawer on opposite sides and light the firebox differently, so
+# crossfading them reads as a glitch — that card runs the colour take alone and
+# the page desaturates it.
+TAKES = {
+    'stove-stationary': ('color', 'grey'),
+    'stove-demountable': ('color',),
 }
 
 
 def crop(name: str, box: tuple[float, float, float, float]) -> None:
     left, right, top, bottom = box
-    for take in ('color', 'grey'):
+    for take in TAKES.get(name, ('color', 'grey')):
         src = Image.open(f'{SRC}/{name}-{take}.webp').convert('RGB')
         w, h = src.size
         x0, x1 = left * w, right * w

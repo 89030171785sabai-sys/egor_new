@@ -81,6 +81,18 @@ export function HeatingTypes() {
  * colour one is simply shown.
  */
 function StovePair({ photo, title }: { photo: StovePhoto; title: string }) {
+  // Without a matching silver take, the colour one is simply desaturated.
+  if (!photo.grey) {
+    return (
+      <img
+        src={photoUrl(photo.color)}
+        alt={title}
+        loading="lazy"
+        className="aspect-4/3 w-full object-contain transition duration-500 motion-reduce:transition-none [@media(hover:hover)]:grayscale [@media(hover:hover)]:group-hover:grayscale-0"
+      />
+    )
+  }
+
   return (
     <span className="relative block aspect-4/3 w-full">
       <img

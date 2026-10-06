@@ -12,8 +12,13 @@
  * than a filter — which is why it is a second file and not a CSS effect.
  */
 export interface StovePhoto {
-  grey: string
   color: string
+  /**
+   * The client's own silver take. Where the two renders do not line up — one
+   * stove has its removed parts laid out on opposite sides in each — it is
+   * left out and the page desaturates the colour take instead.
+   */
+  grey?: string
 }
 
 export interface HeatingType {
@@ -46,6 +51,7 @@ export const heatingTypes: HeatingType[] = [
     title: 'Разборная печь',
     text: 'Та же жаропрочная сталь, но печь разбирается — есть доступ к любому узлу, обслуживать проще.',
     slug: 'valtsovavich',
+    photo: { color: 'stove-demountable-color.webp' },
   },
   {
     id: 'water-circuit',
