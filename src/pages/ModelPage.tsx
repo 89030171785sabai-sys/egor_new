@@ -117,7 +117,7 @@ function HeroBackdrop({ model }: { model: Model }) {
       */}
       <div
         style={heroWidthVars(model)}
-        className="pointer-events-none absolute right-0 bottom-0 -z-20 w-(--hero-sm) [mask-composite:intersect] [mask-image:linear-gradient(to_right,transparent,black_22%),linear-gradient(to_bottom,transparent,black_26%)] lg:w-(--hero-lg)"
+        className="pointer-events-none absolute right-0 bottom-0 -z-20 hidden w-(--hero-sm) [mask-composite:intersect] [mask-image:linear-gradient(to_right,transparent,black_22%),linear-gradient(to_bottom,transparent,black_26%)] lg:block lg:w-(--hero-lg)"
       >
         <ModelShot model={model} slot="hero" contain className="w-full" />
       </div>
@@ -273,6 +273,20 @@ function ModelDetail({ model }: { model: Model }) {
               {model.name}
             </span>
           </h1>
+
+          {/*
+            On a phone the shot sits in the flow, under the name: behind the
+            copy it would be lost under the wash that keeps the headline
+            readable across the full width.
+          */}
+          {model.photos?.hero && (
+            <ModelShot
+              model={model}
+              slot="hero"
+              contain
+              className="mt-6 w-full lg:hidden"
+            />
+          )}
 
           <p className="mt-5 max-w-xl text-base leading-relaxed text-white/85 sm:text-lg">
             {model.accent}. {model.description}
