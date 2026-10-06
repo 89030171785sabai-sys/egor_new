@@ -85,6 +85,12 @@ export interface ModelPhotos {
    * script after adding a photograph rather than guessing a value.
    */
   heroWidth?: number
+  /**
+   * The shot's own backdrop colour. The page lays it behind the photograph as
+   * a soft glow, which is what lets the picture's edges fade out without the
+   * chimney going black against the page. Reported by the same script.
+   */
+  heroTone?: string
 }
 
 export interface Model {
@@ -145,7 +151,7 @@ export const models: Model[] = [
     ],
     // Only the model page's own hero: the home page and the catalogue card
     // are waiting for their own shots.
-    photos: { hero: 'grafit-hero.webp', heroWidth: 0.542 },
+    photos: { hero: 'grafit-hero.webp', heroWidth: 0.542, heroTone: '#181f26' },
     includes: [...commonIncludes, 'Ветрозащита', 'Дымоход 3 м и защитный экран'],
     seoTitle: 'Банный чан «Графит»',
     seoDescription:
@@ -163,7 +169,7 @@ export const models: Model[] = [
     stove: 'Увеличенная, жаропрочная сталь 09Г2С',
     bowlShape: 'faceted',
     theme: 'ink',
-    photos: { hero: 'cherny-brilliant-hero.webp', heroWidth: 0.528 },
+    photos: { hero: 'cherny-brilliant-hero.webp', heroWidth: 0.528, heroTone: '#441403' },
     offers: [
       { cm: 175, price: 133000 },
       { cm: 210, price: 155500 },
@@ -190,7 +196,7 @@ export const models: Model[] = [
     stove: 'Разборная, жаропрочная сталь 09Г2С',
     bowlShape: 'rolled',
     theme: 'sand',
-    photos: { hero: 'valtsovavich-hero.webp', heroWidth: 0.614 },
+    photos: { hero: 'valtsovavich-hero.webp', heroWidth: 0.614, heroTone: '#333d49' },
     offers: [
       { cm: 175, price: 135000 },
       { cm: 210, price: 159000 },
@@ -218,7 +224,7 @@ export const models: Model[] = [
     bowlShape: 'faceted',
     theme: 'jade',
     badge: 'Хит продаж',
-    photos: { hero: 'nefrit-hero.webp', heroWidth: 0.511 },
+    photos: { hero: 'nefrit-hero.webp', heroWidth: 0.511, heroTone: '#3f4148' },
     offers: [
       { cm: 175, price: 187000 },
       { cm: 210, price: 195990 },
@@ -246,7 +252,7 @@ export const models: Model[] = [
     stove: 'Выносная, водяной контур и теплосъёмные трубы',
     bowlShape: 'faceted',
     theme: 'olive',
-    photos: { hero: 'oniks-hero.webp', heroWidth: 0.767 },
+    photos: { hero: 'oniks-hero.webp', heroWidth: 0.767, heroTone: '#1a3935' },
     offers: [
       { cm: 175, price: 188000 },
       { cm: 210, price: 199000 },
@@ -275,7 +281,7 @@ export const models: Model[] = [
     bowlShape: 'faceted',
     theme: 'terracotta',
     badge: 'Решение 4 в 1',
-    photos: { hero: 'oniks-pro-hero.webp', heroWidth: 0.677 },
+    photos: { hero: 'oniks-pro-hero.webp', heroWidth: 0.677, heroTone: '#692713' },
     offers: [
       { cm: 210, price: 294000 },
       { cm: 235, price: 353000 },
@@ -302,7 +308,7 @@ export const models: Model[] = [
     stove: 'Боковая приварная расширенная, водяной контур и теплосъёмные трубы',
     bowlShape: 'faceted',
     theme: 'copper',
-    photos: { hero: 'grant-hero.webp', heroWidth: 0.8 },
+    photos: { hero: 'grant-hero.webp', heroWidth: 0.8, heroTone: '#60220b' },
     offers: [
       { cm: 235, price: 459000 },
       { cm: 250, price: 588000 },

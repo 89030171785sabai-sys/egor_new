@@ -64,9 +64,16 @@ export function ModelPage({ slug }: { slug: string }) {
 function heroWidthVars(model: Model): CSSProperties {
   const lg = model.photos?.heroWidth ?? 0.64
   const sm = Math.min(lg * 1.25, 1)
+  // The glow reaches past the picture on both sides, so the fade at its edges
+  // runs out over colour rather than stopping on it.
+  const glowLg = Math.min(lg * 1.35, 1)
+  const glowSm = Math.min(sm * 1.2, 1)
   return {
     '--hero-lg': `${(lg * 100).toFixed(1)}%`,
     '--hero-sm': `${(sm * 100).toFixed(1)}%`,
+    '--hero-glow-lg': `${(glowLg * 100).toFixed(1)}%`,
+    '--hero-glow-sm': `${(glowSm * 100).toFixed(1)}%`,
+    '--hero-tone': model.photos?.heroTone ?? '#1a1c20',
   } as CSSProperties
 }
 
@@ -85,20 +92,23 @@ function HeroBackdrop({ model }: { model: Model }) {
 
   return (
     <>
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 -z-30 bg-gradient-to-b from-ink-800 to-ink-900"
-      />
+      <div aria-hidden="true" className="absolute inset-0 -z-[40] bg-ink-900" />
+
       {/*
-        The box takes the photograph's own height rather than the section's, so
-        its edges are the photograph's edges — which is what lets the mask fade
-        the actual picture into the page instead of leaving a visible seam.
-        The fade is on the left edge only: a fade from the top dims the
-        chimney, which is the first thing the eye lands on.
+        The shot's own backdrop tone, laid behind it as a soft glow. Without it
+        the picture's top edge ends on flat black — the line the client saw —
+        and fading that edge out instead turned the chimney black. Against a
+        glow of the same colour the fade has nothing to show.
       */}
       <div
+        aria-hidden="true"
         style={heroWidthVars(model)}
-        className="pointer-events-none absolute right-0 bottom-0 -z-20 w-(--hero-sm) [mask-image:linear-gradient(to_right,transparent,black_24%)] lg:w-(--hero-lg)"
+        className="absolute inset-y-0 right-0 -z-30 w-(--hero-glow-sm) [background:radial-gradient(75%_70%_at_58%_52%,var(--hero-tone),transparent_72%)] lg:w-(--hero-glow-lg)"
+      />
+
+      <div
+        style={heroWidthVars(model)}
+        className="pointer-events-none absolute right-0 bottom-0 -z-20 w-(--hero-sm) [mask-composite:intersect] [mask-image:linear-gradient(to_right,transparent,black_22%),linear-gradient(to_bottom,transparent,black_20%)] lg:w-(--hero-lg)"
       >
         <ModelShot model={model} slot="hero" contain className="w-full" />
       </div>
