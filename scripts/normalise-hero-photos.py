@@ -20,6 +20,7 @@ OUT = '/tmp/claude-0/-home-user-egor-new/53ae53de-0bea-5941-9b90-6b7814724db0/sc
 # original width. The rim is the widest point of the bowl.
 SHOTS = {
     'grafit':           (0.00, 1.00, 0.12, 0.78),
+    'valtsovavich':     (0.26, 0.74, 0.405, 0.685),
     'cherny-brilliant': (0.22, 0.84, 0.30, 0.72),
     'nefrit':           (0.20, 0.80, 0.29, 0.71),
     'oniks':            (0.20, 0.80, 0.24, 0.52),
