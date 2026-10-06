@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { ModelDrawer } from './ModelDrawer'
-import { Logo } from '../ui/Logo'
+import { LogoLockup } from '../ui/Logo'
 import { navItems, modelRoutes } from '../../lib/routes'
 import { contacts, hasContact } from '../../data/contacts'
 
@@ -45,7 +45,7 @@ export function Header() {
             }`}
           >
             <Link to="/" className="shrink-0 px-1" aria-label={`${contacts.companyName} — на главную`}>
-              <Logo size="sm" layout="inline" withTagline={false} />
+              <LogoLockup />
             </Link>
 
             <nav className="hidden items-center gap-0.5 lg:flex">
