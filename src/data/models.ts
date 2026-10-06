@@ -207,6 +207,7 @@ export const models: Model[] = [
     bowlShape: 'faceted',
     theme: 'jade',
     badge: 'Хит продаж',
+    photos: { hero: 'nefrit-hero.webp' },
     offers: [
       { cm: 175, price: 187000 },
       { cm: 210, price: 195990 },
