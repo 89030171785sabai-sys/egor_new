@@ -79,7 +79,7 @@ export const contentRoutes: RouteMeta[] = [
     path: '/contacts',
     label: 'Контакты',
     title: 'Контакты',
-    description: 'Телефон, мессенджеры, почта и адреса производств «Дым и Пар».',
+    description: 'Телефон, мессенджеры и адреса производств HOTTUB.',
   },
 ]
 

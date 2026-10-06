@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { modelRoutes, legalRoutes, contentRoutes } from '../../lib/routes'
 import { contacts, hasContact } from '../../data/contacts'
+import { Logo } from '../ui/Logo'
 
 /** Light footer built as four rows separated by hairlines. */
 export function Footer() {
@@ -8,8 +9,8 @@ export function Footer() {
     <footer className="border-t border-sand-300 bg-sand-50">
       <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
         <div className="flex flex-wrap items-center gap-4 border-b border-sand-300 py-6">
-          <Link to="/" className="font-display text-xl tracking-wide uppercase">
-            {contacts.companyName}
+          <Link to="/" aria-label={`${contacts.companyName} — на главную`}>
+            <Logo size="md" layout="inline" />
           </Link>
           <p className="text-sm text-ink-400">{contacts.tagline}</p>
 

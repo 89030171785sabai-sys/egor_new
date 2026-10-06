@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { ModelDrawer } from './ModelDrawer'
+import { Logo } from '../ui/Logo'
 import { navItems, modelRoutes } from '../../lib/routes'
 import { contacts, hasContact } from '../../data/contacts'
 
@@ -43,11 +44,8 @@ export function Header() {
               scrolled ? 'px-3 py-1.5 shadow-lg shadow-ink-900/10' : 'px-4 py-2 shadow-md shadow-ink-900/5'
             }`}
           >
-            <Link
-              to="/"
-              className="shrink-0 px-2 text-base font-semibold tracking-[0.12em] uppercase sm:text-lg"
-            >
-              {contacts.companyName}
+            <Link to="/" className="shrink-0 px-1" aria-label={`${contacts.companyName} — на главную`}>
+              <Logo size="sm" layout="inline" withTagline={false} />
             </Link>
 
             <nav className="hidden items-center gap-0.5 lg:flex">

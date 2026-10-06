@@ -25,7 +25,7 @@ export function Calculator() {
           <aside className="rounded-panel bg-white p-6 lg:sticky lg:top-28">
             <div className="flex items-center gap-4">
               <span className="font-display grid size-12 shrink-0 place-items-center rounded-full bg-ink-800 text-lg text-white">
-                ЖД
+                HT
               </span>
               <div>
                 <p className="font-semibold">{contacts.companyName}</p>

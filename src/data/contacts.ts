@@ -24,8 +24,8 @@ export interface Social {
 }
 
 export const contacts = {
-  companyName: 'Дым и Пар',
-  tagline: 'Банные чаны от производителя',
+  companyName: 'HOTTUB',
+  tagline: 'Горячий чан — банные чаны от производителя',
 
   /** The only number that is answered by voice. */
   phone: { display: '+7 (980) 900-81-30', href: 'tel:+79809008130' },

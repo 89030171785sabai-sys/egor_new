@@ -43,7 +43,13 @@ function QuizTeaser() {
   useEffect(() => {
     if (dismissed) return
 
-    const onScroll = () => setOpen(window.scrollY > 700)
+    const onScroll = () => {
+      const scrolled = window.scrollY > 700
+      // Near the end of the page the card would sit on top of the footer.
+      const nearBottom =
+        window.scrollY + window.innerHeight > document.documentElement.scrollHeight - 420
+      setOpen(scrolled && !nearBottom)
+    }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
@@ -75,7 +81,7 @@ function QuizTeaser() {
     <aside className="fixed bottom-4 left-4 z-40 hidden w-[19rem] rounded-panel bg-white p-4 shadow-2xl shadow-ink-900/20 sm:block">
       <div className="flex items-start gap-3">
         <span className="grid size-9 shrink-0 place-items-center rounded-full bg-ink-800 text-xs font-semibold text-white">
-          ДП
+          HT
         </span>
         <div className="min-w-0">
           <p className="text-sm font-semibold">{contacts.companyName}</p>
