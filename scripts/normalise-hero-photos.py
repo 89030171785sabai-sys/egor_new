@@ -21,11 +21,16 @@ from PIL import Image
 SRC = 'assets/photos-src'
 DST = 'public/photos'
 
-# name: (crop_left, crop_right, rim_left, rim_right) — all fractions of the
-# original width. The rim is the widest point of the bowl.
+# name: (crop_left, crop_right, rim_left, rim_right, crop_top, boost) — the
+# first four are fractions of the original width, crop_top of its height.
+# `boost` nudges a model off the formula: matching bowl rims is right for all
+# but Графит, whose flat top rim is far wider than its body, so the formula
+# leaves the whole picture looking smaller than its neighbours. A tall crop is
+# what makes a shot overflow the hero, so a frame with empty sky above the
+# chimney has it taken off here.
 SHOTS = {
-    'grafit':           (0.00, 1.00, 0.120, 0.780),
-    'valtsovavich':     (0.26, 0.74, 0.405, 0.685),
+    'grafit':           (0.00, 1.00, 0.120, 0.780, 0.00, 1.18),
+    'valtsovavich':     (0.16, 0.84, 0.405, 0.685, 0.12),
     'cherny-brilliant': (0.22, 0.84, 0.300, 0.720),
     'nefrit':           (0.20, 0.80, 0.290, 0.710),
     'oniks':            (0.20, 0.80, 0.240, 0.520),
@@ -35,7 +40,7 @@ SHOTS = {
 
 # Width of the shot on a large screen, as a share of the viewport, before the
 # per-model correction. The correction is capped so no shot runs past 80%.
-MAX_LG = 0.80
+MAX_LG = 0.85
 
 
 def tone(image: Image.Image) -> str:
@@ -59,17 +64,23 @@ def tone(image: Image.Image) -> str:
 
 
 rims = {}
-for name, (cl, cr, rl, rr) in SHOTS.items():
+for name, geometry in SHOTS.items():
+    cl, cr, rl, rr = geometry[:4]
+    ct = geometry[4] if len(geometry) > 4 else 0.0
+    boost = geometry[5] if len(geometry) > 5 else 1.0
     original = Image.open(f'{SRC}/{name}-hero.webp').convert('RGB')
     w, h = original.size
-    cropped = original.crop((round(w * cl), 0, round(w * cr), h))
+    cropped = original.crop((round(w * cl), round(h * ct), round(w * cr), h))
     cropped.save(f'{DST}/{name}-hero.webp', 'WEBP', quality=90, method=6)
-    rims[name] = {'rim': (rr - rl) / (cr - cl), 'tone': tone(cropped), 'size': cropped.size}
+    rims[name] = {'rim': (rr - rl) / (cr - cl), 'tone': tone(cropped),
+                  'size': cropped.size, 'boost': boost}
 
 # The most loosely framed shot sets the ceiling; the rest scale down to match.
 target = MAX_LG * min(info['rim'] for info in rims.values())
 
-print(f'{"model":20} {"heroWidth":>10}  {"heroTone":>9}  rendered rim')
+print(f'{"model":20} {"heroWidth":>10}  {"heroTone":>9}  {"rim":>7}  tallest')
 for name, info in rims.items():
-    lg = round(min(target / info['rim'], MAX_LG), 3)
-    print(f'{name:20} {lg:>10}  {info["tone"]:>9}  {lg * info["rim"]:.4f}')
+    lg = round(min(target / info['rim'] * info['boost'], MAX_LG), 3)
+    cw, ch = info['size']
+    print(f'{name:20} {lg:>10}  {info["tone"]:>9}  {lg * info["rim"]:.4f}  '
+          f'{lg * ch / cw:.3f} of viewport width')

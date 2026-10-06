@@ -2,8 +2,9 @@ import { Link } from 'react-router-dom'
 import { SectionHeading } from '../ui/SectionHeading'
 import { Reveal } from '../ui/Reveal'
 import { ModelShot } from '../ui/ModelShot'
-import { heatingTypes } from '../../data/heating'
+import { heatingTypes, type StovePhoto } from '../../data/heating'
 import { formatHours, modelBySlug } from '../../data/models'
+import { photoUrl } from '../../lib/photos'
 
 /**
  * How the water gets hot — one card per stove layout in the line.
@@ -48,13 +49,17 @@ export function HeatingTypes() {
                       </p>
                     </div>
 
-                    <div className="overflow-hidden bg-sand-200">
-                      <ModelShot
-                        model={model}
-                        slot="hero"
-                        ratio="4/3"
-                        className="object-bottom transition duration-500 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100 [@media(hover:hover)]:grayscale [@media(hover:hover)]:group-hover:grayscale-0"
-                      />
+                    <div className="overflow-hidden bg-white">
+                      {type.photo ? (
+                        <StovePair photo={type.photo} title={type.title} />
+                      ) : (
+                        <ModelShot
+                          model={model}
+                          slot="hero"
+                          ratio="4/3"
+                          className="object-bottom transition duration-500 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100 [@media(hover:hover)]:grayscale [@media(hover:hover)]:group-hover:grayscale-0"
+                        />
+                      )}
                     </div>
                   </Link>
                 </Reveal>
@@ -64,5 +69,33 @@ export function HeatingTypes() {
         </ul>
       </div>
     </section>
+  )
+}
+
+/**
+ * The stove in two takes: silver by default, colour under the pointer.
+ *
+ * Both are the client's own renders, so this crossfades between two files
+ * rather than desaturating one — a CSS filter gives a muddy grey where theirs
+ * is a deliberate high-key silver. Where there is no pointer to reward, the
+ * colour one is simply shown.
+ */
+function StovePair({ photo, title }: { photo: StovePhoto; title: string }) {
+  return (
+    <span className="relative block aspect-4/3 w-full">
+      <img
+        src={photoUrl(photo.grey)}
+        alt=""
+        loading="lazy"
+        aria-hidden="true"
+        className="absolute inset-0 size-full object-contain opacity-0 [@media(hover:hover)]:opacity-100"
+      />
+      <img
+        src={photoUrl(photo.color)}
+        alt={title}
+        loading="lazy"
+        className="absolute inset-0 size-full object-contain transition-opacity duration-500 motion-reduce:transition-none [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100"
+      />
+    </span>
   )
 }

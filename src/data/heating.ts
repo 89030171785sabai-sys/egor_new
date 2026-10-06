@@ -5,12 +5,25 @@
  * model's photograph and link to its page — no new photography needed, and the
  * section cannot drift from the catalogue.
  */
+/**
+ * A close-up of the stove itself, supplied as a pair: the card shows the grey
+ * version and crossfades to the colour one under the pointer. Both are the
+ * client's own renders, so the grey is a deliberate silver treatment rather
+ * than a filter — which is why it is a second file and not a CSS effect.
+ */
+export interface StovePhoto {
+  grey: string
+  color: string
+}
+
 export interface HeatingType {
   id: string
   title: string
   text: string
   /** The model this layout belongs to. */
   slug: string
+  /** Falls back to the model's own photograph until this is shot. */
+  photo?: StovePhoto
 }
 
 export const heatingTypes: HeatingType[] = [
@@ -19,6 +32,7 @@ export const heatingTypes: HeatingType[] = [
     title: 'Открытый очаг с ветрозащитой',
     text: 'Чаша без дна стоит прямо над огнём, вокруг — ветрозащита. Самое простое и самое доступное решение в линейке.',
     slug: 'grafit',
+    photo: { grey: 'stove-hearth-grey.webp', color: 'stove-hearth-color.webp' },
   },
   {
     id: 'enlarged',

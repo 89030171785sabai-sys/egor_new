@@ -106,9 +106,16 @@ function HeroBackdrop({ model }: { model: Model }) {
         className="absolute inset-y-0 right-0 -z-30 w-(--hero-glow-sm) [background:radial-gradient(75%_70%_at_58%_52%,var(--hero-tone),transparent_72%)] lg:w-(--hero-glow-lg)"
       />
 
+      {/*
+        The box is the photograph: its width is the model's own, its height
+        follows. Containing it in a full-height box instead would leave the
+        picture's real edges inside the box, where the mask no longer reaches
+        them — and a hard rectangle is exactly what this is here to avoid.
+        A shot taller than the hero loses only its faded top, over the glow.
+      */}
       <div
         style={heroWidthVars(model)}
-        className="pointer-events-none absolute right-0 bottom-0 -z-20 w-(--hero-sm) [mask-composite:intersect] [mask-image:linear-gradient(to_right,transparent,black_22%),linear-gradient(to_bottom,transparent,black_20%)] lg:w-(--hero-lg)"
+        className="pointer-events-none absolute right-0 bottom-0 -z-20 w-(--hero-sm) [mask-composite:intersect] [mask-image:linear-gradient(to_right,transparent,black_22%),linear-gradient(to_bottom,transparent,black_26%)] lg:w-(--hero-lg)"
       >
         <ModelShot model={model} slot="hero" contain className="w-full" />
       </div>
