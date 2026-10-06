@@ -11,7 +11,7 @@ import {
   type SizeCm,
 } from '../../data/models'
 
-export function Catalog() {
+export function Catalog({ photos = false }: { photos?: boolean } = {}) {
   const [size, setSize] = useState<SizeCm | 'all'>('all')
 
   const shown = useMemo(
@@ -51,7 +51,7 @@ export function Catalog() {
         <div className="mt-10 grid gap-6 lg:grid-cols-2">
           {shown.map((model, index) => (
             <Reveal key={model.slug} delay={(index % 2) * 90}>
-              <ModelCard model={model} />
+              <ModelCard model={model} photo={photos} />
             </Reveal>
           ))}
         </div>

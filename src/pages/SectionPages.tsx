@@ -45,7 +45,7 @@ export function CatalogPage() {
         />
       </PageHeader>
 
-      <Catalog />
+      <Catalog photos />
       <ModelShowcase />
       <Benefits />
       <FinalCta />

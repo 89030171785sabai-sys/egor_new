@@ -51,6 +51,7 @@ export const benefits: Benefit[] = [
     id: 'heat-area',
     title: 'Площадь теплосъёма',
     lead: 'Важнейшая характеристика печи — напрямую влияет на КПД и скорость нагрева воды в чане.',
-    wanted: 'диаграмма: площадь поверхности печи HOTTUB против обычного чана',
+    // Drawn in the page rather than generated: two circles and some type.
+    wanted: 'нарисована кодом, файл не нужен',
   },
 ]

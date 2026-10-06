@@ -13,8 +13,13 @@ import {
 /**
  * Catalogue card: name, accent line, product shot with the heating badge, kit
  * contents, price and the call to action.
+ *
+ * `photo` decides whether the card shows the model's own shot or the stand-in.
+ * The home page runs without it — its photography is being shot separately —
+ * while the catalogue page, which is where someone goes to compare the line,
+ * shows every model as it really looks.
  */
-export function ModelCard({ model }: { model: Model }) {
+export function ModelCard({ model, photo = false }: { model: Model; photo?: boolean }) {
   return (
     <article className="flex flex-col rounded-panel bg-white p-5 shadow-sm shadow-ink-900/5 transition-shadow hover:shadow-lg hover:shadow-ink-900/10 sm:p-6">
       <div className="flex flex-wrap items-center gap-3">
@@ -31,7 +36,7 @@ export function ModelCard({ model }: { model: Model }) {
       </p>
 
       <div className="relative mt-5 overflow-hidden rounded-card">
-        <ModelShot model={model} slot="card" ratio="4/3" />
+        <ModelShot model={model} slot={photo ? 'hero' : 'card'} ratio="4/3" />
         <span className="absolute top-3 right-3 rounded-full bg-brand-500 px-3.5 py-1.5 text-sm font-semibold text-white">
           Нагрев {formatHours(model.heatingHours)}
         </span>

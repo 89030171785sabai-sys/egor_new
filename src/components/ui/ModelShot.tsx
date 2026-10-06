@@ -39,7 +39,7 @@ export function ModelShot({
   /** Overrides the description of the shot the slot is waiting for. */
   label?: string
 }) {
-  const name = model.photos?.[slot] ?? (slot === 'card' ? model.photos?.hero : undefined)
+  const name = model.photos?.[slot]
   const described = label ?? `${model.name} — ${slot === 'hero' ? 'крупный кадр изделия' : 'товарное фото'}`
   const alt = `Банный чан «${model.name}»`
 
