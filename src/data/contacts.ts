@@ -72,8 +72,8 @@ export const contacts = {
   legal: {
     entity: 'ИП Вырышева Ю. А.',
     inn: '745301208415',
-    // Not supplied yet — the footer and the legal pages hide it while empty.
-    ogrnip: '',
+    // Both read off the certificates of conformity in `public/docs`.
+    ogrnip: '319745600041392',
   },
 } as const
 

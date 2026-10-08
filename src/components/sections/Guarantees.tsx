@@ -1,24 +1,7 @@
 import { SectionHeading } from '../ui/SectionHeading'
 import { Reveal } from '../ui/Reveal'
 import { contacts } from '../../data/contacts'
-
-const documents = [
-  {
-    title: 'Сертификат стали',
-    text: 'Документы на пищевую нержавейку AISI 304 и 430 для каждого чана.',
-    icon: 'doc' as const,
-  },
-  {
-    title: 'Гарантия 13 лет',
-    text: 'Отвечаем за герметичность швов и качество изделия.',
-    icon: 'shield' as const,
-  },
-  {
-    title: 'Паспорт изделия',
-    text: 'Индивидуальный паспорт и инструкция по уходу в комплекте.',
-    icon: 'card' as const,
-  },
-]
+import { certificates, docUrl } from '../../data/certificates'
 
 const deal = [
   {
@@ -47,16 +30,33 @@ export function Guarantees() {
   return (
     <section id="guarantees" className="scroll-mt-28 py-20 lg:py-28">
       <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
-        <div className="grid gap-6 lg:grid-cols-3">
-          {documents.map((item, index) => (
-            <Reveal key={item.title} delay={index * 80}>
-              <div className="h-full rounded-panel bg-ink-800 p-7">
+        <SectionHeading
+          eyebrow="Документы"
+          title="Продукция сертифицирована"
+          subtitle="Три действующих сертификата на серийный выпуск. Каждый открывается целиком — номер можно проверить в реестре."
+        />
+
+        <div className="mt-12 grid gap-6 lg:grid-cols-3">
+          {certificates.map((item, index) => (
+            <Reveal key={item.number} delay={index * 80}>
+              <a
+                href={docUrl(item.file)}
+                target="_blank"
+                rel="noopener"
+                className="group flex h-full flex-col rounded-panel bg-ink-800 p-7 transition-colors hover:bg-ink-700"
+              >
                 <span className="text-white/70">
-                  <Icon name={item.icon} />
+                  <Icon name="doc" />
                 </span>
                 <h3 className="mt-5 text-lg font-semibold text-white">{item.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-ink-300">{item.text}</p>
-              </div>
+                <p className="mt-1 text-xs tracking-wider text-ink-400 uppercase">{item.system}</p>
+                <p className="mt-3 text-sm leading-relaxed text-ink-300">{item.summary}</p>
+                <p className="mt-4 text-xs break-all text-ink-400">{item.number}</p>
+                <p className="mt-auto pt-5 text-sm font-medium text-white">
+                  <span className="group-hover:underline">Открыть PDF</span>
+                  <span className="ml-2 text-ink-400">действует до {item.validUntil}</span>
+                </p>
+              </a>
             </Reveal>
           ))}
         </div>

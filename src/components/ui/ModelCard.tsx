@@ -1,6 +1,8 @@
+import type { CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 import { ButtonLink } from './Button'
 import { ModelShot } from './ModelShot'
+import { PlaceholderImage } from './PlaceholderImage'
 import {
   formatHours,
   formatPrice,
@@ -18,6 +20,10 @@ import {
  * The home page runs without it — its photography is being shot separately —
  * while the catalogue page, which is where someone goes to compare the line,
  * shows every model as it really looks.
+ *
+ * The shot is contained rather than cropped, on a panel tinted to the studio
+ * sweep it was photographed against, so the join is invisible; its width comes
+ * from the model, so every bowl in the grid reads at one size.
  */
 export function ModelCard({ model, photo = false }: { model: Model; photo?: boolean }) {
   return (
@@ -36,7 +42,23 @@ export function ModelCard({ model, photo = false }: { model: Model; photo?: bool
       </p>
 
       <div className="relative mt-5 overflow-hidden rounded-card">
-        <ModelShot model={model} slot={photo ? 'hero' : 'card'} ratio="4/3" />
+        {photo && model.photos?.card ? (
+          <div className="flex aspect-10/9 items-end justify-center bg-gradient-to-b from-[#ececed] to-[#f6f5f6]">
+            <ModelShot
+              model={model}
+              slot="card"
+              contain
+              style={{ '--card-w': `${(model.photos.cardWidth ?? 0.8) * 100}%` } as CSSProperties}
+              className="w-(--card-w)"
+            />
+          </div>
+        ) : (
+          <PlaceholderImage
+            tone="studio"
+            ratio="4/3"
+            label={`${model.name} — товарное фото`}
+          />
+        )}
         <span className="absolute top-3 right-3 rounded-full bg-brand-500 px-3.5 py-1.5 text-sm font-semibold text-white">
           Нагрев {formatHours(model.heatingHours)}
         </span>

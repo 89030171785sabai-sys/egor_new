@@ -73,8 +73,17 @@ export const promo = {
 export interface ModelPhotos {
   /** Full-bleed shot behind the model page's opening screen. */
   hero?: string
-  /** Product shot on the catalogue card. */
+  /** Product shot on the catalogue card — the studio set on a white sweep. */
   card?: string
+  /**
+   * Width of the card shot inside its box, as a share of that box.
+   *
+   * Same story as `heroWidth`: the studio set shares one angle and one light
+   * but not one distance, so each shot needs its own width for the bowls to
+   * read as a single line. Computed by `scripts/normalise-card-photos.py` —
+   * re-run it after adding a photograph rather than guessing a value.
+   */
+  cardWidth?: number
   /**
    * Width of the hero shot on a large screen, as a share of the viewport.
    *
@@ -161,7 +170,7 @@ export const models: Model[] = [
     ],
     // Only the model page's own hero: the home page and the catalogue card
     // are waiting for their own shots.
-    photos: { hero: 'grafit-hero.webp', heroWidth: 0.596, heroTone: '#263b44', heroBoost: 1.18 },
+    photos: { card: 'grafit-card.webp', cardWidth: 0.53, hero: 'grafit-hero.webp', heroWidth: 0.596, heroTone: '#263b44', heroBoost: 1.18 },
     includes: [...commonIncludes, 'Ветрозащита без дна', 'Дымоход 3 м и защитный экран'],
     seoTitle: 'Банный чан «Графит»',
     seoDescription:
@@ -179,7 +188,7 @@ export const models: Model[] = [
     stove: 'Стационарная, чугунный колосник и выдвижной зольный ящик',
     bowlShape: 'faceted',
     theme: 'ink',
-    photos: { hero: 'cherny-brilliant-hero.webp', heroWidth: 0.517, heroTone: '#441403' },
+    photos: { card: 'cherny-brilliant-card.webp', cardWidth: 0.534, hero: 'cherny-brilliant-hero.webp', heroWidth: 0.517, heroTone: '#441403' },
     offers: [
       { cm: 175, price: 133000 },
       { cm: 210, price: 155500 },
@@ -206,7 +215,7 @@ export const models: Model[] = [
     stove: 'Разборная, жаропрочная сталь 09Г2С',
     bowlShape: 'rolled',
     theme: 'sand',
-    photos: { hero: 'valtsovavich-hero.webp', heroWidth: 0.701, heroTone: '#3f4c5a' },
+    photos: { card: 'valtsovavich-card.webp', cardWidth: 0.756, hero: 'valtsovavich-hero.webp', heroWidth: 0.701, heroTone: '#3f4c5a' },
     offers: [
       { cm: 175, price: 135000 },
       { cm: 210, price: 159000 },
@@ -234,7 +243,7 @@ export const models: Model[] = [
     bowlShape: 'faceted',
     theme: 'jade',
     badge: 'Хит продаж',
-    photos: { hero: 'nefrit-hero.webp', heroWidth: 0.5, heroTone: '#3f4148' },
+    photos: { card: 'nefrit-card.webp', cardWidth: 0.562, hero: 'nefrit-hero.webp', heroWidth: 0.5, heroTone: '#3f4148' },
     offers: [
       { cm: 175, price: 187000 },
       { cm: 210, price: 195990 },
@@ -262,7 +271,7 @@ export const models: Model[] = [
     stove: 'Выносная, водяной контур и теплосъёмные трубы',
     bowlShape: 'faceted',
     theme: 'olive',
-    photos: { hero: 'oniks-hero.webp', heroWidth: 0.751, heroTone: '#1a3935' },
+    photos: { card: 'oniks-card.webp', cardWidth: 0.96, hero: 'oniks-hero.webp', heroWidth: 0.751, heroTone: '#1a3935' },
     offers: [
       { cm: 175, price: 188000 },
       { cm: 210, price: 199000 },
@@ -291,7 +300,7 @@ export const models: Model[] = [
     bowlShape: 'faceted',
     theme: 'terracotta',
     badge: 'Решение 4 в 1',
-    photos: { hero: 'oniks-pro-hero.webp', heroWidth: 0.663, heroTone: '#692713' },
+    photos: { card: 'oniks-pro-card.webp', cardWidth: 0.81, hero: 'oniks-pro-hero.webp', heroWidth: 0.663, heroTone: '#692713' },
     offers: [
       { cm: 210, price: 294000 },
       { cm: 235, price: 353000 },
@@ -318,7 +327,7 @@ export const models: Model[] = [
     stove: 'Боковая приварная расширенная, водяной контур и теплосъёмные трубы',
     bowlShape: 'faceted',
     theme: 'copper',
-    photos: { hero: 'grant-hero.webp', heroWidth: 0.783, heroTone: '#60220b' },
+    photos: { card: 'grant-card.webp', cardWidth: 0.686, hero: 'grant-hero.webp', heroWidth: 0.783, heroTone: '#60220b' },
     offers: [
       { cm: 235, price: 459000 },
       { cm: 250, price: 588000 },
