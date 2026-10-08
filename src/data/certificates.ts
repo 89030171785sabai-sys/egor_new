@@ -15,6 +15,11 @@ export interface Certificate {
   validUntil: string
   /** File name inside `public/docs`. */
   file: string
+  /**
+   * First page of the document, drawn by
+   * `scripts/render-certificate-previews.py` into `public/photos`.
+   */
+  preview: string
 }
 
 export const certificates: Certificate[] = [
@@ -27,6 +32,7 @@ export const certificates: Certificate[] = [
     validFrom: '29.09.2025',
     validUntil: '28.09.2028',
     file: 'sertifikat-sootvetstviya-85590.pdf',
+    preview: 'cert-sootvetstviya.webp',
   },
   {
     title: 'Экологическая безопасность',
@@ -37,6 +43,7 @@ export const certificates: Certificate[] = [
     validFrom: '29.09.2025',
     validUntil: '28.09.2028',
     file: 'sertifikat-ekologicheskiy-85592.pdf',
+    preview: 'cert-ekologicheskiy.webp',
   },
   {
     title: 'Пожарная безопасность',
@@ -46,6 +53,7 @@ export const certificates: Certificate[] = [
     validFrom: '29.09.2025',
     validUntil: '28.09.2028',
     file: 'sertifikat-pozharnyy-85591.pdf',
+    preview: 'cert-pozharnyy.webp',
   },
 ]
 

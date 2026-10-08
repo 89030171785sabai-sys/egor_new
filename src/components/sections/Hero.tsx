@@ -1,5 +1,5 @@
 import { ButtonLink } from '../ui/Button'
-import { PlaceholderImage } from '../ui/PlaceholderImage'
+import { photoUrl } from '../../lib/photos'
 import { formatPrice, priceFrom } from '../../data/models'
 
 const promises = [
@@ -11,16 +11,33 @@ const promises = [
 
 export function Hero() {
   return (
-    <section className="relative isolate flex min-h-[44rem] items-center overflow-hidden lg:min-h-[48rem]">
-      <PlaceholderImage
-        tone="dusk"
-        ratio="auto"
-        silhouette={false}
-        className="absolute inset-0 -z-20 size-full"
-        label="чан на участке в вечернем свете"
-        showLabel={false}
+    <section className="relative isolate flex min-h-[44rem] items-center overflow-hidden bg-ink-900 lg:min-h-[48rem]">
+      {/*
+       * A wide shot behind a column of copy: on a wide screen it fills the
+       * block, but a phone is taller than the hero's content and far narrower
+       * than the frame, so covering the whole block would crop away everything
+       * but a strip through the middle — the tub included. There it runs as a
+       * band across the top instead, deep enough to carry the headline, and
+       * fades into the section's own dark below it.
+       */}
+      <img
+        src={photoUrl('hero-home.webp')}
+        alt="Банный чан на террасе у реки в вечернем свете"
+        // The first thing on the page, so it is fetched ahead of everything else.
+        loading="eager"
+        fetchPriority="high"
+        className="absolute inset-x-0 top-0 -z-20 h-[30rem] w-full object-cover lg:inset-0 lg:h-full"
       />
-      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-ink-900/45" />
+      {/*
+       * The shot is bright where the sun sits, so a flat wash is not enough to
+       * carry white type across it: the veil is heaviest top and bottom, where
+       * the headline and the buttons fall, and thinnest across the middle,
+       * where the water and the terrace are worth seeing.
+       */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 -z-10 h-[30rem] bg-gradient-to-b from-ink-900/65 via-ink-900/20 via-60% to-ink-900 lg:inset-0 lg:h-full lg:from-ink-900/75 lg:via-ink-900/45 lg:via-50% lg:to-ink-900/75"
+      />
 
       <div className="mx-auto w-full max-w-(--container-content) px-4 pt-32 pb-16 sm:px-6 lg:pt-40 lg:pb-28">
         <div className="mx-auto max-w-3xl text-center">

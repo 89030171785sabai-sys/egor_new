@@ -2,6 +2,7 @@ import { SectionHeading } from '../ui/SectionHeading'
 import { Reveal } from '../ui/Reveal'
 import { contacts } from '../../data/contacts'
 import { certificates, docUrl } from '../../data/certificates'
+import { photoUrl } from '../../lib/photos'
 
 const deal = [
   {
@@ -45,8 +46,19 @@ export function Guarantees() {
                 rel="noopener"
                 className="group flex h-full flex-col rounded-panel bg-ink-800 p-7 transition-colors hover:bg-ink-700"
               >
-                <span className="text-white/70">
-                  <Icon name="doc" />
+                {/*
+                  * The scan itself, rather than an icon standing in for it —
+                  * the seal and the signatures are what someone is checking
+                  * for. It leans in a little under the pointer, so the card
+                  * reads as a document that opens.
+                  */}
+                <span className="block overflow-hidden rounded-card bg-white/5 p-3">
+                  <img
+                    src={photoUrl(item.preview)}
+                    alt={`${item.title} — первая страница`}
+                    loading="lazy"
+                    className="w-full rounded-sm shadow-lg shadow-ink-900/40 transition-transform duration-500 group-hover:scale-[1.03]"
+                  />
                 </span>
                 <h3 className="mt-5 text-lg font-semibold text-white">{item.title}</h3>
                 <p className="mt-1 text-xs tracking-wider text-ink-400 uppercase">{item.system}</p>
