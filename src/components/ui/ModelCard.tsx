@@ -37,7 +37,16 @@ export function ModelCard({
 }) {
   return (
     <article className="rounded-panel bg-white p-5 shadow-sm shadow-ink-900/5 transition-shadow hover:shadow-lg hover:shadow-ink-900/10 sm:p-6 lg:grid lg:grid-cols-[minmax(0,23rem)_minmax(0,1fr)] lg:gap-8">
-      <div className="relative self-start overflow-hidden rounded-card">
+      {/*
+        * The picture stands on the floor of its half and the backdrop carries
+        * on above it, in the shot's own starting colour. A card is as tall as
+        * its text, which outruns the picture on most models — anchoring the
+        * shot to the top instead left a hole under it.
+        */}
+      <div
+        style={{ backgroundColor: model.photos?.cardTop ?? '#f1f2f4' }}
+        className="relative flex flex-col justify-end overflow-hidden rounded-card"
+      >
         {photo && model.photos?.card ? (
           <ModelShot model={model} slot="card" ratio="10/9" />
         ) : (

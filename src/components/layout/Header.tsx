@@ -8,6 +8,13 @@ import { contacts, hasContact } from '../../data/contacts'
  * Floating pill header. It sits over the content rather than pushing it down,
  * tightens once the page is scrolled, and carries the sections of the site;
  * the model line lives behind its own button, which opens a slide-out list.
+ *
+ * At rest it is glass: the photograph behind the opening screen reads through
+ * it. It goes solid the moment the page moves, and that is not decoration —
+ * a translucent bar with the page running underneath shows whatever passes
+ * below it, and a dark button sliding under one of the two pills tinted it a
+ * different colour from the other. Glass only works where nothing is moving
+ * behind it.
  */
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -37,8 +44,10 @@ export function Header() {
       <header className="pointer-events-none fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4 sm:pt-4">
         <div className="mx-auto max-w-(--container-content)">
           <div
-            className={`pointer-events-auto mx-auto flex w-fit max-w-full items-center gap-1 rounded-full bg-white/95 backdrop-blur transition-all duration-300 ${
-              scrolled ? 'px-3 py-1.5 shadow-lg shadow-ink-900/10' : 'px-4 py-2 shadow-md shadow-ink-900/5'
+            className={`pointer-events-auto mx-auto flex w-fit max-w-full items-center gap-1 rounded-full backdrop-blur-md transition-all duration-300 ${
+              scrolled
+                ? 'bg-white px-3 py-1.5 shadow-lg shadow-ink-900/10'
+                : 'bg-white/65 px-4 py-2 shadow-md shadow-ink-900/5'
             }`}
           >
             <Link to="/" className="shrink-0 px-1" aria-label={`${contacts.companyName} — на главную`}>
@@ -106,8 +115,10 @@ export function Header() {
 
           <nav
             aria-label="Модели"
-            className={`pointer-events-auto mx-auto mt-2 hidden w-fit max-w-full items-center gap-0.5 rounded-full bg-white/95 px-2 py-1.5 backdrop-blur transition-all duration-300 md:flex ${
-              scrolled ? 'shadow-lg shadow-ink-900/10' : 'shadow-md shadow-ink-900/5'
+            className={`pointer-events-auto mx-auto mt-2 hidden w-fit max-w-full items-center gap-0.5 rounded-full px-2 py-1.5 backdrop-blur-md transition-all duration-300 md:flex ${
+              scrolled
+                ? 'bg-white shadow-lg shadow-ink-900/10'
+                : 'bg-white/65 shadow-md shadow-ink-900/5'
             }`}
           >
             {modelRoutes.map((route) => (

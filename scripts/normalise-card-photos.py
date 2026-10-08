@@ -81,7 +81,7 @@ def extend_upwards(image: Image.Image, height: int) -> Image.Image:
 
 
 cw, ch = CANVAS
-print(f'{"model":20} {"scale":>7}  canvas fill')
+print(f'{"model":20} {"scale":>7}  top colour and placement')
 for name, rim_px in RIMS.items():
     original = Image.open(f'{SRC}/{name}-card.png').convert('RGB')
     x0, y0, x1, y1 = content_box(original)
@@ -104,4 +104,8 @@ for name, rim_px in RIMS.items():
     canvas.paste(shot, (left, top))
     canvas.save(f'{DST}/{name}-card.webp', 'WEBP', quality=88, method=6)
 
-    print(f'{name:20} {scale:>7.3f}  shot {shot.width}x{shot.height} at ({left}, {top})')
+    # The colour the canvas starts on, for the card to carry on with where it
+    # stands taller than the picture.
+    edge = canvas.crop((0, 0, cw, 6)).resize((1, 1)).getpixel((0, 0))
+    print(f'{name:20} {scale:>7.3f}  cardTop #%02x%02x%02x  shot {shot.width}x{shot.height}'
+          % edge, f'at ({left}, {top})')

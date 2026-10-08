@@ -76,6 +76,15 @@ export interface ModelPhotos {
   /** Product shot on the catalogue card — the studio set on a white sweep. */
   card?: string
   /**
+   * The colour the card shot's canvas starts on at its top edge.
+   *
+   * A catalogue card is as tall as its text, which can run taller than the
+   * picture; the card stands the shot on its floor and carries this colour up
+   * the rest, so the backdrop continues rather than ending in a line.
+   * Reported by `scripts/normalise-card-photos.py`.
+   */
+  cardTop?: string
+  /**
    * Width of the hero shot on a large screen, as a share of the viewport.
    *
    * Every photograph was taken at its own distance, so the same render width
@@ -161,7 +170,7 @@ export const models: Model[] = [
     ],
     // Only the model page's own hero: the home page and the catalogue card
     // are waiting for their own shots.
-    photos: { card: 'grafit-card.webp', hero: 'grafit-hero.webp', heroWidth: 0.596, heroTone: '#263b44', heroBoost: 1.18 },
+    photos: { card: 'grafit-card.webp', cardTop: '#f2f3f5', hero: 'grafit-hero.webp', heroWidth: 0.596, heroTone: '#263b44', heroBoost: 1.18 },
     includes: [...commonIncludes, 'Ветрозащита без дна', 'Дымоход 3 м и защитный экран'],
     seoTitle: 'Банный чан «Графит»',
     seoDescription:
@@ -179,7 +188,7 @@ export const models: Model[] = [
     stove: 'Стационарная, чугунный колосник и выдвижной зольный ящик',
     bowlShape: 'faceted',
     theme: 'ink',
-    photos: { card: 'cherny-brilliant-card.webp', hero: 'cherny-brilliant-hero.webp', heroWidth: 0.517, heroTone: '#441403' },
+    photos: { card: 'cherny-brilliant-card.webp', cardTop: '#eeeff1', hero: 'cherny-brilliant-hero.webp', heroWidth: 0.517, heroTone: '#441403' },
     offers: [
       { cm: 175, price: 133000 },
       { cm: 210, price: 155500 },
@@ -206,7 +215,7 @@ export const models: Model[] = [
     stove: 'Разборная, жаропрочная сталь 09Г2С',
     bowlShape: 'rolled',
     theme: 'sand',
-    photos: { card: 'valtsovavich-card.webp', hero: 'valtsovavich-hero.webp', heroWidth: 0.701, heroTone: '#3f4c5a' },
+    photos: { card: 'valtsovavich-card.webp', cardTop: '#f6f7f9', hero: 'valtsovavich-hero.webp', heroWidth: 0.701, heroTone: '#3f4c5a' },
     offers: [
       { cm: 175, price: 135000 },
       { cm: 210, price: 159000 },
@@ -234,7 +243,7 @@ export const models: Model[] = [
     bowlShape: 'faceted',
     theme: 'jade',
     badge: 'Хит продаж',
-    photos: { card: 'nefrit-card.webp', hero: 'nefrit-hero.webp', heroWidth: 0.5, heroTone: '#3f4148' },
+    photos: { card: 'nefrit-card.webp', cardTop: '#efeff1', hero: 'nefrit-hero.webp', heroWidth: 0.5, heroTone: '#3f4148' },
     offers: [
       { cm: 175, price: 187000 },
       { cm: 210, price: 195990 },
@@ -262,7 +271,7 @@ export const models: Model[] = [
     stove: 'Выносная, водяной контур и теплосъёмные трубы',
     bowlShape: 'faceted',
     theme: 'olive',
-    photos: { card: 'oniks-card.webp', hero: 'oniks-hero.webp', heroWidth: 0.751, heroTone: '#1a3935' },
+    photos: { card: 'oniks-card.webp', cardTop: '#f1f2f4', hero: 'oniks-hero.webp', heroWidth: 0.751, heroTone: '#1a3935' },
     offers: [
       { cm: 175, price: 188000 },
       { cm: 210, price: 199000 },
@@ -291,7 +300,7 @@ export const models: Model[] = [
     bowlShape: 'faceted',
     theme: 'terracotta',
     badge: 'Решение 4 в 1',
-    photos: { card: 'oniks-pro-card.webp', hero: 'oniks-pro-hero.webp', heroWidth: 0.663, heroTone: '#692713' },
+    photos: { card: 'oniks-pro-card.webp', cardTop: '#f2f4f6', hero: 'oniks-pro-hero.webp', heroWidth: 0.663, heroTone: '#692713' },
     offers: [
       { cm: 210, price: 294000 },
       { cm: 235, price: 353000 },
@@ -318,7 +327,7 @@ export const models: Model[] = [
     stove: 'Боковая приварная расширенная, водяной контур и теплосъёмные трубы',
     bowlShape: 'faceted',
     theme: 'copper',
-    photos: { card: 'grant-card.webp', hero: 'grant-hero.webp', heroWidth: 0.783, heroTone: '#60220b' },
+    photos: { card: 'grant-card.webp', cardTop: '#efeff2', hero: 'grant-hero.webp', heroWidth: 0.783, heroTone: '#60220b' },
     offers: [
       { cm: 235, price: 459000 },
       { cm: 250, price: 588000 },
