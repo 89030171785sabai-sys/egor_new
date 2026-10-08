@@ -36,19 +36,30 @@ export function ModelCard({
   photo?: boolean;
 }) {
   return (
-    <article className="rounded-panel bg-white p-5 shadow-sm shadow-ink-900/5 transition-shadow hover:shadow-lg hover:shadow-ink-900/10 sm:p-6 lg:grid lg:grid-cols-[minmax(0,23rem)_minmax(0,1fr)] lg:gap-8">
+    <article className="rounded-panel bg-white p-5 shadow-sm shadow-ink-900/5 transition-shadow hover:shadow-lg hover:shadow-ink-900/10 sm:p-6 lg:grid lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)] lg:gap-8">
       {/*
-        * The picture stands on the floor of its half and the backdrop carries
-        * on above it, in the shot's own starting colour. A card is as tall as
-        * its text, which outruns the picture on most models — anchoring the
-        * shot to the top instead left a hole under it.
+        * One panel, in the shot's own backdrop colour, with the picture
+        * centred in it and its edges dissolved.
+        *
+        * A card is as tall as its text, which outruns the picture on most
+        * models. Standing the picture at the top left a hole under it;
+        * standing it at the bottom and filling above with a flat colour was
+        * worse, because the shot carries a vignette the flat colour cannot
+        * continue, so the join read as a band across the card. Fading the
+        * outer few per cent of the picture into a panel of the same colour
+        * leaves nothing to see a join in — the whole half reads as one sweep.
         */}
       <div
         style={{ backgroundColor: model.photos?.cardTop ?? '#f1f2f4' }}
-        className="relative flex flex-col justify-end overflow-hidden rounded-card"
+        className="relative flex items-center justify-center overflow-hidden rounded-card"
       >
         {photo && model.photos?.card ? (
-          <ModelShot model={model} slot="card" ratio="10/9" />
+          <ModelShot
+            model={model}
+            slot="card"
+            ratio="10/9"
+            className="[mask-composite:intersect] [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent),linear-gradient(to_bottom,transparent,black_5%,black_95%,transparent)]"
+          />
         ) : (
           <PlaceholderImage
             tone="studio"

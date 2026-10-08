@@ -31,6 +31,8 @@ export interface Benefit {
    * difference it cannot show — so it stays text until the figures exist.
    */
   textOnly?: boolean
+  /** Figures that make the point concrete, shown as a row under the text. */
+  figures?: { value: string; unit?: string; caption: string }[]
   /** What the drawing has to show, until it is drawn. */
   wanted?: string
 }
@@ -56,7 +58,19 @@ export const benefits: Benefit[] = [
   {
     id: 'heat-area',
     title: 'Площадь теплосъёма',
-    lead: 'Важнейшая характеристика печи — напрямую влияет на КПД и скорость нагрева воды в чане.',
+    lead: 'Это площадь, которой печь отдаёт тепло воде. Она и решает, за сколько прогреется чан — в линейке разница выходит больше чем втрое.',
+    // Every one of these is a figure from the price list, so the section makes
+    // its case with the line's own numbers rather than with an adjective.
+    points: [
+      'Печь на ветрозащите греет дном чаши — нагрев 5 часов («Графит»)',
+      'Печь с водяным контуром греет водой вокруг топки — 1,5 часа («Нефрит»)',
+      'Теплосъёмные трубы добавляют площадь контакта («Оникс», «Оникс Про», «Грант»)',
+    ],
+    figures: [
+      { value: '3', unit: 'мм', caption: 'толщина стали' },
+      { value: '1,5', unit: 'ч', caption: 'самый быстрый нагрев' },
+      { value: '5', unit: 'ч', caption: 'без водяного контура' },
+    ],
     textOnly: true,
   },
 ]

@@ -42,6 +42,24 @@ export function Benefits() {
                       <p className="mt-4 leading-relaxed text-ink-500">{benefit.lead}</p>
                     )}
 
+                    {benefit.figures && (
+                      <dl className="mt-6 flex flex-wrap gap-x-10 gap-y-4 border-y border-sand-200 py-5">
+                        {benefit.figures.map((figure) => (
+                          <div key={figure.caption}>
+                            <dd>
+                              <span className="font-display text-3xl text-navy-700">
+                                {figure.value}
+                              </span>
+                              {figure.unit && (
+                                <span className="ml-1 text-sm text-ink-400">{figure.unit}</span>
+                              )}
+                            </dd>
+                            <dt className="mt-1 text-sm text-ink-400">{figure.caption}</dt>
+                          </div>
+                        ))}
+                      </dl>
+                    )}
+
                     {benefit.points && (
                       <ul className="mt-5 space-y-3">
                         {benefit.points.map((point) => (
@@ -80,7 +98,17 @@ function BenefitDrawing({ benefit }: { benefit: Benefit }) {
 
   // Silver until it is asked for: under the pointer on a desktop, and on a
   // touch screen once the card has been scrolled into view.
-  const skin = `tint-on-view${seen ? ' tint-seen' : ''} relative block w-full bg-white transition duration-500 motion-reduce:transition-none [@media(hover:hover)]:grayscale [@media(hover:hover)]:group-hover:grayscale-0`
+  // The render was made on its own near-white plate, a shade off the card's
+  // white, so its rectangle showed as a crisp edge. Fading the outer few per
+  // cent dissolves the join without touching the product, which sits well
+  // inside the frame.
+  const edges =
+    '[mask-composite:intersect] [mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent),linear-gradient(to_bottom,transparent,black_4%,black_96%,transparent)]'
+  // The colour drains from the render, not from the overlay drawn on it: the
+  // fire, the water and the circulation are the point of the picture and read
+  // as accents against the silver, rather than going grey along with it.
+  const skin = `${edges} relative block w-full`
+  const render = `tint-on-view${seen ? ' tint-seen' : ''} absolute inset-0 size-full object-contain transition duration-500 motion-reduce:transition-none [@media(hover:hover)]:grayscale [@media(hover:hover)]:group-hover:grayscale-0`
 
   if (!image) {
     return <PlaceholderImage tone="studio" ratio="4/3" label={`Схема: ${wanted ?? ''}`} />
@@ -88,27 +116,25 @@ function BenefitDrawing({ benefit }: { benefit: Benefit }) {
 
   return (
     <span ref={ref} className={skin} style={{ aspectRatio: `${image.width} / ${image.height}` }}>
-      <img
-        src={photoUrl(image.color)}
-        alt={title}
-        loading="lazy"
-        className="absolute inset-0 size-full object-contain"
-      />
+      <img src={photoUrl(image.color)} alt={title} loading="lazy" className={render} />
       {image.arrows === 'circuit' && (
-        <CirculationArrows height={(image.height / image.width) * 100} />
+        <CircuitOverlay height={(image.height / image.width) * 100} />
       )}
     </span>
   )
 }
 
 /**
- * The circulation, drawn over the render rather than baked into it.
+ * What is moving in the tub, drawn over the render rather than baked into it.
  *
- * Vector keeps the arrows crisp at any size and in the brand's own colours,
- * and the wording stays editable. The coordinates are percentages of the
- * drawing, so the overlay follows it however the card is sized.
+ * The render is a still, so the fire, the water and the smoke sit here as
+ * shapes with their motion in the stylesheet. Vector keeps the arrows crisp at
+ * any size and in the brand's own colours, and the wording stays editable.
+ * Every coordinate is a percentage of the drawing, so the overlay follows it
+ * however the card is sized — the positions were read off a percentage grid
+ * laid over the render.
  */
-function CirculationArrows({ height }: { height: number }) {
+function CircuitOverlay({ height }: { height: number }) {
   const cold = 'var(--color-navy-700)'
   const hot = 'var(--color-brand-500)'
 
@@ -119,6 +145,16 @@ function CirculationArrows({ height }: { height: number }) {
       className="pointer-events-none absolute inset-0 size-full"
     >
       <defs>
+        <radialGradient id="circuit-smoke">
+          <stop offset="0%" stopColor="#9aa3ad" stopOpacity="0.55" />
+          <stop offset="55%" stopColor="#9aa3ad" stopOpacity="0.22" />
+          <stop offset="100%" stopColor="#9aa3ad" stopOpacity="0" />
+        </radialGradient>
+        <radialGradient id="circuit-ember">
+          <stop offset="0%" stopColor="#ffb347" />
+          <stop offset="55%" stopColor="#ff7a18" stopOpacity="0.55" />
+          <stop offset="100%" stopColor="#ff7a18" stopOpacity="0" />
+        </radialGradient>
         <marker id="circuit-cold" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4"
           markerHeight="4" markerUnits="userSpaceOnUse" orient="auto">
           <path d="M0 0.5 10 5 0 9.5z" fill={cold} />
@@ -141,6 +177,30 @@ function CirculationArrows({ height }: { height: number }) {
           markerEnd="url(#circuit-hot)" style={{ animationDelay: '-0.9s' }} />
         <path className="circuit-flow" d="M59 72C60 62 61 52 62 43" stroke={hot}
           markerEnd="url(#circuit-hot)" style={{ animationDelay: '-0.9s' }} />
+      </g>
+
+      {/* The fire breathing in the firebox. */}
+      <ellipse className="ember-breathe" cx="48.5" cy="71.5" rx="10" ry="7"
+        fill="url(#circuit-ember)" />
+
+      {/* Light travelling across the surface of the water. */}
+      <g fill="#ffffff">
+        <ellipse className="water-shimmer" cx="38" cy="35.5" rx="12" ry="1.1" />
+        <ellipse className="water-shimmer" cx="62" cy="38.5" rx="9" ry="0.9"
+          style={{ animationDelay: '-1.7s' }} />
+        <ellipse className="water-shimmer" cx="48" cy="41.5" rx="14" ry="1" 
+          style={{ animationDelay: '-3.2s' }} />
+      </g>
+
+      {/* Smoke off the cap. There is little sky above it in the frame, so the
+          puffs drift sideways as they thin rather than climbing out of it, and
+          they are soft-edged — a hard circle reads as a dot, not as smoke. */}
+      <g fill="url(#circuit-smoke)">
+        <circle className="smoke-drift" cx="56.3" cy="4.2" r="2.2" />
+        <circle className="smoke-drift" cx="55.9" cy="3.6" r="1.7"
+          style={{ animationDelay: '-1.5s' }} />
+        <circle className="smoke-drift" cx="56.8" cy="3.9" r="2"
+          style={{ animationDelay: '-3s' }} />
       </g>
     </svg>
   )

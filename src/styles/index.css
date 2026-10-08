@@ -131,6 +131,79 @@ body {
 }
 
 /*
+ * The water-circuit drawing is a still render, so the three things that would
+ * actually be moving in front of someone — the fire, the water and the smoke —
+ * are animated over it. Each is a shape in the overlay; the motion lives here
+ * so one media query can stop all of it.
+ */
+@keyframes ember-breathe {
+  0%,
+  100% {
+    opacity: 0.18;
+  }
+  35% {
+    opacity: 0.62;
+  }
+  60% {
+    opacity: 0.34;
+  }
+}
+
+.ember-breathe {
+  animation: ember-breathe 2.4s ease-in-out infinite;
+}
+
+@keyframes water-shimmer {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: translateX(0);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translateX(1.6px);
+  }
+}
+
+.water-shimmer {
+  transform-box: fill-box;
+  animation: water-shimmer 5s ease-in-out infinite;
+}
+
+/* A puff leaves the cap, drifts off the chimney and thins out as it goes. */
+@keyframes smoke-drift {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.5);
+  }
+  25% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-3.5px, -5px) scale(2.1);
+  }
+}
+
+.smoke-drift {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: smoke-drift 4.5s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ember-breathe,
+  .water-shimmer,
+  .smoke-drift {
+    animation: none;
+  }
+
+  .smoke-drift {
+    opacity: 0;
+  }
+}
+
+/*
  * Drawings that come to colour. A pointer does it on hover; a touch screen has
  * none, so there they come to colour once they are scrolled into view.
  */
