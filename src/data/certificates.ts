@@ -16,6 +16,12 @@ export interface Certificate {
   /** File name inside `public/docs`. */
   file: string
   /**
+   * Page the document starts on, where its file holds more than one. The
+   * ecological certificate and the permission to display its mark are two
+   * registrations issued together and scanned into a single PDF.
+   */
+  page?: number
+  /**
    * First page of the document, drawn by
    * `scripts/render-certificate-previews.py` into `public/photos`.
    */
@@ -46,6 +52,18 @@ export const certificates: Certificate[] = [
     preview: 'cert-ekologicheskiy.webp',
   },
   {
+    title: 'Разрешение на знак',
+    system: 'Система «Экопромбезопасность»',
+    number: 'РОСС RU.32432.04БПЭ0.ОС12.85592Р',
+    summary:
+      'Право наносить знак соответствия экологическим требованиям на продукцию, упаковку и рекламные материалы.',
+    validFrom: '29.09.2025',
+    validUntil: '28.09.2028',
+    file: 'sertifikat-ekologicheskiy-85592.pdf',
+    page: 2,
+    preview: 'cert-eko-znak.webp',
+  },
+  {
     title: 'Пожарная безопасность',
     system: 'Система сертификации пожарной безопасности',
     number: 'РОСС RU.32079.04СПБ1.ОС14.85591',
@@ -57,5 +75,12 @@ export const certificates: Certificate[] = [
   },
 ]
 
-/** Documents live in `public/docs`; the site is served from a sub-path. */
-export const docUrl = (name: string) => `${import.meta.env.BASE_URL}docs/${name}`
+/**
+ * Documents live in `public/docs`; the site is served from a sub-path.
+ *
+ * A certificate that starts partway into its file carries the page in the
+ * fragment, which every PDF viewer in a browser understands — so the link
+ * opens on the document named on the card rather than on the one before it.
+ */
+export const certificateUrl = (item: Certificate) =>
+  `${import.meta.env.BASE_URL}docs/${item.file}${item.page ? `#page=${item.page}` : ''}`

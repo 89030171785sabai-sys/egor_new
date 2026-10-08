@@ -1,7 +1,7 @@
 import { SectionHeading } from '../ui/SectionHeading'
 import { Reveal } from '../ui/Reveal'
 import { contacts } from '../../data/contacts'
-import { certificates, docUrl } from '../../data/certificates'
+import { certificates, certificateUrl } from '../../data/certificates'
 import { photoUrl } from '../../lib/photos'
 
 const deal = [
@@ -34,14 +34,14 @@ export function Guarantees() {
         <SectionHeading
           eyebrow="Документы"
           title="Продукция сертифицирована"
-          subtitle="Три действующих сертификата на серийный выпуск. Каждый открывается целиком — номер можно проверить в реестре."
+          subtitle="Четыре действующих документа на серийный выпуск. Каждый открывается целиком — номер можно проверить в реестре."
         />
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-3">
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {certificates.map((item, index) => (
             <Reveal key={item.number} delay={index * 80}>
               <a
-                href={docUrl(item.file)}
+                href={certificateUrl(item)}
                 target="_blank"
                 rel="noopener"
                 className="group flex h-full flex-col rounded-panel bg-ink-800 p-7 transition-colors hover:bg-ink-700"
@@ -63,7 +63,7 @@ export function Guarantees() {
                 <h3 className="mt-5 text-lg font-semibold text-white">{item.title}</h3>
                 <p className="mt-1 text-xs tracking-wider text-ink-400 uppercase">{item.system}</p>
                 <p className="mt-3 text-sm leading-relaxed text-ink-300">{item.summary}</p>
-                <p className="mt-4 text-xs break-all text-ink-400">{item.number}</p>
+                <p className="mt-4 text-[0.6875rem] break-all text-ink-400">{item.number}</p>
                 <p className="mt-auto pt-5 text-sm font-medium text-white">
                   <span className="group-hover:underline">Открыть PDF</span>
                   <span className="ml-2 text-ink-400">действует до {item.validUntil}</span>
