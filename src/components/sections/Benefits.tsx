@@ -33,17 +33,29 @@ export function Benefits() {
                     </div>
                   )}
 
-                  <div className="p-6 sm:p-8 lg:p-10">
-                    <h3 className="text-xl leading-snug font-semibold text-navy-700 sm:text-2xl">
-                      {benefit.title}
-                    </h3>
+                  <div
+                    className={`p-6 sm:p-8 lg:p-10 ${
+                      // Nothing shares the row with this one, so it splits in
+                      // two itself rather than running a short column down one
+                      // side and leaving the rest of the card empty.
+                      benefit.textOnly
+                        ? 'md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] md:items-start md:gap-10 lg:gap-14'
+                        : ''
+                    }`}
+                  >
+                    <div>
+                      <h3 className="text-xl leading-snug font-semibold text-navy-700 sm:text-2xl">
+                        {benefit.title}
+                      </h3>
 
-                    {benefit.lead && (
-                      <p className="mt-4 leading-relaxed text-ink-500">{benefit.lead}</p>
-                    )}
+                      {benefit.lead && (
+                        <p className="mt-4 leading-relaxed text-ink-500">{benefit.lead}</p>
+                      )}
+                    </div>
 
+                    <div>
                     {benefit.figures && (
-                      <dl className="mt-6 flex flex-wrap gap-x-10 gap-y-4 border-y border-sand-200 py-5">
+                      <dl className="mt-6 flex flex-wrap gap-x-10 gap-y-4 border-y border-sand-200 py-5 md:mt-0">
                         {benefit.figures.map((figure) => (
                           <div key={figure.caption}>
                             <dd>
@@ -81,6 +93,7 @@ export function Benefits() {
                         ))}
                       </ul>
                     )}
+                    </div>
                   </div>
                 </article>
               </Reveal>
@@ -98,16 +111,15 @@ function BenefitDrawing({ benefit }: { benefit: Benefit }) {
 
   // Silver until it is asked for: under the pointer on a desktop, and on a
   // touch screen once the card has been scrolled into view.
-  // The render was made on its own near-white plate, a shade off the card's
-  // white, so its rectangle showed as a crisp edge. Fading the outer few per
-  // cent dissolves the join without touching the product, which sits well
-  // inside the frame.
-  const edges =
-    '[mask-composite:intersect] [mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent),linear-gradient(to_bottom,transparent,black_4%,black_96%,transparent)]'
+  // No mask on the edges any more: the render's plate is flooded to the card's
+  // own white by `scripts/whiten-render-backdrop.py`, so there is no rectangle
+  // left to hide — blurring the edge only ever softened a line that should not
+  // have been there.
+  //
   // The colour drains from the render, not from the overlay drawn on it: the
   // fire, the water and the circulation are the point of the picture and read
   // as accents against the silver, rather than going grey along with it.
-  const skin = `${edges} relative block w-full`
+  const skin = 'relative block w-full'
   const render = `tint-on-view${seen ? ' tint-seen' : ''} absolute inset-0 size-full object-contain transition duration-500 motion-reduce:transition-none [@media(hover:hover)]:grayscale [@media(hover:hover)]:group-hover:grayscale-0`
 
   if (!image) {
