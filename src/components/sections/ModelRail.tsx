@@ -103,7 +103,7 @@ export function ModelRail() {
           >
             <ul className="flex w-max snap-x snap-mandatory gap-5">
               {shown.map((model, index) => (
-                <li key={model.slug} className="w-72 shrink-0 snap-start sm:w-80">
+                <li key={model.slug} className="w-80 shrink-0 snap-start sm:w-96">
                   <Reveal className="h-full" delay={Math.min(index, 3) * 70}>
                     <RailCard model={model} />
                   </Reveal>
@@ -222,8 +222,10 @@ function Step({
       aria-hidden={!show}
       aria-label={back ? 'Предыдущие модели' : 'Следующие модели'}
       // Lined up with the middle of the photograph, not of the whole tile,
-      // which carries a name, chips, a price and two actions below it.
-      className={`absolute top-[8.5rem] grid size-11 place-items-center rounded-full bg-white text-ink-700 shadow-lg shadow-ink-900/15 transition-opacity hover:text-brand-600 ${
+      // which carries a name, chips, a price and two actions below it. Kept
+      // off the phone, where the row is pushed along with a thumb and the
+      // buttons would only sit on top of the tiles.
+      className={`absolute top-[29%] hidden size-11 -translate-y-1/2 place-items-center rounded-full bg-white text-ink-700 shadow-lg shadow-ink-900/15 transition-opacity hover:text-brand-600 sm:grid ${
         back ? '-left-2 sm:-left-5' : '-right-2 sm:-right-5'
       } ${show ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
     >
