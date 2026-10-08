@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState, type MouseEvent } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { SectionHeading } from '../ui/SectionHeading'
 import { ModelShot } from '../ui/ModelShot'
@@ -33,6 +33,35 @@ export function ModelRail() {
     [size],
   )
 
+  const rail = useRef<HTMLDivElement>(null)
+  const [reach, setReach] = useState({ back: false, on: false })
+
+  // Which way there is still room to go, so an arrow is only offered when it
+  // would do something.
+  const measure = useCallback(() => {
+    const node = rail.current
+    if (!node) return
+    const slack = node.scrollWidth - node.clientWidth
+    setReach({
+      back: node.scrollLeft > 8,
+      on: slack > 8 && node.scrollLeft < slack - 8,
+    })
+  }, [])
+
+  useEffect(() => {
+    measure()
+    window.addEventListener('resize', measure)
+    return () => window.removeEventListener('resize', measure)
+  }, [measure, shown])
+
+  const step = (direction: 1 | -1) => {
+    const node = rail.current
+    if (!node) return
+    const tile = node.querySelector('li')
+    const by = (tile?.clientWidth ?? 280) + 20
+    node.scrollBy({ left: direction * by, behavior: 'smooth' })
+  }
+
   return (
     <section id="catalog" className="scroll-mt-28 py-20 lg:py-28">
       <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
@@ -62,18 +91,29 @@ export function ModelRail() {
         {/*
          * The row runs wider than the column and scrolls inside it, so the
          * tile at the end is cut rather than wrapped — a partly visible tile
-         * is what tells someone the row can be pushed along.
+         * is what tells someone the row goes on. A phone is pushed along with
+         * a thumb; a mouse has no sideways wheel to do it with, so the two
+         * arrows sit over the ends of the row and each take it one tile.
          */}
-        <div className="mt-10 overflow-x-auto overscroll-x-contain pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <ul className="flex w-max snap-x snap-mandatory gap-5">
-            {shown.map((model, index) => (
-              <li key={model.slug} className="w-64 shrink-0 snap-start sm:w-72">
-                <Reveal delay={Math.min(index, 3) * 70}>
-                  <RailCard model={model} />
-                </Reveal>
-              </li>
-            ))}
-          </ul>
+        <div className="relative mt-10">
+          <div
+            ref={rail}
+            onScroll={measure}
+            className="overflow-x-auto overscroll-x-contain pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          >
+            <ul className="flex w-max snap-x snap-mandatory gap-5">
+              {shown.map((model, index) => (
+                <li key={model.slug} className="w-72 shrink-0 snap-start sm:w-80">
+                  <Reveal className="h-full" delay={Math.min(index, 3) * 70}>
+                    <RailCard model={model} />
+                  </Reveal>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <Step side="back" show={reach.back} onClick={() => step(-1)} />
+          <Step side="on" show={reach.on} onClick={() => step(1)} />
         </div>
 
         {shown.length === 0 && (
@@ -125,7 +165,7 @@ function RailCard({ model }: { model: Model }) {
 
       <p className="mt-3 text-center text-sm font-semibold">от {formatPrice(from)}</p>
 
-      <div className="mt-4 flex flex-col items-center gap-2.5">
+      <div className="mt-auto flex flex-col items-center gap-2.5 pt-4">
         <Link
           to={`/${model.slug}`}
           className="w-full rounded-full bg-ink-900 px-5 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-ink-800"
@@ -156,6 +196,51 @@ function RailCard({ model }: { model: Model }) {
  * is deliberately left out of the transition so the picture follows the
  * pointer instead of chasing it.
  */
+/**
+ * One of the two arrows over the ends of the row.
+ *
+ * Sat against the tiles rather than beside the heading: that is where the
+ * row is cut off, so that is where someone looks for the way on. It fades
+ * out rather than disappearing when the row runs out, so the arrows do not
+ * shift the layout as the row moves.
+ */
+function Step({
+  side,
+  show,
+  onClick,
+}: {
+  side: 'back' | 'on'
+  show: boolean
+  onClick: () => void
+}) {
+  const back = side === 'back'
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      tabIndex={show ? 0 : -1}
+      aria-hidden={!show}
+      aria-label={back ? 'Предыдущие модели' : 'Следующие модели'}
+      // Lined up with the middle of the photograph, not of the whole tile,
+      // which carries a name, chips, a price and two actions below it.
+      className={`absolute top-[8.5rem] grid size-11 place-items-center rounded-full bg-white text-ink-700 shadow-lg shadow-ink-900/15 transition-opacity hover:text-brand-600 ${
+        back ? '-left-2 sm:-left-5' : '-right-2 sm:-right-5'
+      } ${show ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true" className={`size-5 ${back ? 'rotate-180' : ''}`}>
+        <path
+          d="m9 5 7 7-7 7"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
+  )
+}
+
 function Loupe({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null)
 
