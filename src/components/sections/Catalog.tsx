@@ -48,9 +48,9 @@ export function Catalog({ photos = false }: { photos?: boolean } = {}) {
           ))}
         </div>
 
-        <div className="mt-10 grid gap-6 lg:grid-cols-2">
+        <div className="mt-10 grid gap-6">
           {shown.map((model, index) => (
-            <Reveal key={model.slug} delay={(index % 2) * 90}>
+            <Reveal key={model.slug} delay={Math.min(index, 2) * 90}>
               <ModelCard model={model} photo={photos} />
             </Reveal>
           ))}
