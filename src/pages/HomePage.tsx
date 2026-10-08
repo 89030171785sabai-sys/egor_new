@@ -1,6 +1,6 @@
 import { Hero } from '../components/sections/Hero'
 import { Advantages } from '../components/sections/Advantages'
-import { Catalog } from '../components/sections/Catalog'
+import { ModelRail } from '../components/sections/ModelRail'
 import { ModelShowcase } from '../components/sections/ModelShowcase'
 import { Benefits } from '../components/sections/Benefits'
 import { Calculator } from '../components/sections/Calculator'
@@ -28,7 +28,7 @@ export function HomePage() {
     <>
       <Hero />
       <Advantages />
-      <Catalog photos />
+      <ModelRail />
       <ModelShowcase />
       <Benefits />
       <Calculator />
