@@ -104,7 +104,26 @@ export const legalRoutes: RouteMeta[] = [
     title: 'Согласие на обработку персональных данных',
     description: 'Условия согласия на обработку персональных данных, которые вы оставляете в формах.',
   },
+  {
+    path: '/cookies',
+    label: 'Политика cookie',
+    title: 'Политика в отношении файлов cookie',
+    description: 'Какие файлы cookie использует сайт, когда они появляются и как ими управлять.',
+  },
 ]
+
+/**
+ * Pages that open on a dark block — the ones the header may sit on without a
+ * plate of its own.
+ *
+ * It is a list of what opens dark rather than of what opens light, so a page
+ * added later gets the readable treatment by default instead of white type on
+ * white. The legal pages, a blog post and the not-found page all open light.
+ */
+export const opensDark = (pathname: string) => {
+  const dark = [homeRoute.path, calculatorRoute.path, ...contentRoutes.map((route) => route.path)]
+  return dark.includes(pathname) || modelRoutes.some((route) => route.path === pathname)
+}
 
 export const routes: RouteMeta[] = [
   homeRoute,

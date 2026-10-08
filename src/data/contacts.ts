@@ -69,8 +69,18 @@ export const contacts = {
     { city: 'Коркино', street: 'Челябинская обл., ул. 1 Мая, 35В', role: 'производство' },
   ] satisfies Address[],
 
+  /** The domain the site will live on, as the legal documents name it. */
+  site: 'хоттаб-чан.рф',
+
+  /** Written address for legal notices and for withdrawing consent. */
+  email: 'hottab.hotchan@mail.ru',
+
   legal: {
     entity: 'ИП Вырышева Ю. А.',
+    /** Full form, as the certificates and the legal documents spell it. */
+    entityFull: 'Индивидуальный предприниматель Вырышева Юлия Александровна',
+    /** Registered address, read off the certificates of conformity. */
+    address: '454000, Челябинская область, г. Челябинск, ул. Рубиновая, д. 21',
     inn: '745301208415',
     // Both read off the certificates of conformity in `public/docs`.
     ogrnip: '319745600041392',

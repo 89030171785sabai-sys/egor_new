@@ -75,7 +75,10 @@ function LegalContent({
           {contacts.legal.entity}, ИНН {contacts.legal.inn}
         </p>
         <p className="mt-1">ОГРНИП {contacts.legal.ogrnip}</p>
-        <p className="mt-1">{contacts.phone.display}</p>
+        <p className="mt-1">{contacts.legal.address}</p>
+        <p className="mt-1">
+          {contacts.phone.display} · {contacts.email}
+        </p>
       </footer>
     </article>
   )

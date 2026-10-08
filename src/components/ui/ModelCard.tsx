@@ -138,7 +138,9 @@ export function ModelCard({
         </div>
 
         <div className="mt-auto flex flex-wrap items-center gap-4 pt-5">
-          <ButtonLink to="/contacts" size="lg">
+          {/* The model travels with the click, so the contacts page opens
+              knowing which tub was being read about, not as a blank form. */}
+          <ButtonLink to={`/contacts?model=${model.slug}`} size="lg">
             Обсудить детали
           </ButtonLink>
           <Link

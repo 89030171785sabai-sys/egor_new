@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { LogoLockup } from '../ui/Logo'
-import { navItems, modelRoutes } from '../../lib/routes'
+import { navItems, modelRoutes, opensDark } from '../../lib/routes'
 import { contacts, hasContact } from '../../data/contacts'
 
 /**
@@ -22,11 +22,15 @@ import { contacts, hasContact } from '../../data/contacts'
  */
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
+  const [atTop, setAtTop] = useState(false)
   const { pathname } = useLocation()
 
+  // Plateless only where white type has a dark opening screen to sit on. A
+  // page that opens light wears the plate from the start.
+  const scrolled = !atTop || !opensDark(pathname)
+
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 16)
+    const onScroll = () => setAtTop(window.scrollY <= 16)
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
