@@ -8,6 +8,7 @@ type Slot = 'hero' | 'card'
 const ratios: Record<string, string> = {
   '4/3': 'aspect-4/3',
   '16/10': 'aspect-16/10',
+  '10/9': 'aspect-10/9',
 }
 
 /**
@@ -28,7 +29,7 @@ export function ModelShot({
   model: Model
   slot: Slot
   /** Ignored when `fill` is set — the shot then takes the parent's box. */
-  ratio?: '4/3' | '16/10'
+  ratio?: '4/3' | '16/10' | '10/9'
   className?: string
   /** Lets a caller size the shot, as the hero does per model. */
   style?: CSSProperties

@@ -1,16 +1,22 @@
-"""Normalise the white-backdrop studio shots used on the catalogue cards.
+"""Lay out the white-backdrop studio shots as catalogue card images.
 
-The seven products were photographed on one sweep, in one light, from one
-angle — but not from one distance, so the bowl takes anywhere from a quarter
-to nearly half of its frame. Two steps bring them together: each shot is
-cropped to its own product, and each is given a render width, so rim x width
-lands on the same number for every model and the bowls read as one line.
+The seven products share one sweep, one light and one angle, but not one
+distance: the bowl takes anywhere from a quarter to nearly half of its frame.
+Each shot is therefore rescaled so that the bowl's rim lands on one width for
+the whole line, and placed on a card-shaped canvas, bottom-aligned and centred
+on the product.
 
-Why the width is not baked into the file: equalising the rims by padding or
-windowing inside the source cannot work for this set — Грант is framed so
-loosely that its window would have to be wider than the photograph, while
-Оникс has a chimney too tall for the window that its own rim would demand.
-Decoupling the width from the file is what lets every bowl match.
+The canvas is filled by the photograph itself rather than by a colour of ours.
+A shot scaled down far enough to match the others no longer reaches the top of
+the canvas, so the gap above it continues the sweep's own top edge, column by
+column — the sweep is smooth and nearly flat up there, so the join does not
+read. Keying the product out instead was tried first and does not work on this
+set: the sweep is lit brightest behind the product, so a backdrop test either
+keeps the hot centre or eats the chimney.
+
+The result is one image per model, all the same shape, each filling its box
+edge to edge — no frame around the photograph and nothing cropped off the
+product.
 
 Rim measurements are in pixels of the original frame. Six were found by
 scanning for the widest unbroken dark run in the upper frame; Грант's bowl is
@@ -19,7 +25,7 @@ was measured off the larch band instead.
 
     python3 scripts/normalise-card-photos.py
 """
-from PIL import Image
+from PIL import Image, ImageFilter
 
 SRC = 'assets/photos-src'
 DST = 'public/photos'
@@ -34,12 +40,17 @@ RIMS = {
     'grant': 724,
 }
 
-# Breathing room around the product, as a fraction of its own bounding box.
-MARGIN = 0.04
+# Card image shape and size. 10:9 is the shallowest box that holds the tallest
+# composition — Оникс, whose chimney stands well clear of its bowl.
+CANVAS = (1200, 1080)
 
-# Ceiling on how wide a card shot may run inside its box. The most loosely
-# framed model takes it and the rest come down to match.
-MAX_CARD = 0.96
+# Share of the canvas width taken by every bowl's rim. Raising it enlarges the
+# whole line together; past this, Оникс's chimney leaves the canvas.
+RIM_SHARE = 0.458
+
+# Where the product stands: its feet this far down the canvas, so the shot
+# keeps a little floor under it.
+FEET_AT = 0.95
 
 
 def content_box(image: Image.Image) -> tuple[int, int, int, int]:
@@ -50,22 +61,47 @@ def content_box(image: Image.Image) -> tuple[int, int, int, int]:
     return box
 
 
-rims = {}
+def extend_upwards(image: Image.Image, height: int) -> Image.Image:
+    """Carry the sweep's top edge up to fill a taller canvas.
+
+    The top of every one of these frames is an even, near-white band, so
+    repeating it reads as more of the same backdrop. The seam is softened so
+    that the change of slope does not show as a line.
+    """
+    if height <= 0:
+        return image
+    edge = image.crop((0, 0, image.width, 8)).resize((image.width, 1), Image.LANCZOS)
+    filler = edge.resize((image.width, height), Image.NEAREST)
+    grown = Image.new('RGB', (image.width, image.height + height))
+    grown.paste(filler, (0, 0))
+    grown.paste(image, (0, height))
+    seam = grown.crop((0, max(0, height - 24), image.width, height + 24))
+    grown.paste(seam.filter(ImageFilter.GaussianBlur(9)), (0, max(0, height - 24)))
+    return grown
+
+
+cw, ch = CANVAS
+print(f'{"model":20} {"scale":>7}  canvas fill')
 for name, rim_px in RIMS.items():
     original = Image.open(f'{SRC}/{name}-card.png').convert('RGB')
-    w, h = original.size
     x0, y0, x1, y1 = content_box(original)
-    pad = round((x1 - x0) * MARGIN)
-    crop = (max(0, x0 - pad), max(0, y0 - pad), min(w, x1 + pad), min(h, y1 + pad))
-    cropped = original.crop(crop)
-    cropped.save(f'{DST}/{name}-card.webp', 'WEBP', quality=88, method=6)
-    rims[name] = {'rim': rim_px / cropped.width, 'size': cropped.size}
 
-target = MAX_CARD * min(info['rim'] for info in rims.values())
+    scale = RIM_SHARE * cw / rim_px
+    shot = original.resize(
+        (round(original.width * scale), round(original.height * scale)), Image.LANCZOS
+    )
 
-print(f'{"model":20} {"cardWidth":>10}  {"rim":>7}  shape')
-for name, info in rims.items():
-    width = round(min(target / info['rim'], MAX_CARD), 3)
-    cw, ch = info['size']
-    print(f'{name:20} {width:>10}  {width * info["rim"]:.4f}  {cw}x{ch} -> '
-          f'{width * ch / cw:.3f} of box width')
+    # Feet on the floor line, product centred across the canvas.
+    top = round(FEET_AT * ch - y1 * scale)
+    left = round(cw / 2 - (x0 + x1) / 2 * scale)
+
+    # A shot too tall for the canvas is simply hung above its top edge; one
+    # too short has the sweep carried up to meet it.
+    canvas = Image.new('RGB', CANVAS)
+    if top > 0:
+        shot = extend_upwards(shot, top)
+        top = 0
+    canvas.paste(shot, (left, top))
+    canvas.save(f'{DST}/{name}-card.webp', 'WEBP', quality=88, method=6)
+
+    print(f'{name:20} {scale:>7.3f}  shot {shot.width}x{shot.height} at ({left}, {top})')

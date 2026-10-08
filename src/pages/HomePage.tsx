@@ -28,7 +28,7 @@ export function HomePage() {
     <>
       <Hero />
       <Advantages />
-      <Catalog />
+      <Catalog photos />
       <ModelShowcase />
       <Benefits />
       <Calculator />

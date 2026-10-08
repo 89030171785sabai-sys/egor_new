@@ -1,4 +1,3 @@
-import type { CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 import { ButtonLink } from './Button'
 import { ModelShot } from './ModelShot'
@@ -21,9 +20,9 @@ import {
  * while the catalogue page, which is where someone goes to compare the line,
  * shows every model as it really looks.
  *
- * The shot is contained rather than cropped, on a panel tinted to the studio
- * sweep it was photographed against, so the join is invisible; its width comes
- * from the model, so every bowl in the grid reads at one size.
+ * The shot fills its box edge to edge: `scripts/normalise-card-photos.py`
+ * lays each photograph out on a card-shaped canvas, so the page has no frame
+ * to draw around it and every bowl in the grid already reads at one size.
  */
 export function ModelCard({ model, photo = false }: { model: Model; photo?: boolean }) {
   return (
@@ -43,15 +42,7 @@ export function ModelCard({ model, photo = false }: { model: Model; photo?: bool
 
       <div className="relative mt-5 overflow-hidden rounded-card">
         {photo && model.photos?.card ? (
-          <div className="flex aspect-10/9 items-end justify-center bg-gradient-to-b from-[#ececed] to-[#f6f5f6]">
-            <ModelShot
-              model={model}
-              slot="card"
-              contain
-              style={{ '--card-w': `${(model.photos.cardWidth ?? 0.8) * 100}%` } as CSSProperties}
-              className="w-(--card-w)"
-            />
-          </div>
+          <ModelShot model={model} slot="card" ratio="10/9" />
         ) : (
           <PlaceholderImage
             tone="studio"
