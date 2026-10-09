@@ -7,7 +7,10 @@ import { models } from './src/data/models'
 import { contentRoutes } from './src/lib/routes'
 import { posts } from './src/data/posts'
 
-const PRODUCTION_ORIGIN = 'https://xn----7sbnf7av3f.xn--p1ai'
+// хоттаб-чан.рф in punycode, which is the form a canonical link and a sitemap
+// have to carry. It had been left pointing at жар-дым.рф, a different project's
+// domain, so every canonical and every sitemap entry named the wrong site.
+const PRODUCTION_ORIGIN = 'https://xn----7sbbc6db2aay0a.xn--p1ai'
 
 /**
  * Prepares the built output for static hosting:

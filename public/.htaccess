@@ -1,0 +1,40 @@
+# Настройки для хостинга reg.ru (Apache). Файл копируется в сборку как есть.
+
+# Сайт одностраничный: адреса вроде /catalog или /grafit разбирает сам сайт в
+# браузере, на диске таких папок нет. Поэтому всё, что не является реальным
+# файлом, отдаём index.html — иначе прямая ссылка на раздел вернёт «404».
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Реальные файлы и папки отдаём как есть.
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# Сжатие текстовых файлов — страницы открываются заметно быстрее.
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# Картинки, шрифты и скрипты можно держать в кэше браузера надолго: при сборке
+# у них меняется имя файла, поэтому обновление всё равно долетит.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType application/pdf "access plus 1 month"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  # А саму страницу — нет: она должна подхватывать свежую сборку сразу.
+  ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
+
+AddDefaultCharset UTF-8

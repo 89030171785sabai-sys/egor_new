@@ -1,0 +1,58 @@
+name: Публикация на reg.ru по FTP
+
+# Любое изменение в рабочей ветке — хоть из чата, хоть вручную — собирает сайт
+# и выкладывает его на хостинг. Отдельно есть кнопка «Run workflow» на вкладке
+# Actions, если нужно перезалить без изменений.
+on:
+  push:
+    branches: [claude/practical-dijkstra-a0c9pq, main]
+  workflow_dispatch:
+
+# Два деплоя подряд не должны класть файлы друг поверх друга.
+concurrency:
+  group: ftp
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Проверка типов
+        run: npm run typecheck
+
+      # На своём домене сайт лежит в корне, поэтому префикс пути не задаётся —
+      # в отличие от сборки для GitHub Pages, которая живёт в подпапке.
+      - name: Сборка
+        run: npm run build
+        env:
+          VITE_YANDEX_METRIKA_ID: ${{ secrets.YANDEX_METRIKA_ID }}
+
+      # Пока доступы не заведены, шаг пропускается и сборка просто проверяется.
+      - name: Загрузка на хостинг
+        if: ${{ secrets.FTP_SERVER != '' }}
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          # Папка сайта на хостинге. У reg.ru это обычно /www/вашдомен/
+          server-dir: ${{ secrets.FTP_DIR }}
+          local-dir: ./dist/
+          # Шифрованный FTP. Если хостинг его не принимает, заведите
+          # переменную FTP_PROTOCOL со значением ftp на вкладке Variables.
+          protocol: ${{ vars.FTP_PROTOCOL || 'ftps' }}
+          # Файлы прошлой сборки с другими именами удаляются, чтобы в папке не
+          # копился мусор; эти — трогать нельзя.
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
