@@ -1,6 +1,18 @@
 @import 'tailwindcss';
 
 /*
+ * Onest, served from the site's own files rather than from Google Fonts.
+ *
+ * Three reasons, in order. A request to fonts.gstatic.com hands the visitor's
+ * IP address to a third party, which the privacy policy would then have to
+ * declare; Google's servers are unreliable from Russia, where the customers
+ * are, and a blocked stylesheet means the page draws in a fallback face; and
+ * one less connection to open is one less thing between the click and the
+ * first paint. The build fingerprints the files, so they cache for a year.
+ */
+@import '@fontsource-variable/onest';
+
+/*
  * Brand tokens. Colours and radii are read off the client's own site, so the
  * whole palette lives here and components never reach for a raw value.
  */
@@ -42,8 +54,8 @@
   --color-sand-200: #eceef1;
   --color-sand-300: #dee1e6;
 
-  --font-display: 'Onest', ui-sans-serif, system-ui, sans-serif;
-  --font-sans: 'Onest', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Onest Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Onest Variable', ui-sans-serif, system-ui, sans-serif;
 
   --radius-card: 1.125rem;
   --radius-panel: 1.5rem;
