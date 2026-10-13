@@ -16,6 +16,11 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    # Условие шага не умеет читать секреты напрямую — GitHub такой файл просто
+    # не принимает. Поэтому адрес сервера переносится в переменную задачи, и
+    # проверяется уже она.
+    env:
+      FTP_SERVER: ${{ secrets.FTP_SERVER }}
     steps:
       - uses: actions/checkout@v4
 
@@ -38,7 +43,7 @@ jobs:
 
       # Пока доступы не заведены, шаг пропускается и сборка просто проверяется.
       - name: Загрузка на хостинг
-        if: ${{ secrets.FTP_SERVER != '' }}
+        if: env.FTP_SERVER != ''
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
