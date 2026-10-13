@@ -26,6 +26,14 @@ export function HomePage() {
 
   return (
     <>
+      {/*
+       * ВРЕМЕННАЯ ПЛАШКА — проверка автопубликации. Убрать после проверки:
+       * удалить этот блок целиком, больше нигде он не используется.
+       */}
+      <div className="bg-red-600 px-4 py-8 text-center">
+        <p className="font-display text-4xl text-white uppercase sm:text-6xl">Сайт работает</p>
+      </div>
+
       <Hero />
       <Advantages />
       <ModelRail />
