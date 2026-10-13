@@ -54,7 +54,7 @@ jobs:
           local-dir: ./dist/
           # Шифрованный FTP. Если хостинг его не принимает, заведите
           # переменную FTP_PROTOCOL со значением ftp на вкладке Variables.
-          protocol: ${{ vars.FTP_PROTOCOL || 'ftps' }}
+          protocol: ${{ vars.FTP_PROTOCOL || 'ftps-legacy' }}
           # Файлы прошлой сборки с другими именами удаляются, чтобы в папке не
           # копился мусор; эти — трогать нельзя.
           exclude: |
