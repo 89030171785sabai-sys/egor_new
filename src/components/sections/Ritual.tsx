@@ -1,4 +1,5 @@
 import { PlaceholderImage } from '../ui/PlaceholderImage'
+import { photoUrl } from '../../lib/photos'
 import { SectionHeading } from '../ui/SectionHeading'
 import { Reveal } from '../ui/Reveal'
 
@@ -54,11 +55,16 @@ export function Ritual() {
               <p className="px-7 pt-7 text-center text-lg leading-snug text-ink-700">
                 Работает круглый год — и в мороз тоже
               </p>
-              <PlaceholderImage
-                tone="dusk"
-                ratio="16/10"
-                className="mt-auto rounded-card"
-                label="чан зимой у дома"
+              {/*
+                * Снимок вертикальный, а слот горизонтальный. Кадр смещён вниз
+                * по измеренному положению чаши — она занимает 29–84% высоты
+                * кадра, и при обычном центрировании ей срезало бы низ.
+                */}
+              <img
+                src={photoUrl('ritual-winter.webp')}
+                alt="Банный чан зимой во дворе дома"
+                loading="lazy"
+                className="mt-auto aspect-16/10 w-full rounded-card object-cover object-[50%_62%]"
               />
             </Cell>
           </Reveal>
@@ -95,11 +101,11 @@ export function Ritual() {
               <p className="px-7 pt-7 text-center text-lg leading-snug text-ink-700">
                 Нержавейка, которой не нужен особый уход
               </p>
-              <PlaceholderImage
-                tone="studio"
-                ratio="16/10"
-                className="mt-auto rounded-card"
-                label="фактура нержавеющей стали"
+              <img
+                src={photoUrl('ritual-steel.webp')}
+                alt="Фактура шлифованной нержавеющей стали"
+                loading="lazy"
+                className="mt-auto aspect-16/10 w-full rounded-card object-cover"
               />
             </Cell>
           </Reveal>
