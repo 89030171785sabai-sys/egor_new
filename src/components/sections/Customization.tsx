@@ -5,11 +5,6 @@ import type { PlaceholderTone } from '../ui/PlaceholderImage'
 
 const options: Array<{ title: string; text: string; tone: PlaceholderTone }> = [
   {
-    title: 'Покрасим изделие в любой цвет',
-    text: 'Предложим цвета под ваш дом и участок или покрасим в любой оттенок на ваш выбор.',
-    tone: 'terracotta',
-  },
-  {
     title: 'Изменим размеры под вас',
     text: 'Чаша делается под компанию: от четырёх человек до двенадцати. Габариты подгоняем под площадку.',
     tone: 'graphite',
