@@ -23,8 +23,8 @@ export function Ritual() {
           <Reveal>
             <Cell className="flex items-center gap-5 pr-6">
               <img
-                src={photoUrl('ritual-ambience.webp')}
-                alt="Пар над водой чана, дольки апельсина и еловые ветки"
+                src={photoUrl('ritual-water.webp')}
+                alt="Горячая вода в чане зимой, над озером поднимается пар"
                 loading="lazy"
                 className="-ml-8 size-40 shrink-0 rounded-full object-cover"
               />
@@ -96,7 +96,7 @@ export function Ritual() {
 
           <Reveal delay={210} className="sm:col-span-2 lg:col-span-3">
             <Cell height="h-auto" className="flex flex-col">
-              <p className="px-7 pt-7 text-center text-lg leading-snug text-ink-700">
+              <p className="px-7 pt-7 pb-6 text-center text-lg leading-snug text-ink-700">
                 Нержавейка, которой не нужен особый уход
               </p>
               {/* Фактура — материал, а не сюжет: полосой во всю ширину она
@@ -105,7 +105,7 @@ export function Ritual() {
                 src={photoUrl('ritual-steel.webp')}
                 alt="Фактура шлифованной нержавеющей стали"
                 loading="lazy"
-                className="mt-auto h-24 w-full rounded-card object-cover"
+                className="mt-auto h-32 w-full rounded-card object-cover"
               />
             </Cell>
           </Reveal>

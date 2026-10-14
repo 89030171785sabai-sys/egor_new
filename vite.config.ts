@@ -1,4 +1,6 @@
 import { copyFile, writeFile } from 'node:fs/promises'
+import { createHash } from 'node:crypto'
+import { readdirSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
@@ -60,6 +62,28 @@ function staticHostAssets(origin: string): Plugin {
   }
 }
 
+/**
+ * Снимки лежат в `public/photos` и сохраняют свои имена — в отличие от скриптов
+ * и стилей, которым сборка подмешивает хэш. Хостинг же отдаёт картинки с
+ * годовым сроком хранения, поэтому заменённый под тем же именем кадр у
+ * вернувшегося посетителя так и остался бы старым. Отпечаток содержимого
+ * попадает в адрес: пока файл не менялся, адрес прежний и кадр берётся из
+ * кэша; изменился — адрес новый и браузер скачивает заново.
+ */
+function photoFingerprints(): Record<string, string> {
+  const dir = resolve(__dirname, 'public/photos')
+  const fingerprints: Record<string, string> = {}
+
+  for (const file of readdirSync(dir)) {
+    fingerprints[file] = createHash('sha1')
+      .update(readFileSync(resolve(dir, file)))
+      .digest('hex')
+      .slice(0, 8)
+  }
+
+  return fingerprints
+}
+
 export default defineConfig(({ mode }) => {
   const base = process.env.VITE_BASE_PATH ?? '/'
   const origin = process.env.VITE_SITE_ORIGIN ?? PRODUCTION_ORIGIN
@@ -67,7 +91,10 @@ export default defineConfig(({ mode }) => {
   return {
     base,
     // Passed through to the client so canonicals match where the build lives.
-    define: { 'import.meta.env.VITE_SITE_ORIGIN': JSON.stringify(origin) },
+    define: {
+      'import.meta.env.VITE_SITE_ORIGIN': JSON.stringify(origin),
+      __PHOTO_FINGERPRINTS__: JSON.stringify(photoFingerprints()),
+    },
     plugins: [react(), tailwindcss(), staticHostAssets(origin)],
     build: { target: 'es2022', sourcemap: mode !== 'production' },
   }

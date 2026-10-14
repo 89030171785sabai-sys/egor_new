@@ -9,3 +9,6 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv
 }
+
+/** Отпечатки файлов из `public/photos`, подставляются при сборке. */
+declare const __PHOTO_FINGERPRINTS__: Record<string, string>
