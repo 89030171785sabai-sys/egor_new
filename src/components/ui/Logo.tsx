@@ -13,14 +13,16 @@
  * coordinate system; a crop picks which of them a slot shows, so the artwork
  * is never duplicated.
  */
-export type LogoCrop = 'full' | 'emblem' | 'wordmark'
+export type LogoCrop = 'full' | 'emblem' | 'wordmark' | 'lockup'
 
 const CROPS: Record<LogoCrop, string> = {
   full: '101 215 1058 868',
   emblem: '187 215 880 512',
-  // HOT-TUB alone. The line under it is set too small to survive beside the
-  // bowl at header size, so the header shows these two and leaves it out.
+  // HOT-TUB alone.
   wordmark: '101 760 1058 190',
+  // HOT-TUB with «Горячий чан» under it. Taller than the wordmark, so a slot
+  // showing this one has to give it the height or the strapline closes up.
+  lockup: '101 760 1058 320',
 }
 
 const ARTWORK =
@@ -56,7 +58,13 @@ export function LogoLockup({ className = '' }: { className?: string }) {
   return (
     <span className={`inline-flex items-center gap-3 ${className}`} role="img" aria-label="HOTTUB">
       <Logo crop="emblem" title="" className="h-9 w-auto lg:h-11" />
-      <Logo crop="wordmark" title="" className="h-4 w-auto lg:h-5" />
+      {/*
+        * The name and the line under it, kept as one piece of artwork rather
+        * than two: the spacing between them is the logo's own, and setting it
+        * in CSS would drift from the file the moment either moved. The height
+        * carries both, so HOT-TUB itself lands about where it did alone.
+        */}
+      <Logo crop="lockup" title="" className="h-7 w-auto lg:h-9" />
     </span>
   )
 }
