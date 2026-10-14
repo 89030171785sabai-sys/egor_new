@@ -1,23 +1,19 @@
 import { useState } from 'react'
 import { ButtonLink } from '../ui/Button'
-import { PlaceholderImage } from '../ui/PlaceholderImage'
-import type { PlaceholderTone } from '../ui/PlaceholderImage'
+import { photoUrl } from '../../lib/photos'
 
-const options: Array<{ title: string; text: string; tone: PlaceholderTone }> = [
+const options: Array<{ title: string; text: string }> = [
   {
     title: 'Изменим размеры под вас',
     text: 'Чаша делается под компанию: от четырёх человек до двенадцати. Габариты подгоняем под площадку.',
-    tone: 'graphite',
   },
   {
     title: 'Заменим материалы отделки',
     text: 'Четыре уровня отделки — от базового «стандарта» до «люкса» с премиальными материалами.',
-    tone: 'copper',
   },
   {
     title: 'Добавим дополнительные опции',
     text: 'Джакузи и гидро-аэромассаж, подсветка воды, столы, подголовник, стекло в печь, логотип на чашу.',
-    tone: 'ink',
   },
 ]
 
@@ -79,11 +75,17 @@ export function Customization() {
             </ButtonLink>
           </div>
 
-          <PlaceholderImage
-            tone={options[active].tone}
-            ratio="4/3"
-            className="rounded-panel"
-            label={options[active].title}
+          {/*
+            * One photograph for the whole section rather than a drawing per
+            * option: it is the same tub whichever line is open, and a real
+            * scene says more about what the thing is for than four tinted
+            * illustrations did.
+            */}
+          <img
+            src={photoUrl('customization-scene.webp')}
+            alt="Компания отдыхает в банном чане на участке"
+            loading="lazy"
+            className="aspect-3/2 w-full rounded-panel object-cover"
           />
         </div>
       </div>
