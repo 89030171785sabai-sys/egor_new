@@ -20,22 +20,46 @@ export function Ritual() {
         />
 
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          <Reveal>
-            <Cell className="flex items-center gap-5 pr-6">
+          {/* Кадр целиком, подпись поверх него: так снимок работает сам, без рамки. */}
+          <Reveal className="h-full sm:col-span-2">
+            <div className="relative aspect-4/3 overflow-hidden rounded-panel bg-ink-900 lg:aspect-auto lg:h-full lg:min-h-[34rem]">
               <img
                 src={photoUrl('ritual-water.webp')}
                 alt="Горячая вода в чане зимой, над озером поднимается пар"
                 loading="lazy"
-                className="-ml-8 size-40 shrink-0 rounded-full object-cover"
+                className="absolute inset-0 size-full object-cover"
               />
-              <p className="text-lg leading-snug text-ink-700">
-                Живой огонь и вода — вместо кафеля и таймера
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink-900/75 to-transparent px-7 pt-24 pb-7">
+                <p className="max-w-md text-xl leading-snug text-white lg:text-2xl">
+                  Живой огонь и вода — вместо кафеля и таймера
+                </p>
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal delay={70} className="h-full">
+            <Cell height="h-auto lg:h-full" className="flex flex-col">
+              <p className="px-7 pt-7 text-center text-lg leading-snug text-ink-700">
+                Работает круглый год — и в мороз тоже
               </p>
+              {/*
+                * Снимок вертикальный: на узком экране он идёт в своих
+                * пропорциях, а в ряду с озером растягивается на оставшуюся
+                * высоту карточки — кадр виден почти целиком.
+                */}
+              <div className="relative mt-4 aspect-4/5 w-full lg:aspect-auto lg:min-h-0 lg:flex-1">
+                <img
+                  src={photoUrl('ritual-winter.webp')}
+                  alt="Банный чан зимой во дворе дома"
+                  loading="lazy"
+                  className="absolute inset-0 size-full rounded-card object-cover"
+                />
+              </div>
             </Cell>
           </Reveal>
 
-          <Reveal delay={70}>
-            <Cell className="flex flex-col justify-center px-7 text-center">
+          <Reveal className="h-full">
+            <Cell height="h-full" className="flex flex-col justify-center px-7 py-10 text-center">
               <p className="text-lg text-ink-500">
                 Как <span className="font-display text-4xl text-ink-900">баня</span>
                 <span aria-hidden="true" className="ml-1 inline-block size-2 rounded-full bg-brand-500 align-super" />
@@ -47,42 +71,9 @@ export function Ritual() {
             </Cell>
           </Reveal>
 
-          <Reveal delay={140} className="sm:row-span-2">
+          <Reveal delay={70} className="h-full">
             <Cell height="h-full" className="flex flex-col">
-              <p className="px-7 pt-7 text-center text-lg leading-snug text-ink-700">
-                Работает круглый год — и в мороз тоже
-              </p>
-              {/*
-                * Снимок вертикальный (соотношение 0.83), поэтому карточка
-                * здесь растёт по содержимому, а не держит общие 256px: в
-                * окне 4/5 кадр виден целиком по высоте — и чан, и двор со
-                * снегом. В широкой полосе от него оставалась половина.
-                */}
-              <img
-                src={photoUrl('ritual-winter.webp')}
-                alt="Банный чан зимой во дворе дома"
-                loading="lazy"
-                className="mt-auto aspect-4/5 w-full rounded-card object-cover"
-              />
-            </Cell>
-          </Reveal>
-
-          <Reveal delay={70}>
-            <Cell className="flex flex-col justify-center px-7">
-              <p className="text-ink-700">
-                <span className="text-sm text-ink-400">до</span>{' '}
-                <span className="font-display text-5xl">12</span>{' '}
-                <span className="text-sm text-ink-400">человек</span>
-              </p>
-              <p className="mt-4 text-sm leading-relaxed text-ink-500">
-                Самый большой размер в линейке — для мероприятий и банных комплексов
-              </p>
-            </Cell>
-          </Reveal>
-
-          <Reveal delay={140}>
-            <Cell height="h-auto" className="flex flex-col">
-              <p className="px-7 pt-7 text-center text-lg leading-snug text-ink-700">
+              <p className="px-7 pt-7 pb-4 text-center text-lg leading-snug text-ink-700">
                 Одна закладка дров на весь вечер
               </p>
               <img
@@ -94,20 +85,37 @@ export function Ritual() {
             </Cell>
           </Reveal>
 
-          <Reveal delay={210} className="sm:col-span-2 lg:col-span-3">
-            <Cell height="h-auto" className="flex flex-col">
-              <p className="px-7 pt-7 pb-6 text-center text-lg leading-snug text-ink-700">
-                Нержавейка, которой не нужен особый уход
+          <Reveal delay={140} className="h-full">
+            <Cell height="h-full" className="flex flex-col justify-center px-7 py-10 text-center">
+              <p className="text-ink-700">
+                <span className="text-sm text-ink-400">до</span>{' '}
+                <span className="font-display text-5xl">12</span>{' '}
+                <span className="text-sm text-ink-400">человек</span>
               </p>
-              {/* Фактура — материал, а не сюжет: полосой во всю ширину она
-                  читается лучше и закрывает последний ряд сетки. */}
+              <p className="mt-4 text-sm leading-relaxed text-ink-500">
+                Самый большой размер в линейке — для мероприятий и банных комплексов
+              </p>
+            </Cell>
+          </Reveal>
+
+          {/* Фактура — фон карточки, а не отдельная серая полоса: текст стоит на самом материале. */}
+          <Reveal delay={210} className="sm:col-span-2 lg:col-span-3">
+            <div className="relative overflow-hidden rounded-panel bg-ink-100">
               <img
                 src={photoUrl('ritual-steel.webp')}
-                alt="Фактура шлифованной нержавеющей стали"
+                alt=""
+                aria-hidden="true"
                 loading="lazy"
-                className="mt-auto h-32 w-full rounded-card object-cover"
+                className="absolute inset-0 size-full object-cover"
               />
-            </Cell>
+              <div aria-hidden="true" className="absolute inset-0 bg-white/40" />
+              <div className="relative flex flex-col items-start justify-between gap-4 px-8 py-10 sm:flex-row sm:items-center lg:px-12">
+                <p className="max-w-md text-xl leading-snug text-ink-900 lg:text-2xl">
+                  Нержавейка, которой не нужен особый уход
+                </p>
+                <p className="font-display text-4xl text-ink-900 lg:text-5xl">AISI 304</p>
+              </div>
+            </div>
           </Reveal>
         </div>
       </div>
