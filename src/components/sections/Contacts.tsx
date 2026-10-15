@@ -1,6 +1,6 @@
 import { SectionHeading } from '../ui/SectionHeading'
 import { LeadForm } from '../forms/LeadForm'
-import { contacts, MESSENGER_NOTE } from '../../data/contacts'
+import { contacts } from '../../data/contacts'
 
 const mapsUrl = (query: string) =>
   `https://yandex.ru/maps/?text=${encodeURIComponent(query)}`
@@ -23,24 +23,6 @@ export function Contacts() {
               <a href={contacts.phone.href} className="transition-colors hover:text-brand-600">
                 {contacts.phone.display}
               </a>
-            </Row>
-
-            <Row icon="chat" caption={MESSENGER_NOTE}>
-              <span className="block">Мессенджеры</span>
-              <span className="mt-3 grid gap-2">
-                {contacts.messengers.map((messenger) => (
-                  <a
-                    key={messenger.id}
-                    href={messenger.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-between gap-4 rounded-card bg-white px-4 py-3 text-sm font-medium shadow-sm transition-shadow hover:shadow-md"
-                  >
-                    <span>{messenger.label}</span>
-                    <span className="font-normal text-ink-500">{messenger.display}</span>
-                  </a>
-                ))}
-              </span>
             </Row>
 
             <Row icon="clock" caption="часы работы">

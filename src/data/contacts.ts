@@ -31,33 +31,14 @@ export const contacts = {
   phone: { display: '+7 (980) 900-81-30', href: 'tel:+79809008130' },
 
   /**
-   * Messenger numbers. Nobody picks up a call on these — the site says so
-   * wherever they appear, so a visitor does not waste a call.
+   * Messenger numbers. Empty on purpose: the client dropped WhatsApp, Telegram
+   * and MAX from the site, and with an empty list the floating chat button and
+   * the messenger row on the contacts page do not render.
    */
-  messengers: [
-    {
-      id: 'whatsapp',
-      label: 'WhatsApp',
-      display: '8 (916) 587-76-52',
-      href: 'https://wa.me/79165877652',
-    },
-    {
-      id: 'telegram',
-      label: 'Telegram',
-      display: '+7 (922) 711-14-03',
-      href: 'https://t.me/+79227111403',
-    },
-    {
-      id: 'max',
-      label: 'MAX',
-      display: '+7 (950) 815-82-43',
-      href: 'https://max.ru/+79508158243',
-    },
-  ] satisfies Messenger[],
+  messengers: [] as Messenger[],
 
   /** Public pages, as opposed to the messenger numbers above. */
   social: [
-    { id: 'telegram', label: 'Telegram-канал', href: 'https://t.me/HOTTUB_Chan' },
     { id: 'vk', label: 'ВКонтакте', href: 'https://vk.ru/hottub_hotchan' },
     { id: 'rutube', label: 'RuTube', href: 'https://rutube.ru/channel/58967609/' },
   ] satisfies Social[],
