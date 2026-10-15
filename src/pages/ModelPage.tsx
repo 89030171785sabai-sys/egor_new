@@ -266,7 +266,7 @@ function ModelVideoBlock({
               src={photoUrl(photo.file)}
               alt={photo.alt}
               loading="lazy"
-              className="aspect-2/3 w-[78vw] shrink-0 snap-center rounded-panel object-cover sm:w-full"
+              className="aspect-2/3 w-[78vw] shrink-0 snap-center rounded-panel object-cover object-[50%_65%] sm:w-full"
             />
           ))}
         </div>
