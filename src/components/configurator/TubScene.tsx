@@ -318,23 +318,40 @@ export function TubScene({ visual, view }: { visual: TubVisual; view: CameraView
 
       // Proportions as shares of the diameter, read off the studio shots.
       const hb = (v.stove === 'side' ? 0.3 : faceted ? 0.36 : 0.4) * D
-      const rb = (faceted ? 0.53 : 0.57) * R
+      const rb = (faceted ? 0.53 * 0.9 : 0.556) * R
       const baseH =
         { under: 0.3, inner: faceted ? 0.34 : 0.38, frame: 0.3, external: 0.22, side: 0.12 }[
           v.stove
         ] * D
       const rimY = baseH + hb
 
+      // The wooden rim overhangs the bowl: measured on the studio shot, the
+      // bowl's top edge is 0.88 of the rim's half-width, its bottom 0.56.
+      const top = (faceted ? 0.9 : 0.883) * R
+      /** Measured silhouette of the rolled bowl: height share -> share of the rim radius. */
+      const rolledProfile: Array<[number, number]> = [
+        [0, 0.556],
+        [0.03, 0.573],
+        [0.19, 0.669],
+        [0.35, 0.745],
+        [0.53, 0.803],
+        [1, 0.883],
+      ]
       /** Bowl radius at a height t (0 bottom, 1 rim). Faceted bowls break at 55%. */
       const radiusAt = (t: number) => {
         if (faceted) {
           return t < 0.55
-            ? rb + (0.8 * R - rb) * (t / 0.55)
-            : 0.8 * R + (R - 0.8 * R) * ((t - 0.55) / 0.45)
+            ? rb + (0.8 * top - rb) * (t / 0.55)
+            : 0.8 * top + (top - 0.8 * top) * ((t - 0.55) / 0.45)
         }
-        return rb + (R - rb) * Math.pow(Math.sin((t * Math.PI) / 2), 0.85)
+        for (let i = 1; i < rolledProfile.length; i += 1) {
+          const [t1, r1] = rolledProfile[i]!
+          const [t0, r0] = rolledProfile[i - 1]!
+          if (t <= t1) return (r0 + ((r1 - r0) * (t - t0)) / (t1 - t0)) * R
+        }
+        return 0.883 * R
       }
-      const steps = faceted ? [0, 0.55, 1] : Array.from({ length: 9 }, (_, i) => i / 8)
+      const steps = faceted ? [0, 0.55, 1] : rolledProfile.map(([t]) => t)
       const profile = (offset: number, lift = 0) =>
         steps.map((t) => new THREE.Vector2(radiusAt(t) + offset, baseH + lift + t * (hb - lift)))
 
@@ -400,11 +417,11 @@ export function TubScene({ visual, view }: { visual: TubVisual; view: CameraView
       }
 
       // The larch rim, an octagonal ring with softened edges.
-      const rimRing = new THREE.Shape(octagon(R * 1.035))
-      rimRing.holes.push(new THREE.Path(octagon(R - 0.11).reverse()))
+      const rimRing = new THREE.Shape(octagon(R))
+      rimRing.holes.push(new THREE.Path(octagon(top - 0.1).reverse()))
       addMesh(
         new THREE.ExtrudeGeometry(rimRing, {
-          depth: 0.05,
+          depth: 0.06,
           bevelEnabled: true,
           bevelSize: 0.009,
           bevelThickness: 0.009,
@@ -567,7 +584,7 @@ export function TubScene({ visual, view }: { visual: TubVisual; view: CameraView
 
       if (chimney && v.chimney !== 'none') {
         const sandwich = v.chimney === 'sandwich'
-        const r = sandwich ? 0.075 : 0.055
+        const r = Math.max(0.055, 0.08 * R) * (sandwich ? 1.3 : 1)
         const length = chimney.top - chimney.from
         addMesh(
           new THREE.CylinderGeometry(r, r, length, 24),
@@ -601,9 +618,9 @@ export function TubScene({ visual, view }: { visual: TubVisual; view: CameraView
         if (centred) {
           // Perforated shield where the pipe passes the rim.
           addMesh(
-            new THREE.CylinderGeometry(r * 2.1, r * 2.1, 0.34, 24, 1, true),
+            new THREE.CylinderGeometry(r * 1.3, r * 1.3, 0.105 * D, 24, 1, true),
             shared.shield,
-            [chimney.x, rimY + 0.2, chimney.z],
+            [chimney.x, rimY + 0.04 * D, chimney.z],
           )
         }
       }
@@ -614,7 +631,7 @@ export function TubScene({ visual, view }: { visual: TubVisual; view: CameraView
         const tread = v.ladder === 'wood' ? shared.wood : shared.brushed
         const depth = 0.32
         const width = 0.74
-        const heights = [0.22, 0.44, 0.66].map((f) => f * rimY)
+        const heights = [0.26, 0.49, 0.7].map((f) => f * rimY)
         const wallT = Math.min(Math.max((heights[2]! - baseH) / hb, 0), 1)
         const innerEdge = -((heights[2]! < baseH ? rb : radiusAt(wallT)) + 0.04)
 
