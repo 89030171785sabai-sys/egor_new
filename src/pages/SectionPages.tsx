@@ -3,6 +3,7 @@ import { Catalog } from '../components/sections/Catalog'
 import { ModelShowcase } from '../components/sections/ModelShowcase'
 import { Benefits } from '../components/sections/Benefits'
 import { Production } from '../components/sections/Production'
+import { ProductionVideos } from '../components/sections/ProductionVideos'
 import { Process } from '../components/sections/Process'
 import { Customization } from '../components/sections/Customization'
 import { Delivery } from '../components/sections/Delivery'
@@ -75,6 +76,7 @@ export function ProductionPage() {
         />
       </PageHeader>
 
+      <ProductionVideos />
       <Production />
       <Customization />
       <Process />

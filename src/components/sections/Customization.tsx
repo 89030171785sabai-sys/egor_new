@@ -70,9 +70,23 @@ export function Customization() {
               })}
             </div>
 
-            <ButtonLink to="/contacts" variant="light" size="lg" arrow className="mt-8">
-              Обсудить свой проект
-            </ButtonLink>
+            <div className="mt-10 border-t border-white/10 pt-8">
+              <h3 className="font-display text-2xl text-white sm:text-3xl">
+                Рассчитайте свой банный чан в калькуляторе
+              </h3>
+              <p className="mt-3 max-w-md text-sm leading-relaxed text-white/65">
+                Модель, размер, отделка, лестница, дымоход, крышка и опции — цена пересчитывается
+                сразу, расчёт пришлём в удобный канал.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <ButtonLink to="/calculator" size="lg" arrow>
+                  Открыть калькулятор
+                </ButtonLink>
+                <ButtonLink to="/contacts" variant="ghost" size="lg">
+                  Обсудить свой проект
+                </ButtonLink>
+              </div>
+            </div>
           </div>
 
           {/*

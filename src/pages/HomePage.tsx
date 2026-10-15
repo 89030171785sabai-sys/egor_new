@@ -3,7 +3,6 @@ import { Advantages } from '../components/sections/Advantages'
 import { ModelRail } from '../components/sections/ModelRail'
 import { ModelShowcase } from '../components/sections/ModelShowcase'
 import { Benefits } from '../components/sections/Benefits'
-import { Calculator } from '../components/sections/Calculator'
 import { Customization } from '../components/sections/Customization'
 import { Ritual } from '../components/sections/Ritual'
 import { Production } from '../components/sections/Production'
@@ -31,7 +30,6 @@ export function HomePage() {
       <ModelRail />
       <ModelShowcase />
       <Benefits />
-      <Calculator />
       <Customization />
       <Ritual />
       <Production />
