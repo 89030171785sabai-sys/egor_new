@@ -4,6 +4,7 @@ import { Button } from '../ui/Button'
 import { ChannelSwitch, Field, Input, Select } from './Field'
 import { formatPhone, isPhoneComplete } from '../../lib/phone'
 import { submitLead, type LeadSource } from '../../lib/leads'
+import { reachGoal } from '../../lib/analytics'
 
 export type FieldName = 'name' | 'phone' | 'city' | 'budget' | 'channel'
 
@@ -110,6 +111,7 @@ export function LeadForm({
       },
     })
 
+    if (result.ok) reachGoal('lead', { source })
     setState(result.ok ? 'success' : 'error')
   }
 

@@ -40,6 +40,9 @@ jobs:
         run: npm run build
         env:
           VITE_YANDEX_METRIKA_ID: ${{ secrets.YANDEX_METRIKA_ID }}
+          # Коды подтверждения сайта в Вебмастере и Search Console — не секретные.
+          VITE_YANDEX_VERIFICATION: ${{ vars.YANDEX_VERIFICATION }}
+          VITE_GOOGLE_VERIFICATION: ${{ vars.GOOGLE_VERIFICATION }}
           # Адрес приёма заявок (Google Apps Script). Пока не задан — формы в демо-режиме.
           # Адрес не секретный: он всё равно попадает в код сайта, который видит
           # каждый посетитель. Секрет LEADS_ENDPOINT, если задан, главнее.

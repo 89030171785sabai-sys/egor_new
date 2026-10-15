@@ -15,6 +15,31 @@ import { posts } from './src/data/posts'
 const PRODUCTION_ORIGIN = 'https://xn----7sbbc6db2aay0a.xn--p1ai'
 
 /**
+ * Search-engine ownership tags. Yandex Webmaster and Google Search Console ask
+ * for a meta tag in the head; the codes arrive as build variables so the tag
+ * exists only on the real site and only once a code is set.
+ */
+function verificationTags(): Plugin {
+  return {
+    name: 'search-verification-tags',
+    transformIndexHtml() {
+      const tags = [
+        ['yandex-verification', process.env.VITE_YANDEX_VERIFICATION],
+        ['google-site-verification', process.env.VITE_GOOGLE_VERIFICATION],
+      ] as const
+
+      return tags
+        .filter(([, content]) => content && /^[\w-]+$/.test(content))
+        .map(([name, content]) => ({
+          tag: 'meta',
+          attrs: { name, content: content! },
+          injectTo: 'head' as const,
+        }))
+    },
+  }
+}
+
+/**
  * Prepares the built output for static hosting:
  *
  * - sitemap.xml from the same model data the pages are built from, so the two
@@ -95,7 +120,7 @@ export default defineConfig(({ mode }) => {
       'import.meta.env.VITE_SITE_ORIGIN': JSON.stringify(origin),
       __PHOTO_FINGERPRINTS__: JSON.stringify(photoFingerprints()),
     },
-    plugins: [react(), tailwindcss(), staticHostAssets(origin)],
+    plugins: [react(), tailwindcss(), verificationTags(), staticHostAssets(origin)],
     build: { target: 'es2022', sourcemap: mode !== 'production' },
   }
 })

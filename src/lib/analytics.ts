@@ -55,3 +55,13 @@ export function trackPageView(path: string) {
   if (!started || !COUNTER_ID) return
   window.ym?.(Number(COUNTER_ID), 'hit', path)
 }
+
+/**
+ * Reports a goal reached — a submitted request, say. Does nothing until the
+ * counter has started, i.e. until the visitor accepted the cookie notice.
+ * In Metrica, create a goal of the type «JavaScript-событие» with the same name.
+ */
+export function reachGoal(name: string, params?: Record<string, string>) {
+  if (!started || !COUNTER_ID) return
+  window.ym?.(Number(COUNTER_ID), 'reachGoal', name, params)
+}
