@@ -1,5 +1,6 @@
 import { SectionHeading } from '../ui/SectionHeading'
 import { Reveal } from '../ui/Reveal'
+import { photoUrl, videoUrl } from '../../lib/photos'
 
 const stages = [
   {
@@ -34,7 +35,12 @@ const stages = [
   },
 ]
 
-export function Production() {
+/**
+ * `withVideo` puts the walk through the works at the top of the section. The
+ * production page carries that video in a block of its own, so only the home
+ * page asks for it here.
+ */
+export function Production({ withVideo = false }: { withVideo?: boolean }) {
   return (
     <section id="production" className="scroll-mt-28 py-20 lg:py-28">
       <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
@@ -43,6 +49,21 @@ export function Production() {
           title="Собственный цех полного цикла"
           subtitle="От заготовки древесины до финальной сборки."
         />
+
+        {withVideo && (
+          <Reveal>
+            <video
+              controls
+              playsInline
+              preload="none"
+              poster={photoUrl('proizvodstvo-poster.webp')}
+              aria-label="Видео о производстве: цех, где собираются банные чаны"
+              className="mt-12 aspect-video w-full rounded-panel bg-ink-900"
+            >
+              <source src={videoUrl('proizvodstvo.mp4')} type="video/mp4" />
+            </video>
+          </Reveal>
+        )}
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {stages.map((stage, index) => (

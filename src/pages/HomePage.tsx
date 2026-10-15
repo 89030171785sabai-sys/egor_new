@@ -32,7 +32,7 @@ export function HomePage() {
       <Benefits />
       <Customization />
       <Ritual />
-      <Production />
+      <Production withVideo />
       <Process />
       <Guarantees />
       <Delivery />

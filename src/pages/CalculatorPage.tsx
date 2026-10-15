@@ -17,7 +17,6 @@ export function CalculatorPage() {
       <PageHeader
         title="3D-калькулятор банного чана"
         breadcrumb="Калькулятор"
-        image="cherny-brilliant-banner.webp"
         lead="Соберите чан под себя: модель, размер, отделка, дымоход и опции. Модель перестраивается на каждом шаге, а цена считается сразу."
       >
         <PageFigures

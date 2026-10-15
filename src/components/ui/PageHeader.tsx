@@ -1,33 +1,23 @@
 import { Link } from 'react-router-dom'
 import type { ReactNode } from 'react'
-import { photoUrl } from '../../lib/photos'
 
 /** Opening band of an inner page: breadcrumbs, title and a short lead. */
 export function PageHeader({
   title,
   lead,
   breadcrumb,
-  image,
   children,
 }: {
   title: string
   lead?: ReactNode
   /** Label of the current page in the breadcrumb trail. */
   breadcrumb?: string
-  /** Backdrop photograph, by file name in `public/photos`. */
-  image: string
   /** Figures or chips shown under the lead. */
   children?: ReactNode
 }) {
   return (
     <section className="relative isolate overflow-hidden pt-32 pb-16 lg:pt-40 lg:pb-20">
-      <img
-        src={photoUrl(image)}
-        alt=""
-        aria-hidden="true"
-        className="absolute inset-0 -z-20 size-full object-cover"
-      />
-      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-ink-900/65" />
+      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-ink-900" />
 
       <div className="relative mx-auto max-w-(--container-content) px-4 sm:px-6">
         <nav aria-label="Хлебные крошки" className="text-sm text-white/60">

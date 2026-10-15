@@ -37,7 +37,6 @@ export function BlogPage() {
     <>
       <PageHeader
         title="Блог"
-        image="customization-scene.webp"
         lead="Пишем о том, о чём нас спрашивают: как выбрать размер, чем топить, как ухаживать и что подготовить к доставке."
       />
 

@@ -30,6 +30,14 @@ const steps = [
   { title: 'Первый протоп', text: 'Ведём по телефону и видеосвязи. Консультируем по уходу бессрочно.', ours: true },
 ]
 
+/** Photographs from the dispatch yard, in the order they should read. */
+const gallery: Array<{ file: string; alt: string }> = [
+  {
+    file: 'delivery-loading.webp',
+    alt: 'Погрузчик загружает чан в плёнке в кузов грузовика на площадке отгрузки',
+  },
+]
+
 export function Delivery() {
   return (
     <section id="delivery" className="scroll-mt-28 py-20 lg:py-28">
@@ -86,6 +94,26 @@ export function Delivery() {
               </Reveal>
             ))}
           </div>
+
+          {gallery.length > 0 && (
+            <div
+              className={`mt-12 grid gap-4 ${
+                gallery.length === 1 ? '' : 'grid-cols-2 lg:grid-cols-4'
+              }`}
+            >
+              {gallery.map((item) => (
+                <img
+                  key={item.file}
+                  src={photoUrl(item.file)}
+                  alt={item.alt}
+                  loading="lazy"
+                  className={`w-full rounded-panel object-cover ${
+                    gallery.length === 1 ? 'aspect-4/3 sm:aspect-16/9' : 'aspect-4/5'
+                  }`}
+                />
+              ))}
+            </div>
+          )}
 
           <div className="mt-14">
             <div className="flex flex-wrap items-baseline gap-x-6 gap-y-3">

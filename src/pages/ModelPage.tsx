@@ -428,9 +428,9 @@ function ModelDetail({ model }: { model: Model }) {
         <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
           <SectionHeading eyebrow="Другие модели" title="Сравните с остальными" />
 
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="mt-10 flex snap-x gap-5 overflow-x-auto pb-2 [scrollbar-width:none] lg:grid lg:grid-cols-6 lg:overflow-visible [&::-webkit-scrollbar]:hidden">
             {others.map((other, index) => (
-              <Reveal key={other.slug} delay={index * 60}>
+              <Reveal key={other.slug} delay={index * 60} className="w-44 shrink-0 snap-start sm:w-52 lg:w-auto">
                 <Link
                   to={`/${other.slug}`}
                   className="group block h-full overflow-hidden rounded-panel bg-white transition-shadow hover:shadow-lg hover:shadow-ink-900/10"
