@@ -20,7 +20,7 @@ export function Catalog({ photos = false }: { photos?: boolean } = {}) {
   )
 
   return (
-    <section id="catalog" className="scroll-mt-28 py-20 lg:py-28">
+    <section id="catalog" className="scroll-mt-28 py-10 lg:py-14">
       <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
         <SectionHeading
           eyebrow="Каталог"

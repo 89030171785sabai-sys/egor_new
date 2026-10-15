@@ -14,7 +14,7 @@ import { benefits, type Benefit } from '../../data/benefits'
  */
 export function Benefits() {
   return (
-    <section id="benefits" className="scroll-mt-28 bg-sand-100 py-20 lg:py-28">
+    <section id="benefits" className="scroll-mt-28 bg-sand-100 py-14 lg:py-20">
       <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
         <SectionHeading
           eyebrow="Преимущества"

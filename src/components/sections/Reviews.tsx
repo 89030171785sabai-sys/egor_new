@@ -8,7 +8,7 @@ export function Reviews() {
   if (reviews.length === 0) return null
 
   return (
-    <section id="reviews" className="scroll-mt-28 overflow-hidden py-20 lg:py-28">
+    <section id="reviews" className="scroll-mt-28 overflow-hidden py-10 lg:py-14">
       <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
         <SectionHeading
           eyebrow="Отзывы"

@@ -331,7 +331,7 @@ function ModelDetail({ model }: { model: Model }) {
         </div>
       </section>
 
-      <section className="py-16 lg:py-24">
+      <section className="py-10 lg:py-14">
         <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
           <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-14">
             <div>
@@ -425,7 +425,7 @@ function ModelDetail({ model }: { model: Model }) {
         </div>
       </section>
 
-      <section className="pb-20 lg:pb-28">
+      <section className="pb-10 lg:pb-14">
         <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
           <SectionHeading eyebrow="Другие модели" title="Сравните с остальными" />
 

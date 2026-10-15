@@ -16,7 +16,7 @@ export function PageHeader({
   children?: ReactNode
 }) {
   return (
-    <section className="relative isolate overflow-hidden pt-32 pb-16 lg:pt-40 lg:pb-20">
+    <section className="relative isolate overflow-hidden pt-32 pb-12 lg:pt-40 lg:pb-14">
       <div aria-hidden="true" className="absolute inset-0 -z-10 bg-ink-900" />
 
       <div className="relative mx-auto max-w-(--container-content) px-4 sm:px-6">

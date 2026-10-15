@@ -3,7 +3,7 @@ import { Reveal } from '../ui/Reveal'
 
 export function FinalCta() {
   return (
-    <section className="pb-20 lg:pb-28">
+    <section className="pb-10 lg:pb-14">
       <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
         <Reveal>
           <div className="rounded-panel bg-ink-900 px-6 py-14 text-center sm:px-12 lg:py-20">

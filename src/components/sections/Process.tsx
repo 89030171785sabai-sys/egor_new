@@ -10,7 +10,7 @@ const steps = [
 
 export function Process() {
   return (
-    <section className="bg-sand-200 py-20 lg:py-28">
+    <section className="bg-sand-200 py-14 lg:py-20">
       <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
         <SectionHeading eyebrow="Как мы работаем" title="4 шага до вашего чана" />
 

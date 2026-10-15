@@ -33,7 +33,7 @@ export function CalculatorPage() {
         />
       </PageHeader>
 
-      <section className="py-14 lg:py-20">
+      <section className="py-10 lg:py-14">
         <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
           <Configurator />
         </div>

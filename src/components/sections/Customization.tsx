@@ -21,7 +21,7 @@ export function Customization() {
   const [active, setActive] = useState(0)
 
   return (
-    <section className="bg-ink-900 py-20 lg:py-28">
+    <section className="bg-ink-900 py-14 lg:py-20">
       <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
         <h2 className="font-display mx-auto max-w-3xl text-center text-[2rem] sm:text-[2.75rem] lg:text-[3.5rem]">
           <span className="text-brand-400">Место силы</span>

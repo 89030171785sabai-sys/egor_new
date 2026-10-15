@@ -40,7 +40,7 @@ export function BlogPage() {
         lead="Пишем о том, о чём нас спрашивают: как выбрать размер, чем топить, как ухаживать и что подготовить к доставке."
       />
 
-      <section className="py-16 lg:py-24">
+      <section className="py-10 lg:py-14">
         <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
           {lead && (
             <Reveal>
@@ -181,7 +181,7 @@ function PostContent({ post }: { post: Post }) {
       </article>
 
       {others.length > 0 && (
-        <section className="pb-20 lg:pb-28">
+        <section className="pb-10 lg:pb-14">
           <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
             <h2 className="text-xl font-bold text-navy-700 sm:text-2xl">Читайте также</h2>
             <div className="mt-8 grid gap-6 md:grid-cols-3">

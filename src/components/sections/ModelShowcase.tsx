@@ -11,7 +11,7 @@ import { models, modelSizes, sizeTier, type Model } from '../../data/models'
  */
 export function ModelShowcase() {
   return (
-    <section className="overflow-hidden py-20 lg:py-28">
+    <section className="overflow-hidden py-10 lg:py-14">
       <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
         <SectionHeading
           eyebrow="Модельный ряд"

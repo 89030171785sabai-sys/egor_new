@@ -56,7 +56,7 @@ const gallery: Array<{ file: string; alt: string }> = [
  */
 export function Delivery({ withPhotos = true }: { withPhotos?: boolean }) {
   return (
-    <section id="delivery" className="scroll-mt-28 py-20 lg:py-28">
+    <section id="delivery" className="scroll-mt-28 py-10 lg:py-14">
       <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
         <div className="rounded-panel bg-sand-50 p-6 ring-1 ring-sand-200 sm:p-10">
           <div

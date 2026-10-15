@@ -8,7 +8,7 @@ import { Reveal } from '../ui/Reveal'
  */
 export function ProductionVideos() {
   return (
-    <section className="pt-16 lg:pt-24">
+    <section className="pt-8 lg:pt-12">
       <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
         <Reveal>
           <figure>

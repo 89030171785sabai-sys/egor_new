@@ -35,7 +35,7 @@ const rutube = contacts.social.find((item) => item.id === 'rutube')
 /** Reviews, production and installation on film, with a way out to the channel. */
 export function Videos() {
   return (
-    <section id="videos" className="scroll-mt-28 overflow-hidden py-20 lg:py-28">
+    <section id="videos" className="scroll-mt-28 overflow-hidden py-10 lg:py-14">
       <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
         <h2 className="font-display mx-auto max-w-4xl text-center text-[2rem] text-balance sm:text-[2.75rem] lg:text-[3.25rem]">
           <span className="text-ink-900">Отзывы наших покупателей, </span>
