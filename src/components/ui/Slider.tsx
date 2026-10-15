@@ -81,13 +81,13 @@ export function Slider({
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}
         onPointerLeave={endDrag}
-        className="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex snap-x snap-mandatory scroll-px-4 gap-5 overflow-x-auto pb-2 sm:scroll-px-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {children}
       </div>
 
       {scrollable && (
-        <div className="mt-6 flex items-center justify-end gap-3">
+        <div className="mx-auto mt-6 flex max-w-(--container-content) items-center justify-end gap-3 px-4 sm:px-6">
           <span className="mr-auto hidden text-sm text-ink-400 sm:block">{hint}</span>
           <ArrowButton direction="prev" disabled={atStart} onClick={() => scrollBy(-1)} />
           <ArrowButton direction="next" disabled={atEnd} onClick={() => scrollBy(1)} />

@@ -1,6 +1,7 @@
 import { SectionHeading } from '../ui/SectionHeading'
 import { photoUrl } from '../../lib/photos'
 import { ButtonLink } from '../ui/Button'
+import { PhotoGallery } from '../ui/Lightbox'
 import { Reveal } from '../ui/Reveal'
 import { contacts } from '../../data/contacts'
 
@@ -114,23 +115,13 @@ export function Delivery({ withPhotos = true }: { withPhotos?: boolean }) {
           </div>
 
           {withPhotos && gallery.length > 0 && (
-            <div
+            <PhotoGallery
+              photos={gallery}
               className={`mt-12 grid gap-4 ${
                 gallery.length === 1 ? '' : 'grid-cols-2 lg:grid-cols-4'
               }`}
-            >
-              {gallery.map((item) => (
-                <img
-                  key={item.file}
-                  src={photoUrl(item.file)}
-                  alt={item.alt}
-                  loading="lazy"
-                  className={`w-full rounded-panel object-cover ${
-                    gallery.length === 1 ? 'aspect-4/3 sm:aspect-16/9' : 'aspect-4/5'
-                  }`}
-                />
-              ))}
-            </div>
+              thumbClassName={gallery.length === 1 ? 'aspect-4/3 sm:aspect-16/9' : 'aspect-4/5'}
+            />
           )}
 
           <div className="mt-14">

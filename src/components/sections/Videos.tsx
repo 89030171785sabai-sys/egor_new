@@ -1,5 +1,6 @@
 import { ButtonLink } from '../ui/Button'
 import { Reveal } from '../ui/Reveal'
+import { Slider } from '../ui/Slider'
 import { VideoPlayer } from '../ui/VideoPlayer'
 import { contacts } from '../../data/contacts'
 
@@ -16,18 +17,15 @@ interface Clip {
  * `public/video` and `public/photos`.
  */
 const clips: Clip[] = [
-  {
-    file: 'tehprotsess.mp4',
-    poster: 'tehprotsess-poster.webp',
-    title: 'Технический процесс: сварка швов и зачистка нержавеющей стали',
-    shape: 'upright',
-  },
-  {
-    file: 'bystrosemnaya-otdelka.mp4',
-    poster: 'bystrosemnaya-otdelka-poster.webp',
-    title: 'Быстросъёмная отделка внутри чана',
-    shape: 'upright',
-  },
+  { file: 'otzyv-pokupatelya.mp4', poster: 'otzyv-pokupatelya-poster.webp', title: 'Отзыв покупателя', shape: 'upright' },
+  { file: 'otzyv-klienta.mp4', poster: 'otzyv-klienta-poster.webp', title: 'Отзыв клиента', shape: 'upright' },
+  { file: 'videootzyv-zima.mp4', poster: 'videootzyv-zima-poster.webp', title: 'Видеоотзыв клиента: чан зимой', shape: 'upright' },
+  { file: 'chan-posle-3-let.mp4', poster: 'chan-posle-3-let-poster.webp', title: 'Банный чан после трёх лет эксплуатации', shape: 'upright' },
+  { file: 'krasota-zimoy-noch.mp4', poster: 'krasota-zimoy-noch-poster.webp', title: 'Красота, когда есть собственный банный чан HOTTUB', shape: 'upright' },
+  { file: 'obzor-topki.mp4', poster: 'obzor-topki-poster.webp', title: 'Обзор топки чана с боковой приварной печью', shape: 'upright' },
+  { file: 'tehprotsess.mp4', poster: 'tehprotsess-poster.webp', title: 'Технический процесс: сварка швов и зачистка нержавеющей стали', shape: 'upright' },
+  { file: 'bystrosemnaya-otdelka.mp4', poster: 'bystrosemnaya-otdelka-poster.webp', title: 'Быстросъёмная отделка внутри чана', shape: 'upright' },
+  { file: 'proizvodstvo.mp4', poster: 'proizvodstvo-poster.webp', title: 'Наше производство: от раскроя стали до сборки', shape: 'wide' },
 ]
 
 const rutube = contacts.social.find((item) => item.id === 'rutube')
@@ -43,32 +41,27 @@ export function Videos() {
         </h2>
       </div>
 
-      {/* Centred while the row fits, swiped sideways once it does not. */}
-      <div className="mt-12 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        <div className="mx-auto flex w-max gap-5 px-4 sm:px-6">
-          {clips.map((clip, index) => (
-            <Reveal
-              key={clip.file}
-              delay={index * 60}
-              className={`shrink-0 ${
-                clip.shape === 'upright' ? 'w-64 sm:w-72' : 'w-[85vw] sm:w-[34rem]'
-              }`}
-            >
-              <figure>
-                <VideoPlayer
-                  file={clip.file}
-                  poster={clip.poster}
-                  label={clip.title}
-                  className={clip.shape === 'upright' ? 'aspect-9/16' : 'aspect-video'}
-                />
-                <figcaption className="mt-3 text-sm leading-snug text-ink-500">
-                  {clip.title}
-                </figcaption>
-              </figure>
-            </Reveal>
-          ))}
-        </div>
-      </div>
+      <Slider label="Видео" className="mt-12" hint="Листайте видео">
+        {clips.map((clip, index) => (
+          <Reveal
+            key={clip.file}
+            delay={Math.min(index, 4) * 60}
+            className={`shrink-0 snap-start first:ml-4 last:mr-4 sm:first:ml-6 sm:last:mr-6 ${
+              clip.shape === 'upright' ? 'w-60 sm:w-64' : 'w-[85vw] sm:w-[30rem]'
+            }`}
+          >
+            <figure>
+              <VideoPlayer
+                file={clip.file}
+                poster={clip.poster}
+                label={clip.title}
+                className={clip.shape === 'upright' ? 'aspect-9/16' : 'aspect-video'}
+              />
+              <figcaption className="mt-3 text-sm leading-snug text-ink-500">{clip.title}</figcaption>
+            </figure>
+          </Reveal>
+        ))}
+      </Slider>
 
       {rutube && (
         <div className="mt-10 flex justify-center px-4">
