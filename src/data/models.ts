@@ -221,7 +221,7 @@ export const models: Model[] = [
     stove: 'Разборная, жаропрочная сталь 09Г2С',
     bowlShape: 'rolled',
     theme: 'sand',
-    photos: { card: 'valtsovavich-card.webp', cardTop: '#f6f7f9', hero: 'valtsovavich-hero.webp', heroWidth: 0.701, heroTone: '#3f4c5a' },
+    photos: { banner: 'valtsovavich-banner.webp', card: 'valtsovavich-card.webp', cardTop: '#f6f7f9', hero: 'valtsovavich-hero.webp', heroWidth: 0.701, heroTone: '#3f4c5a' },
     offers: [
       { cm: 175, price: 135000 },
       { cm: 210, price: 159000 },
