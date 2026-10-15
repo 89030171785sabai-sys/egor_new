@@ -38,12 +38,20 @@ const gallery: Array<{ file: string; alt: string }> = [
   },
 ]
 
-export function Delivery() {
+/**
+ * `withImages` shows the map and the dispatch photographs. The home page asks
+ * for the section without them; the delivery page keeps them.
+ */
+export function Delivery({ withImages = true }: { withImages?: boolean }) {
   return (
     <section id="delivery" className="scroll-mt-28 py-20 lg:py-28">
       <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
         <div className="rounded-panel bg-sand-50 p-6 ring-1 ring-sand-200 sm:p-10">
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:items-center">
+          <div
+            className={`grid gap-10 lg:items-center ${
+              withImages ? 'lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]' : ''
+            }`}
+          >
             <div>
               <SectionHeading
                 eyebrow="Доставка и оплата"
@@ -63,16 +71,18 @@ export function Delivery() {
               </dl>
             </div>
 
-            {/* On a phone the labels would shrink to nothing, so the map keeps a
-                readable width and is swiped sideways instead. */}
-            <div className="-mx-6 overflow-x-auto px-6 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              <img
-                src={photoUrl('delivery-map.webp')}
-                alt="Карта России: площадка в Москве, производство в Коркино, доставка по всей стране"
-                loading="lazy"
-                className="aspect-[1500/827] min-w-[38rem] rounded-panel object-cover ring-1 ring-sand-200 sm:min-w-0 sm:w-full"
-              />
-            </div>
+            {withImages && (
+              /* On a phone the labels would shrink to nothing, so the map keeps a
+                 readable width and is swiped sideways instead. */
+              <div className="-mx-6 overflow-x-auto px-6 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                <img
+                  src={photoUrl('delivery-map.webp')}
+                  alt="Карта России: площадка в Москве, производство в Коркино, доставка по всей стране"
+                  loading="lazy"
+                  className="aspect-[1500/827] min-w-[38rem] rounded-panel object-cover ring-1 ring-sand-200 sm:min-w-0 sm:w-full"
+                />
+              </div>
+            )}
           </div>
 
           <div className="mt-12 grid gap-6 sm:grid-cols-2">
@@ -95,7 +105,7 @@ export function Delivery() {
             ))}
           </div>
 
-          {gallery.length > 0 && (
+          {withImages && gallery.length > 0 && (
             <div
               className={`mt-12 grid gap-4 ${
                 gallery.length === 1 ? '' : 'grid-cols-2 lg:grid-cols-4'

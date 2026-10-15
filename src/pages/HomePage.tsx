@@ -35,7 +35,7 @@ export function HomePage() {
       <Production withVideo />
       <Process />
       <Guarantees />
-      <Delivery />
+      <Delivery withImages={false} />
       <Reviews />
       <Videos />
       <Contacts />
