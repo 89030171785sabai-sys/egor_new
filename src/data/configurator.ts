@@ -33,6 +33,11 @@ export interface ConfigOption {
   note?: string
   /** Surcharge in roubles, or null while the price is unknown. */
   price: number | null
+  /**
+   * Sizes the price is valid for. The client's list quotes lids and covers for
+   * 175 and 210 only; on any other size the option is «по запросу».
+   */
+  sizes?: SizeCm[]
   /** Shown instead of a price when the option is part of the base kit. */
   included?: boolean
   /** What this option changes in the preview. */
@@ -77,61 +82,25 @@ export function basePrice(model: Model, cm: SizeCm): number | null {
 export const claddingGroup: ConfigGroup = {
   id: 'cladding',
   label: 'Отделка снаружи',
-  hint: 'Чем закрыт корпус чаши с внешней стороны.',
   kind: 'single',
   options: [
-    {
-      id: 'standard',
-      label: 'Стандарт — без обшивки',
-      note: 'Открытая нержавейка, входит в базовую комплектацию',
-      price: 0,
-      included: true,
-      visual: { cladding: 'none' },
-    },
-    {
-      id: 'larch',
-      label: 'Обшивка лиственницей',
-      note: 'Тёплый светлый тон, обработка маслом',
-      price: null,
-      visual: { cladding: 'larch' },
-    },
-    {
-      id: 'thermo',
-      label: 'Термодерево',
-      note: 'Тёмный тон, устойчиво к влаге и перепадам',
-      price: null,
-      visual: { cladding: 'thermo' },
-    },
-    {
-      id: 'painted',
-      label: 'Термостойкая покраска',
-      note: 'Матовый чёрный по металлу',
-      price: null,
-      visual: { cladding: 'painted' },
-    },
+    { id: 'standard', label: 'Стандарт — без обшивки', price: 0, included: true, visual: { cladding: 'none' } },
+    { id: 'larch', label: 'Обшивка лиственницей', price: null, visual: { cladding: 'larch' } },
+    { id: 'thermo', label: 'Термодерево', price: null, visual: { cladding: 'thermo' } },
+    { id: 'painted', label: 'Термостойкая покраска', price: null, visual: { cladding: 'painted' } },
   ],
 }
 
+/** Ladders and steps from the client's price list. */
 export const ladderGroup: ConfigGroup = {
   id: 'ladder',
   label: 'Лестница',
   kind: 'single',
   options: [
-    {
-      id: 'metal',
-      label: 'Металлокаркас с площадкой и поручнем',
-      note: 'Входит в комплект большинства моделей',
-      price: 0,
-      included: true,
-      visual: { ladder: 'metal' },
-    },
-    {
-      id: 'wood',
-      label: 'Деревянные ступени',
-      note: 'Ступени из лиственницы на том же каркасе',
-      price: null,
-      visual: { ladder: 'wood' },
-    },
+    { id: 'metal', label: 'Как в комплекте модели', price: 0, included: true, visual: { ladder: 'metal' } },
+    { id: 'straight', label: 'Лестница прямая металлическая', price: 10000, visual: { ladder: 'metal' } },
+    { id: 'frame', label: 'Лестница металлокаркас с площадкой', price: 16500, visual: { ladder: 'metal' } },
+    { id: 'hangers', label: 'Лестница металлокаркас с вешалками', price: 23500, visual: { ladder: 'metal' } },
     { id: 'none', label: 'Без лестницы', price: 0, visual: { ladder: 'none' } },
   ],
 }
@@ -141,46 +110,24 @@ export const chimneyGroup: ConfigGroup = {
   label: 'Дымоход',
   kind: 'single',
   options: [
-    {
-      id: 'steel',
-      label: 'Дымоход 3 м с защитным экраном',
-      note: 'Входит в комплект',
-      price: 0,
-      included: true,
-      visual: { chimney: 'steel' },
-    },
-    {
-      id: 'sandwich',
-      label: 'Сэндвич-дымоход 3 м',
-      note: 'Двойная стенка с утеплителем — наружная труба не обжигает',
-      price: null,
-      visual: { chimney: 'sandwich' },
-    },
+    { id: 'steel', label: 'Дымоход 3 м с защитным экраном', price: 0, included: true, visual: { chimney: 'steel' } },
+    { id: 'sandwich', label: 'Сэндвич-дымоход 3 м', price: null, visual: { chimney: 'sandwich' } },
     { id: 'none', label: 'Без дымохода', price: 0, visual: { chimney: 'none' } },
   ],
 }
 
+/** Lids and covers are quoted for 175 and 210 only. */
+const lidSizes: SizeCm[] = [175, 210]
+
 export const lidGroup: ConfigGroup = {
   id: 'lid',
   label: 'Крышка',
-  hint: 'Держит температуру между заходами и защищает чашу от осадков.',
   kind: 'single',
   options: [
     { id: 'none', label: 'Без крышки', price: 0, visual: { lid: false } },
-    {
-      id: 'cover',
-      label: 'Влагостойкая крышка',
-      note: 'Лёгкая, снимается вручную',
-      price: null,
-      visual: { lid: true },
-    },
-    {
-      id: 'insulated',
-      label: 'Утеплённая крышка',
-      note: 'Дольше держит температуру',
-      price: null,
-      visual: { lid: true },
-    },
+    { id: 'wood', label: 'Крышка из дерева', price: 16000, sizes: lidSizes, visual: { lid: true } },
+    { id: 'cover', label: 'Чехол мягкий', price: 9500, sizes: lidSizes, visual: { lid: true } },
+    { id: 'thermo', label: 'Термокрышка жёсткая', price: 18500, sizes: lidSizes, visual: { lid: true } },
   ],
 }
 
@@ -190,31 +137,18 @@ export const extrasGroup: ConfigGroup = {
   hint: 'Можно выбрать несколько.',
   kind: 'multi',
   options: [
-    {
-      id: 'light',
-      label: 'Подсветка чаши',
-      note: 'Влагозащищённая, с пультом',
-      price: null,
-      visual: { light: true },
-    },
-    {
-      id: 'table',
-      label: 'Центральный стол',
-      note: 'Съёмный, на горловину печи',
-      price: null,
-      visual: { table: true },
-    },
-    {
-      id: 'hydro',
-      label: 'Гидромассаж',
-      note: 'Форсунки по периметру чаши',
-      price: null,
-      visual: { hydro: true },
-    },
-    { id: 'headrests', label: 'Подголовники', note: 'Комплект на всю посадку', price: null },
-    { id: 'cover-case', label: 'Защитный чехол', note: 'На межсезонное хранение', price: null },
-    { id: 'thermometer', label: 'Термометр', price: null },
-    { id: 'drain', label: 'Слив с краном', note: 'Быстрый слив воды после сеанса', price: null },
+    { id: 'light', label: 'Подсветка безопасная', price: 10500, visual: { light: true } },
+    { id: 'light-outer', label: 'Внешняя подсветка', price: 33000 },
+    { id: 'table', label: 'Стол по центру', price: 12500, visual: { table: true } },
+    { id: 'table-side', label: 'Боковой стол', price: 5500 },
+    { id: 'headrest', label: 'Подголовник', price: 15000 },
+    { id: 'step', label: 'Ступенька в чан', price: 8000 },
+    { id: 'jacuzzi', label: 'Джакузи', price: 45000 },
+    { id: 'hydro', label: 'Гидро / аэро массаж', price: 169000, visual: { hydro: true } },
+    { id: 'burner', label: 'Газовая горелка 100 кВт', price: 24000 },
+    { id: 'thermo-welded', label: 'Термометр приварной', price: 6000 },
+    { id: 'thermo-float', label: 'Термометр поплавок + часы', price: 5000 },
+    { id: 'emblem', label: 'Эмблема', price: 6000 },
   ],
 }
 
@@ -225,6 +159,10 @@ export const optionGroups: ConfigGroup[] = [
   lidGroup,
   extrasGroup,
 ]
+
+/** The surcharge of an option at a size, or null when it has to be quoted. */
+export const optionPrice = (option: ConfigOption, size: SizeCm): number | null =>
+  option.sizes && !option.sizes.includes(size) ? null : option.price
 
 /** Default selection per group — the base kit as the catalogue describes it. */
 export const defaultSelection: Record<string, string[]> = {

@@ -6,6 +6,7 @@ import {
   diameterOf,
   modelVisual,
   optionGroups,
+  optionPrice,
   type ConfigGroup,
   type ConfigOption,
   type TubVisual,
@@ -66,8 +67,8 @@ export function Configurator() {
   const offer = offerFor(model, size)
   const base = basePrice(model, size)
   const promoHere = isPromo(model, size)
-  const surcharge = chosen.reduce((sum, option) => sum + (option.price ?? 0), 0)
-  const pending = chosen.filter((option) => option.price === null)
+  const surcharge = chosen.reduce((sum, option) => sum + (optionPrice(option, size) ?? 0), 0)
+  const pending = chosen.filter((option) => optionPrice(option, size) === null)
   const total = base === null ? null : base + surcharge
 
   const choose = (group: ConfigGroup, optionId: string) =>
@@ -177,6 +178,7 @@ export function Configurator() {
                 <OptionRow
                   key={option.id}
                   option={option}
+                  price={optionPrice(option, size)}
                   kind={group.kind}
                   active={(selection[group.id] ?? []).includes(option.id)}
                   onSelect={() => choose(group, option.id)}
@@ -280,11 +282,14 @@ function ModelTile({
 
 function OptionRow({
   option,
+  price,
   kind,
   active,
   onSelect,
 }: {
   option: ConfigOption
+  /** Surcharge at the chosen size; null when it has to be quoted. */
+  price: number | null
   kind: ConfigGroup['kind']
   active: boolean
   onSelect: () => void
@@ -326,12 +331,12 @@ function OptionRow({
       <span className="shrink-0 text-sm whitespace-nowrap">
         {option.included ? (
           <span className="text-ink-400">в комплекте</span>
-        ) : option.price === null ? (
+        ) : price === null ? (
           <span className="text-ink-400">по запросу</span>
-        ) : option.price === 0 ? (
+        ) : price === 0 ? (
           <span className="text-ink-400">—</span>
         ) : (
-          <span className="font-medium">+ {formatPrice(option.price)}</span>
+          <span className="font-medium">+ {formatPrice(price)}</span>
         )}
       </span>
     </button>
