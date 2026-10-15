@@ -377,7 +377,7 @@ function ModelDetail({ model }: { model: Model }) {
 
               {model.video && <ModelVideoBlock model={model} video={model.video} />}
 
-              {(model.photos?.banner || model.photos?.hero) && (
+              {(model.photos?.banner || model.photos?.scene || model.photos?.hero) && (
                 <div className="mt-10 grid gap-5 sm:grid-cols-2">
                   {model.photos?.banner && (
                     <img
@@ -387,10 +387,14 @@ function ModelDetail({ model }: { model: Model }) {
                       className="aspect-4/5 w-full rounded-panel object-cover"
                     />
                   )}
-                  {model.photos?.hero && (
+                  {(model.photos?.scene ?? model.photos?.hero) && (
                     <img
-                      src={photoUrl(model.photos.hero)}
-                      alt={`Банный чан «${model.name}» в студии`}
+                      src={photoUrl((model.photos?.scene ?? model.photos?.hero)!)}
+                      alt={
+                        model.photos?.scene
+                          ? `${model.name} во дворе дома`
+                          : `Банный чан «${model.name}» в студии`
+                      }
                       loading="lazy"
                       className="aspect-4/5 w-full rounded-panel object-cover"
                     />

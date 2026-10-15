@@ -85,6 +85,8 @@ export interface ModelPhotos {
    * stays in frame.
    */
   banner?: string
+  /** Second scene on the model page, in place of the studio hero shot. */
+  scene?: string
   /** Product shot on the catalogue card — the studio set on a white sweep. */
   card?: string
   /**
@@ -316,7 +318,7 @@ export const models: Model[] = [
     bowlShape: 'faceted',
     theme: 'terracotta',
     badge: 'Решение 4 в 1',
-    photos: { banner: 'oniks-pro-banner.webp', card: 'oniks-pro-card.webp', cardTop: '#f2f4f6', hero: 'oniks-pro-hero.webp', heroWidth: 0.663, heroTone: '#692713' },
+    photos: { scene: 'oniks-pro-scene.webp', banner: 'oniks-pro-banner.webp', card: 'oniks-pro-card.webp', cardTop: '#f2f4f6', hero: 'oniks-pro-hero.webp', heroWidth: 0.663, heroTone: '#692713' },
     video: { src: 'oniks-pro-obzor.mp4', poster: 'oniks-pro-obzor-poster.webp' },
     offers: [
       { cm: 210, price: 294000 },
