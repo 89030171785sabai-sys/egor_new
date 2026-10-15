@@ -4,8 +4,7 @@ import { NotFoundPage } from './NotFoundPage'
 import { ButtonLink } from '../components/ui/Button'
 import { ModelShot } from '../components/ui/ModelShot'
 import { StoveShot } from '../components/ui/StoveShot'
-import { SectionHeading } from '../components/ui/SectionHeading'
-import { Reveal } from '../components/ui/Reveal'
+import { ModelRail } from '../components/sections/ModelRail'
 import { LeadForm } from '../components/forms/LeadForm'
 import { heatingForModel } from '../data/heating'
 import { useSeo } from '../lib/seo'
@@ -20,7 +19,6 @@ import {
   formatPrice,
   formatPriceRange,
   modelBySlug,
-  models,
   type Model,
   type ModelVideo,
 } from '../data/models'
@@ -231,18 +229,81 @@ function HowItHeats({ model }: { model: Model }) {
  * The review of the set, played from the site's own server. The file is only
  * fetched when someone presses play, so the page weighs the same without it.
  */
-function ModelVideoBlock({ model, video }: { model: Model; video: ModelVideo }) {
+function ModelVideoBlock({
+  model,
+  video,
+  photos,
+}: {
+  model: Model
+  video: ModelVideo
+  photos: Array<{ file: string; alt: string }>
+}) {
+  // An upright clip beside a pair of upright photographs: all three in one
+  // row, cut to one shape, rather than a lone narrow video above a grid.
+  if (video.portrait) {
+    return (
+      <section className="mt-14">
+        <h2 className="text-2xl font-bold text-navy-700">Видеообзор комплекта</h2>
+        <div className="mt-6 grid grid-cols-3 gap-3 sm:gap-5">
+          <VideoPlayer
+            file={video.src}
+            poster={video.poster}
+            label={`Видеообзор комплекта: ${model.name}`}
+            className="aspect-2/3"
+          />
+          {photos.slice(0, 2).map((photo) => (
+            <img
+              key={photo.file}
+              src={photoUrl(photo.file)}
+              alt={photo.alt}
+              loading="lazy"
+              className="aspect-2/3 w-full rounded-panel object-cover"
+            />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  // A wide clip takes two columns, the photographs one each, all one height:
+  // the clip sets the height and the photographs are cut to fit it.
   return (
     <section className="mt-14">
       <h2 className="text-2xl font-bold text-navy-700">Видеообзор комплекта</h2>
-      <VideoPlayer
-        file={video.src}
-        poster={video.poster}
-        label={`Видеообзор комплекта: ${model.name}`}
-        className={video.portrait ? 'mx-auto mt-6 aspect-9/16 max-w-xs' : 'mt-6 aspect-video'}
-      />
+      <div className="mt-6 grid grid-cols-[2fr_1fr_1fr] gap-3 sm:gap-5">
+        <VideoPlayer
+          file={video.src}
+          poster={video.poster}
+          label={`Видеообзор комплекта: ${model.name}`}
+          className="aspect-video"
+        />
+        {photos.slice(0, 2).map((photo) => (
+          <div key={photo.file} className="relative overflow-hidden rounded-panel">
+            <img
+              src={photoUrl(photo.file)}
+              alt={photo.alt}
+              loading="lazy"
+              className="absolute inset-0 size-full object-cover"
+            />
+          </div>
+        ))}
+      </div>
     </section>
   )
+}
+
+/** The two photographs shown under a model's heating block. */
+function galleryPhotos(model: Model): Array<{ file: string; alt: string }> {
+  const list: Array<{ file: string; alt: string }> = []
+  if (model.photos?.banner) list.push({ file: model.photos.banner, alt: `${model.name} на участке` })
+  const second = model.photos?.scene ?? model.photos?.hero
+  if (second) {
+    list.push({
+      file: second,
+      alt: model.photos?.scene ? `${model.name} во дворе дома` : `Банный чан «${model.name}» в студии`,
+    })
+  }
+  return list
 }
 
 function ModelDetail({ model }: { model: Model }) {
@@ -251,8 +312,6 @@ function ModelDetail({ model }: { model: Model }) {
     description: model.seoDescription,
     path: `/${model.slug}`,
   })
-
-  const others = models.filter((other) => other.slug !== model.slug)
 
   return (
     <>
@@ -380,30 +439,22 @@ function ModelDetail({ model }: { model: Model }) {
 
               <HowItHeats model={model} />
 
-              {model.video && <ModelVideoBlock model={model} video={model.video} />}
+              {model.video && (
+                <ModelVideoBlock model={model} video={model.video} photos={galleryPhotos(model)} />
+              )}
 
-              {(model.photos?.banner || model.photos?.scene || model.photos?.hero) && (
+              {/* Without an upright clip the photographs stand on their own. */}
+              {!model.video && galleryPhotos(model).length > 0 && (
                 <div className="mt-10 grid gap-5 sm:grid-cols-2">
-                  {model.photos?.banner && (
+                  {galleryPhotos(model).map((photo) => (
                     <img
-                      src={photoUrl(model.photos.banner)}
-                      alt={`${model.name} на участке`}
+                      key={photo.file}
+                      src={photoUrl(photo.file)}
+                      alt={photo.alt}
                       loading="lazy"
                       className="aspect-4/5 w-full rounded-panel object-cover"
                     />
-                  )}
-                  {(model.photos?.scene ?? model.photos?.hero) && (
-                    <img
-                      src={photoUrl((model.photos?.scene ?? model.photos?.hero)!)}
-                      alt={
-                        model.photos?.scene
-                          ? `${model.name} во дворе дома`
-                          : `Банный чан «${model.name}» в студии`
-                      }
-                      loading="lazy"
-                      className="aspect-4/5 w-full rounded-panel object-cover"
-                    />
-                  )}
+                  ))}
                 </div>
               )}
             </div>
@@ -430,32 +481,13 @@ function ModelDetail({ model }: { model: Model }) {
         </div>
       </section>
 
-      <section className="pb-10 lg:pb-14">
-        <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
-          <SectionHeading eyebrow="Другие модели" title="Сравните с остальными" />
-
-          <div className="mt-10 flex snap-x gap-5 overflow-x-auto pb-2 [scrollbar-width:none] lg:grid lg:grid-cols-6 lg:overflow-visible [&::-webkit-scrollbar]:hidden">
-            {others.map((other, index) => (
-              <Reveal key={other.slug} delay={index * 60} className="w-44 shrink-0 snap-start sm:w-52 lg:w-auto">
-                <Link
-                  to={`/${other.slug}`}
-                  className="group block h-full overflow-hidden rounded-panel bg-white transition-shadow hover:shadow-lg hover:shadow-ink-900/10"
-                >
-                  <ModelShot model={other} slot="card" ratio="10/9" className="w-full" />
-                  <span className="block p-4">
-                    <span className="block font-semibold group-hover:text-brand-600">
-                      {other.name}
-                    </span>
-                    <span className="mt-1 block text-sm text-ink-400">
-                      Нагрев {formatHours(other.heatingHours)}
-                    </span>
-                  </span>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ModelRail
+        excludeSlug={model.slug}
+        eyebrow="Другие модели"
+        title="Сравните с остальными"
+        subtitle="Листайте вбок: у каждой модели своя печь, время нагрева и размеры."
+        withFilter={false}
+      />
     </>
   )
 }

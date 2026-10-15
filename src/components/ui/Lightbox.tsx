@@ -95,7 +95,7 @@ export function PhotoGallery({
             src={photoUrl(current.file)}
             alt={current.alt}
             onClick={(event) => event.stopPropagation()}
-            className="max-h-full max-w-full rounded-card object-contain shadow-2xl"
+            className="max-h-[calc(100dvh-5rem)] max-w-[calc(100vw-2rem)] rounded-card object-contain shadow-2xl sm:max-h-[calc(100dvh-6rem)] sm:max-w-[calc(100vw-10rem)]"
           />
 
           <button

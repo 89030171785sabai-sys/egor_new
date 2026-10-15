@@ -25,13 +25,26 @@ import {
  * to do next. The row runs off the edge of the screen on purpose: a partly
  * visible tile is what says it can be swiped.
  */
-export function ModelRail() {
+export function ModelRail({
+  excludeSlug,
+  eyebrow = 'Каталог',
+  title = 'Серии чанов HOTTUB',
+  subtitle = `Семь моделей: своя печь, своё время нагрева и своя марка стали. Цены от ${formatPrice(priceFrom)} за полный комплект — итоговую считаем под ваш участок.`,
+  withFilter = true,
+}: {
+  /** A model page leaves its own model out of the row. */
+  excludeSlug?: string
+  eyebrow?: string
+  title?: string
+  subtitle?: string
+  withFilter?: boolean
+} = {}) {
   const [size, setSize] = useState<SizeCm | 'all'>('all')
 
-  const shown = useMemo(
-    () => (size === 'all' ? models : models.filter((model) => modelSizes(model).includes(size))),
-    [size],
-  )
+  const shown = useMemo(() => {
+    const pool = excludeSlug ? models.filter((model) => model.slug !== excludeSlug) : models
+    return size === 'all' ? pool : pool.filter((model) => modelSizes(model).includes(size))
+  }, [size, excludeSlug])
 
   const rail = useRef<HTMLDivElement>(null)
   const [reach, setReach] = useState({ back: false, on: false })
@@ -63,18 +76,14 @@ export function ModelRail() {
   }
 
   return (
-    <section id="catalog" className="scroll-mt-28 py-10 lg:py-14">
+    <section id={excludeSlug ? undefined : 'catalog'} className="scroll-mt-28 py-10 lg:py-14">
       <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
-        <SectionHeading
-          eyebrow="Каталог"
-          title="Серии чанов HOTTUB"
-          subtitle={`Семь моделей: своя печь, своё время нагрева и своя марка стали. Цены от ${formatPrice(priceFrom)} за полный комплект — итоговую считаем под ваш участок.`}
-          align="center"
-        />
+        <SectionHeading eyebrow={eyebrow} title={title} subtitle={subtitle} align="center" />
 
         <div
           role="radiogroup"
           aria-label="Фильтр по размеру чаши"
+          hidden={!withFilter}
           className="mt-8 flex flex-wrap justify-center gap-2"
         >
           <FilterChip active={size === 'all'} onClick={() => setSize('all')}>
