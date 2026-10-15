@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { Slider } from '../ui/Slider'
 import { SectionHeading } from '../ui/SectionHeading'
 import { PlaceholderImage } from '../ui/PlaceholderImage'
+import { photoUrl } from '../../lib/photos'
 import { models, modelSizes, sizeTier, type Model } from '../../data/models'
 
 /**
@@ -31,20 +32,36 @@ export function ModelShowcase() {
 function Banner({ model, withCopy }: { model: Model; withCopy: boolean }) {
   return (
     <article
-      className="relative isolate w-[85vw] shrink-0 snap-start overflow-hidden rounded-panel first:ml-4 last:mr-4 sm:w-[70vw] lg:w-[58rem] sm:first:ml-6 sm:last:mr-6"
-      style={{ aspectRatio: '16/10' }}
+      className="relative isolate w-[78vw] shrink-0 snap-start overflow-hidden rounded-panel first:ml-4 last:mr-4 sm:w-[22rem] lg:w-[26rem] sm:first:ml-6 sm:last:mr-6"
+      style={{ aspectRatio: '4/5' }}
     >
-      <PlaceholderImage
-        tone={model.theme}
-        ratio="auto"
-        silhouette={false}
-        className="absolute inset-0 -z-10 size-full"
-        label={`${model.name} на участке`}
-      />
+      {model.photos?.banner ? (
+        <>
+          <img
+            src={photoUrl(model.photos.banner)}
+            alt={`${model.name} на участке`}
+            loading="lazy"
+            className="absolute inset-0 -z-10 size-full object-cover"
+          />
+          {/* Небо сверху и плитка снизу светлее белого шрифта — подложка держит текст. */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 -z-10 bg-gradient-to-b from-ink-900/55 via-transparent via-40% to-ink-900/60"
+          />
+        </>
+      ) : (
+        <PlaceholderImage
+          tone={model.theme}
+          ratio="auto"
+          silhouette={false}
+          className="absolute inset-0 -z-10 size-full"
+          label={`${model.name} на участке`}
+        />
+      )}
 
       <div className="flex h-full flex-col justify-between p-6 sm:p-8">
         <div className="flex flex-wrap items-start justify-between gap-6">
-          <h3 className="font-display text-[2.5rem] text-white sm:text-[3.25rem] lg:text-[4rem]">
+          <h3 className="font-display text-[2.5rem] text-white sm:text-[2.75rem] lg:text-[3rem]">
             {model.name}
           </h3>
 

@@ -73,6 +73,12 @@ export const promo = {
 export interface ModelPhotos {
   /** Full-bleed shot behind the model page's opening screen. */
   hero?: string
+  /**
+   * The tub in a real setting, for the home page's model range. Shot upright,
+   * cut to the 4:5 shape of the slide so the whole tub — chimney to base —
+   * stays in frame.
+   */
+  banner?: string
   /** Product shot on the catalogue card — the studio set on a white sweep. */
   card?: string
   /**
@@ -188,7 +194,7 @@ export const models: Model[] = [
     stove: 'Стационарная, чугунный колосник и выдвижной зольный ящик',
     bowlShape: 'faceted',
     theme: 'ink',
-    photos: { card: 'cherny-brilliant-card.webp', cardTop: '#eeeff1', hero: 'cherny-brilliant-hero.webp', heroWidth: 0.517, heroTone: '#441403' },
+    photos: { banner: 'cherny-brilliant-banner.webp', card: 'cherny-brilliant-card.webp', cardTop: '#eeeff1', hero: 'cherny-brilliant-hero.webp', heroWidth: 0.517, heroTone: '#441403' },
     offers: [
       { cm: 175, price: 133000 },
       { cm: 210, price: 155500 },
