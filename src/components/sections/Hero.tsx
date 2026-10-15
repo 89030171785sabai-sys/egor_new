@@ -3,9 +3,10 @@ import { photoUrl } from '../../lib/photos'
 import { formatPrice, priceFrom } from '../../data/models'
 
 const promises = [
-  'Сталь служит до 50 лет',
-  'Доставка по всей РФ',
-  '2 подарка при заказе',
+  'Ответим за 1 минуту',
+  'Подберём модель за 30 минут',
+  'Рассчитаем стоимость за 5 минут',
+  'Доставим прямо на участок',
 ]
 
 export function Hero() {
@@ -40,23 +41,19 @@ export function Hero() {
 
       <div className="mx-auto w-full max-w-(--container-content) px-4 pt-32 pb-16 sm:px-6 lg:pt-40 lg:pb-28">
         <div className="mx-auto max-w-3xl text-center">
-          <h1 className="font-display text-[2.5rem] text-white sm:text-[3.25rem] lg:text-[4.25rem]">
-            Банный чан под ключ{' '}
-            {/* The price is the punchline — it never breaks away from the dash. */}
-            <span className="whitespace-nowrap">— от {formatPrice(priceFrom)}</span>
+          <h1 className="font-display text-[2.25rem] text-white sm:text-[2.75rem] lg:text-[3rem]">
+            Банные чаны от производителя
+            <br />
+            под ключ по всей России
           </h1>
 
-          <p className="mx-auto mt-6 max-w-3xl text-base leading-relaxed text-white/85 sm:text-lg">
-            В собственном цеху полного цикла —{' '}
-            <strong className="font-semibold text-white">
-              изготовим и доставим под ключ <span className="whitespace-nowrap">за 8 дней</span>
-            </strong>
-            .{/* Два предложения — две строки; на узком экране текст течёт сам. */}
-            <br className="hidden lg:inline" /> Начинаем работу с предоплаты всего{' '}
-            <strong className="font-semibold text-white">10%</strong> — работаем по договору.
+          <p className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-white/90 sm:text-xl">
+            <span className="whitespace-nowrap">От {formatPrice(priceFrom)}</span> ·{' '}
+            <span className="whitespace-nowrap">от 8 дней</span> ·{' '}
+            <span className="whitespace-nowrap">гарантия 13 лет</span>
           </p>
 
-          <ul className="mt-8 flex flex-wrap justify-center gap-2">
+          <ul className="mx-auto mt-8 flex max-w-2xl flex-wrap justify-center gap-2">
             {promises.map((promise) => (
               <li
                 key={promise}
