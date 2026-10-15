@@ -21,15 +21,15 @@ export function ModelShowcase() {
       </div>
 
       <Slider label="Модели в интерьере" className="mt-12">
-        {models.map((model, index) => (
-          <Banner key={model.slug} model={model} withCopy={index === 0} />
+        {models.map((model) => (
+          <Banner key={model.slug} model={model} />
         ))}
       </Slider>
     </section>
   )
 }
 
-function Banner({ model, withCopy }: { model: Model; withCopy: boolean }) {
+function Banner({ model }: { model: Model }) {
   return (
     <article
       className="relative isolate w-[78vw] shrink-0 snap-start overflow-hidden rounded-panel first:ml-4 last:mr-4 sm:w-[22rem] lg:w-[26rem] sm:first:ml-6 sm:last:mr-6"
@@ -60,17 +60,9 @@ function Banner({ model, withCopy }: { model: Model; withCopy: boolean }) {
       )}
 
       <div className="flex h-full flex-col justify-between p-6 sm:p-8">
-        <div className="flex flex-wrap items-start justify-between gap-6">
-          <h3 className="font-display text-[2.5rem] text-white sm:text-[2.75rem] lg:text-[3rem]">
-            {model.name}
-          </h3>
-
-          {withCopy && (
-            <p className="max-w-xs text-sm leading-relaxed text-white/85 sm:text-base">
-              {model.accent}. {model.description}
-            </p>
-          )}
-        </div>
+        <h3 className="font-display text-[2.5rem] text-white sm:text-[2.75rem] lg:text-[3rem]">
+          {model.name}
+        </h3>
 
         <div className="flex flex-wrap items-center gap-3">
           <Link
