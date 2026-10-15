@@ -242,7 +242,7 @@ function ModelVideoBlock({
   // row, cut to one shape, rather than a lone narrow video above a grid.
   if (video.portrait) {
     return (
-      <section className="mt-14">
+      <section className="mx-auto max-w-4xl">
         <h2 className="text-2xl font-bold text-navy-700">Видеообзор комплекта</h2>
         <div className="mt-6 grid grid-cols-3 gap-3 sm:gap-5">
           <VideoPlayer
@@ -268,7 +268,7 @@ function ModelVideoBlock({
   // A wide clip takes two columns, the photographs one each, all one height:
   // the clip sets the height and the photographs are cut to fit it.
   return (
-    <section className="mt-14">
+    <section>
       <h2 className="text-2xl font-bold text-navy-700">Видеообзор комплекта</h2>
       <div className="mt-6 grid grid-cols-[2fr_1fr_1fr] gap-3 sm:gap-5">
         <VideoPlayer
@@ -439,10 +439,6 @@ function ModelDetail({ model }: { model: Model }) {
 
               <HowItHeats model={model} />
 
-              {model.video && (
-                <ModelVideoBlock model={model} video={model.video} photos={galleryPhotos(model)} />
-              )}
-
               {/* Without an upright clip the photographs stand on their own. */}
               {!model.video && galleryPhotos(model).length > 0 && (
                 <div className="mt-10 grid gap-5 sm:grid-cols-2">
@@ -480,6 +476,12 @@ function ModelDetail({ model }: { model: Model }) {
           </div>
         </div>
       </section>
+
+      {model.video && (
+        <div className="mx-auto max-w-(--container-content) px-4 pb-10 sm:px-6 lg:pb-14">
+          <ModelVideoBlock model={model} video={model.video} photos={galleryPhotos(model)} />
+        </div>
+      )}
 
       <ModelRail
         excludeSlug={model.slug}

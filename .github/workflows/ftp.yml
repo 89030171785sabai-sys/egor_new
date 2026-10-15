@@ -40,6 +40,8 @@ jobs:
         run: npm run build
         env:
           VITE_YANDEX_METRIKA_ID: ${{ secrets.YANDEX_METRIKA_ID }}
+          # Адрес приёма заявок (Google Apps Script). Пока не задан — формы в демо-режиме.
+          VITE_LEADS_ENDPOINT: ${{ secrets.LEADS_ENDPOINT }}
 
       # Пока доступы не заведены, шаг пропускается и сборка просто проверяется.
       - name: Загрузка на хостинг

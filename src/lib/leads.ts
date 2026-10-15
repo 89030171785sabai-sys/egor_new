@@ -35,11 +35,23 @@ export async function submitLead(lead: Lead): Promise<LeadResult> {
     return { ok: true }
   }
 
+  // A Google Apps Script web app does not answer the pre-flight request a JSON
+  // POST triggers, so the lead goes as plain text with no custom headers and
+  // the answer is opaque. A network failure is still reported; a script that
+  // rejected the row is not, which is why the script itself is kept trivial.
+  const toGoogleScript = /^https:\/\/script\.google(usercontent)?\.com\//.test(endpoint)
+  const body = JSON.stringify({ ...lead, sentAt: new Date().toISOString(), page: location.href })
+
   try {
+    if (toGoogleScript) {
+      await fetch(endpoint, { method: 'POST', mode: 'no-cors', body })
+      return { ok: true }
+    }
+
     const response = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...lead, sentAt: new Date().toISOString() }),
+      body,
     })
     if (!response.ok) return { ok: false, error: `HTTP ${response.status}` }
     return { ok: true }
