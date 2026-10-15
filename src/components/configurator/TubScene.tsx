@@ -7,12 +7,15 @@ import type { TubVisual } from '../../data/configurator'
 export type CameraView = 'outside' | 'inside'
 
 /**
- * Parametric 3D preview of the configured tub.
+ * Parametric 3D preview of the configured tub, shot like the studio photographs:
+ * a white sweep, soft light, a slow turntable.
  *
- * Nothing here is loaded from a file: the tub is built from primitives on every
- * change and the lighting comes from a generated room environment. That keeps
- * the page free of 3D assets — and, while the client has no photography yet,
- * it is the only honest way to show what a configuration looks like.
+ * Nothing is loaded from a file. The tub is built from exact geometry — an
+ * eight-sided bowl with its creases, a larch rim, the stove of the chosen
+ * layout — so every facet is straight and the two halves are identical, which a
+ * model generated from a single photograph cannot promise. Proportions are
+ * taken from the studio shots (bowl depth, base height, chimney height, all as
+ * shares of the diameter) and scale with the chosen size.
  */
 export function TubScene({ visual, view }: { visual: TubVisual; view: CameraView }) {
   const mountRef = useRef<HTMLDivElement>(null)
@@ -22,8 +25,6 @@ export function TubScene({ visual, view }: { visual: TubVisual; view: CameraView
     dispose: () => void
   } | null>(null)
 
-  // The renderer is created once and lives for the life of the component; the
-  // tub itself is rebuilt whenever the configuration changes.
   useEffect(() => {
     const mount = mountRef.current
     if (!mount) return
@@ -52,96 +53,183 @@ export function TubScene({ visual, view }: { visual: TubVisual; view: CameraView
     const pmrem = new THREE.PMREMGenerator(renderer)
     const environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture
     scene.environment = environment
+    scene.environmentIntensity = 0.9
 
-    const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100)
+    const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100)
     const controls = new OrbitControls(camera, renderer.domElement)
     controls.enableDamping = true
     controls.dampingFactor = 0.08
     controls.enablePan = false
-    controls.minDistance = 2.2
-    controls.maxDistance = 12
-    // Never let the camera drop below the ground plane.
+    controls.minDistance = 1.8
+    controls.maxDistance = 14
     controls.maxPolarAngle = Math.PI / 2 - 0.04
 
+    // One turn in about twenty seconds, like a showroom turntable. The tub
+    // stops turning while it is being handled and resumes a moment after.
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     controls.autoRotate = !reduceMotion
-    controls.autoRotateSpeed = 0.5
+    controls.autoRotateSpeed = 1.5
+    let resumeTimer = 0
+    controls.addEventListener('start', () => {
+      controls.autoRotate = false
+      window.clearTimeout(resumeTimer)
+    })
+    controls.addEventListener('end', () => {
+      if (reduceMotion) return
+      resumeTimer = window.setTimeout(() => {
+        controls.autoRotate = true
+      }, 2500)
+    })
 
-    const key = new THREE.DirectionalLight(0xfff1e2, 2.1)
-    key.position.set(4, 6, 3)
+    const key = new THREE.DirectionalLight(0xffffff, 2.3)
+    key.position.set(3.5, 7, 4.5)
     key.castShadow = true
-    key.shadow.mapSize.set(1024, 1024)
+    key.shadow.mapSize.set(2048, 2048)
     key.shadow.camera.near = 1
-    key.shadow.camera.far = 20
-    key.shadow.camera.left = -5
-    key.shadow.camera.right = 5
-    key.shadow.camera.top = 5
-    key.shadow.camera.bottom = -5
-    key.shadow.bias = -0.0015
+    key.shadow.camera.far = 24
+    key.shadow.camera.left = -6
+    key.shadow.camera.right = 6
+    key.shadow.camera.top = 6
+    key.shadow.camera.bottom = -6
+    key.shadow.bias = -0.0008
+    key.shadow.radius = 4
     scene.add(key)
 
-    const rim = new THREE.DirectionalLight(0xf1602e, 0.45)
-    rim.position.set(-4, 2.4, -3)
-    scene.add(rim)
+    const fill = new THREE.DirectionalLight(0xe9eef7, 0.9)
+    fill.position.set(-5, 3.5, -2)
+    scene.add(fill)
 
-    scene.add(new THREE.HemisphereLight(0xdfe6ef, 0x15161a, 0.5))
+    scene.add(new THREE.HemisphereLight(0xffffff, 0xd9dde2, 0.55))
 
     const ground = new THREE.Mesh(
-      new THREE.CircleGeometry(9, 64).rotateX(-Math.PI / 2),
-      new THREE.ShadowMaterial({ opacity: 0.38 }),
+      new THREE.CircleGeometry(12, 64).rotateX(-Math.PI / 2),
+      new THREE.ShadowMaterial({ opacity: 0.16 }),
     )
     ground.receiveShadow = true
     scene.add(ground)
 
+    // ---- textures, made once ---------------------------------------------
+
+    const canvasTexture = (size: [number, number], paint: (ctx: CanvasRenderingContext2D) => void) => {
+      const canvas = document.createElement('canvas')
+      canvas.width = size[0]
+      canvas.height = size[1]
+      const ctx = canvas.getContext('2d')
+      if (ctx) paint(ctx)
+      const texture = new THREE.CanvasTexture(canvas)
+      texture.colorSpace = THREE.SRGBColorSpace
+      texture.wrapS = THREE.RepeatWrapping
+      texture.wrapT = THREE.RepeatWrapping
+      texture.anisotropy = 4
+      return texture
+    }
+
+    // Larch: warm boards with a fine grain running along the length.
+    const larchTexture = canvasTexture([512, 256], (ctx) => {
+      ctx.fillStyle = '#b6702f'
+      ctx.fillRect(0, 0, 512, 256)
+      for (let y = 0; y < 256; y += 1) {
+        const shade = Math.sin(y * 0.31) * 0.5 + Math.sin(y * 0.093 + 1.7) * 0.5
+        ctx.fillStyle = `rgba(${shade > 0 ? '255,214,160' : '86,44,12'},${Math.abs(shade) * 0.1})`
+        ctx.fillRect(0, y, 512, 1)
+      }
+      for (let i = 0; i < 70; i += 1) {
+        ctx.fillStyle = `rgba(72,36,10,${0.05 + Math.random() * 0.12})`
+        ctx.fillRect(Math.random() * 512, Math.random() * 256, 40 + Math.random() * 180, 1)
+      }
+    })
+
+    // Perforated heat shield on the chimney.
+    const perforationTexture = canvasTexture([128, 128], (ctx) => {
+      ctx.fillStyle = '#a9afb6'
+      ctx.fillRect(0, 0, 128, 128)
+      ctx.fillStyle = '#26282b'
+      for (let y = 8; y < 128; y += 16)
+        for (let x = (y / 16) % 2 ? 8 : 0; x < 136; x += 16) {
+          ctx.beginPath()
+          ctx.arc(x, y, 4.2, 0, Math.PI * 2)
+          ctx.fill()
+        }
+    })
+
+    const blobTexture = canvasTexture([256, 256], (ctx) => {
+      const gradient = ctx.createRadialGradient(128, 128, 0, 128, 128, 128)
+      gradient.addColorStop(0, 'rgba(0,0,0,0.42)')
+      gradient.addColorStop(0.55, 'rgba(0,0,0,0.16)')
+      gradient.addColorStop(1, 'rgba(0,0,0,0)')
+      ctx.fillStyle = gradient
+      ctx.fillRect(0, 0, 256, 256)
+    })
+    blobTexture.wrapS = THREE.ClampToEdgeWrapping
+    blobTexture.wrapT = THREE.ClampToEdgeWrapping
+
+    // ---- materials, made once --------------------------------------------
+
+    const shared = {
+      brushed: new THREE.MeshStandardMaterial({ color: 0xa9afb7, metalness: 1, roughness: 0.38 }),
+      liner: new THREE.MeshStandardMaterial({
+        color: 0xc3c9d0,
+        metalness: 1,
+        roughness: 0.3,
+        side: THREE.DoubleSide,
+      }),
+      chrome: new THREE.MeshStandardMaterial({ color: 0xe4e8ec, metalness: 1, roughness: 0.18 }),
+      black: new THREE.MeshStandardMaterial({ color: 0x17181b, metalness: 0.5, roughness: 0.5 }),
+      blackFlat: new THREE.MeshStandardMaterial({
+        color: 0x17181b,
+        metalness: 0.5,
+        roughness: 0.5,
+        flatShading: true,
+      }),
+      wood: new THREE.MeshStandardMaterial({ map: larchTexture, roughness: 0.6 }),
+      cover: new THREE.MeshStandardMaterial({ color: 0x25272b, roughness: 0.85 }),
+      water: new THREE.MeshPhysicalMaterial({
+        color: 0x86b9c4,
+        roughness: 0.04,
+        metalness: 0,
+        transparent: true,
+        opacity: 0.9,
+        clearcoat: 1,
+        clearcoatRoughness: 0.05,
+      }),
+      fire: new THREE.MeshStandardMaterial({
+        color: 0x2a0d00,
+        emissive: 0xff7a1a,
+        emissiveIntensity: 2.4,
+      }),
+      log: new THREE.MeshStandardMaterial({ color: 0x3b2616, roughness: 0.9 }),
+      hose: new THREE.MeshStandardMaterial({ color: 0x1d2733, roughness: 0.6 }),
+      shield: new THREE.MeshStandardMaterial({
+        map: perforationTexture,
+        metalness: 0.8,
+        roughness: 0.4,
+      }),
+      blob: new THREE.MeshBasicMaterial({
+        map: blobTexture,
+        transparent: true,
+        depthWrite: false,
+      }),
+    }
+
+    // ---- the tub, rebuilt on every change --------------------------------
+
     const tubRoot = new THREE.Group()
     scene.add(tubRoot)
 
-    const disposables: Array<THREE.BufferGeometry | THREE.Material> = []
-    const track = <T extends THREE.BufferGeometry | THREE.Material>(item: T) => {
+    const disposables: Array<THREE.BufferGeometry | THREE.Material | THREE.Texture> = []
+    const track = <T extends THREE.BufferGeometry | THREE.Material | THREE.Texture>(item: T) => {
       disposables.push(item)
       return item
     }
 
+    // Flickering fire: the glowing faces and the light they cast.
+    let fireLights: Array<{ light: THREE.PointLight; base: number }> = []
+
     const clearTub = () => {
       tubRoot.clear()
+      fireLights = []
       for (const item of disposables.splice(0)) item.dispose()
     }
-
-    // ---- materials -------------------------------------------------------
-
-    const steel = () =>
-      track(new THREE.MeshStandardMaterial({ color: 0xb6bcc4, metalness: 1, roughness: 0.26 }))
-
-    const darkSteel = () =>
-      track(new THREE.MeshStandardMaterial({ color: 0x2c3036, metalness: 0.85, roughness: 0.45 }))
-
-    const claddingMaterial = (cladding: TubVisual['cladding']) => {
-      if (cladding === 'larch')
-        return track(new THREE.MeshStandardMaterial({ color: 0x9c6530, roughness: 0.8 }))
-      if (cladding === 'thermo')
-        return track(new THREE.MeshStandardMaterial({ color: 0x40281d, roughness: 0.74 }))
-      return track(new THREE.MeshStandardMaterial({ color: 0x17191c, roughness: 0.58, metalness: 0.2 }))
-    }
-
-    const waterMaterial = (lit: boolean) =>
-      track(
-        new THREE.MeshPhysicalMaterial({
-          color: 0x1c5663,
-          roughness: 0.06,
-          metalness: 0,
-          transparent: true,
-          opacity: 0.94,
-          clearcoat: 1,
-          clearcoatRoughness: 0.08,
-          emissive: lit ? new THREE.Color(0x12505f) : new THREE.Color(0x000000),
-          emissiveIntensity: lit ? 0.8 : 0,
-        }),
-      )
-
-    const woodMaterial = () =>
-      track(new THREE.MeshStandardMaterial({ color: 0xa8713a, roughness: 0.8 }))
-
-    // ---- builders --------------------------------------------------------
 
     const addMesh = (
       geometry: THREE.BufferGeometry,
@@ -157,295 +245,521 @@ export function TubScene({ visual, view }: { visual: TubVisual; view: CameraView
       return mesh
     }
 
-    /** Height the bowl's bottom sits at, by stove layout. */
-    const standHeight = (stove: TubVisual['stove']) =>
-      stove === 'under' ? 0.58 : stove === 'inner' ? 0.42 : 0.3
+    /** A regular eight-sided outline, vertices on the axes like the lathe's. */
+    const octagon = (radius: number) =>
+      Array.from({ length: 8 }, (_, i) => {
+        const angle = (i / 8) * Math.PI * 2
+        return new THREE.Vector2(Math.sin(angle) * radius, Math.cos(angle) * radius)
+      })
 
-    const buildBowl = (v: TubVisual, radius: number, wall: number, base: number) => {
-      const segments = v.bowl === 'faceted' ? 8 : v.bowl === 'rect' ? 4 : 56
-      const taper = v.bowl === 'rect' ? 1 : 0.9
-
-      if (v.bowl === 'rect') {
-        const side = radius * 1.75
-        const shell = addMesh(
-          new THREE.BoxGeometry(side, wall, side * 0.78),
-          steel(),
-          [0, base + wall / 2, 0],
-        )
-        shell.material = steel()
-        // Inner cavity, drawn as a slightly smaller inverted box so the rim
-        // reads as a wall thickness rather than a solid block.
-        addMesh(
-          new THREE.BoxGeometry(side - 0.1, wall, side * 0.78 - 0.1),
-          track(new THREE.MeshStandardMaterial({ color: 0x9aa1a9, metalness: 1, roughness: 0.3, side: THREE.BackSide })),
-          [0, base + wall / 2 + 0.06, 0],
-        )
-        return
-      }
-
-      // Outer wall, open at both ends so the inside is visible from above.
-      addMesh(
-        new THREE.CylinderGeometry(radius, radius * taper, wall, segments, 1, true),
-        track(new THREE.MeshStandardMaterial({ color: 0xb6bcc4, metalness: 1, roughness: 0.26, side: THREE.DoubleSide })),
-        [0, base + wall / 2, 0],
-      )
-      // Floor of the bowl.
-      addMesh(
-        new THREE.CylinderGeometry(radius * taper, radius * taper, 0.06, segments),
-        steel(),
-        [0, base + 0.03, 0],
-      )
-      // Rolled rim.
-      addMesh(
-        new THREE.TorusGeometry(radius, 0.035, 10, segments * 2).rotateX(Math.PI / 2),
-        steel(),
-        [0, base + wall, 0],
-      )
+    /** Door opening with an arched top, as on the stationary stoves. */
+    const archShape = (width: number, height: number) => {
+      const r = width / 2
+      const shape = new THREE.Shape()
+      shape.moveTo(-r, 0)
+      shape.lineTo(-r, height - r)
+      shape.absarc(0, height - r, r, Math.PI, 0, true)
+      shape.lineTo(r, 0)
+      shape.closePath()
+      return shape
     }
 
-    const buildCladding = (v: TubVisual, radius: number, wall: number, base: number) => {
-      if (v.cladding === 'none' || v.bowl === 'rect') return
-      const segments = v.bowl === 'faceted' ? 8 : 56
+    /** A firebox door: dark plate, glowing opening, logs, a light on the ground. */
+    const addFireDoor = (
+      width: number,
+      height: number,
+      position: [number, number, number],
+      rotationY = 0,
+    ) => {
+      const door = new THREE.Group()
+      door.position.set(...position)
+      door.rotation.y = rotationY
+      tubRoot.add(door)
+
       addMesh(
-        new THREE.CylinderGeometry(radius * 1.03, radius * taperOf(v) * 1.05, wall * 0.94, segments, 1, true),
-        track(
-          Object.assign(claddingMaterial(v.cladding), { side: THREE.DoubleSide }) as THREE.Material,
-        ),
-        [0, base + wall * 0.47, 0],
+        new THREE.ExtrudeGeometry(archShape(width, height), { depth: 0.03, bevelEnabled: false }),
+        shared.black,
+        [0, 0, 0],
+        door,
       )
+      addMesh(
+        new THREE.ExtrudeGeometry(archShape(width * 0.7, height * 0.7), {
+          depth: 0.012,
+          bevelEnabled: false,
+        }),
+        shared.fire,
+        [0, height * 0.1, 0.03],
+        door,
+      )
+      for (const [x, y] of [
+        [-0.16, 0.1],
+        [0.12, 0.12],
+        [0, 0.17],
+      ] as const) {
+        addMesh(
+          new THREE.CylinderGeometry(0.022, 0.026, width * 0.5, 8).rotateZ(Math.PI / 2),
+          shared.log,
+          [x * width, height * y, 0.045],
+          door,
+        )
+      }
+      const light = new THREE.PointLight(0xff8a3d, 0.7, 1.6, 2)
+      light.position.set(0, height * 0.35, 0.35)
+      door.add(light)
+      fireLights.push({ light, base: 0.7 })
     }
 
-    const taperOf = (v: TubVisual) => (v.bowl === 'rect' ? 1 : 0.9)
+    const rebuild = (v: TubVisual) => {
+      clearTub()
 
-    const buildStove = (v: TubVisual, radius: number, base: number) => {
-      if (v.stove === 'under') {
-        addMesh(
-          new THREE.CylinderGeometry(radius * 0.62, radius * 0.7, base, 24),
-          darkSteel(),
-          [0, base / 2, 0],
-        )
-        // Firebox door.
-        addMesh(
-          new THREE.BoxGeometry(0.42, 0.3, 0.06),
-          steel(),
-          [0, base * 0.55, radius * 0.7 - 0.01],
-        )
-        return
+      const D = v.diameter
+      const R = D / 2
+      const faceted = v.bowl !== 'rolled'
+
+      // Proportions as shares of the diameter, read off the studio shots.
+      const hb = (v.stove === 'side' ? 0.3 : faceted ? 0.36 : 0.4) * D
+      const rb = (faceted ? 0.53 : 0.57) * R
+      const baseH =
+        { under: 0.3, inner: faceted ? 0.34 : 0.38, frame: 0.3, external: 0.22, side: 0.12 }[
+          v.stove
+        ] * D
+      const rimY = baseH + hb
+
+      /** Bowl radius at a height t (0 bottom, 1 rim). Faceted bowls break at 55%. */
+      const radiusAt = (t: number) => {
+        if (faceted) {
+          return t < 0.55
+            ? rb + (0.8 * R - rb) * (t / 0.55)
+            : 0.8 * R + (R - 0.8 * R) * ((t - 0.55) / 0.45)
+        }
+        return rb + (R - rb) * Math.pow(Math.sin((t * Math.PI) / 2), 0.85)
       }
+      const steps = faceted ? [0, 0.55, 1] : Array.from({ length: 9 }, (_, i) => i / 8)
+      const profile = (offset: number, lift = 0) =>
+        steps.map((t) => new THREE.Vector2(radiusAt(t) + offset, baseH + lift + t * (hb - lift)))
+
+      // ---- the bowl ------------------------------------------------------
+
+      const outerSteel = track(
+        new THREE.MeshStandardMaterial({
+          color: v.cladding === 'painted' ? 0x17181b : 0xa4aab2,
+          metalness: v.cladding === 'painted' ? 0.5 : 1,
+          roughness: v.cladding === 'painted' ? 0.5 : 0.4,
+          flatShading: true,
+          side: THREE.DoubleSide,
+        }),
+      )
+      addMesh(new THREE.LatheGeometry(profile(0), 8), outerSteel)
+
+      if (v.cladding === 'larch' || v.cladding === 'thermo') {
+        const board = track(larchTexture.clone())
+        board.needsUpdate = true
+        board.rotation = Math.PI / 2
+        board.center.set(0.5, 0.5)
+        board.repeat.set(1, 4)
+        const cladMaterial = track(
+          new THREE.MeshStandardMaterial({
+            map: board,
+            color: v.cladding === 'thermo' ? 0x6b4a36 : 0xffffff,
+            roughness: 0.65,
+            flatShading: true,
+            side: THREE.DoubleSide,
+          }),
+        )
+        addMesh(new THREE.LatheGeometry(profile(0.022, 0.02), 8), cladMaterial)
+      }
+
+      // Inside: stainless liner, its floor and the water.
+      addMesh(new THREE.LatheGeometry(profile(-0.045, 0.03), 8), shared.liner)
+      addMesh(
+        new THREE.CircleGeometry(rb - 0.05, 8).rotateX(-Math.PI / 2),
+        shared.liner,
+        [0, baseH + 0.04, 0],
+      )
+
+      const waterT = 0.84
+      const waterY = baseH + waterT * hb
+      const water = addMesh(
+        new THREE.CircleGeometry(radiusAt(waterT) - 0.05, 8).rotateX(-Math.PI / 2),
+        shared.water,
+        [0, waterY, 0],
+      )
+      water.castShadow = false
+      if (v.light) {
+        water.material = track(
+          new THREE.MeshPhysicalMaterial({
+            color: 0x86d6e6,
+            roughness: 0.04,
+            transparent: true,
+            opacity: 0.88,
+            clearcoat: 1,
+            emissive: 0x4fc3dc,
+            emissiveIntensity: 0.55,
+          }),
+        )
+      }
+
+      // The larch rim, an octagonal ring with softened edges.
+      const rimRing = new THREE.Shape(octagon(R * 1.035))
+      rimRing.holes.push(new THREE.Path(octagon(R - 0.11).reverse()))
+      addMesh(
+        new THREE.ExtrudeGeometry(rimRing, {
+          depth: 0.05,
+          bevelEnabled: true,
+          bevelSize: 0.009,
+          bevelThickness: 0.009,
+          bevelSegments: 2,
+        }).rotateX(-Math.PI / 2),
+        shared.wood,
+        [0, rimY - 0.04, 0],
+      )
+
+      // ---- stove and base ------------------------------------------------
+
+      // Where the chimney stands and how far it rises.
+      let chimney: { x: number; z: number; from: number; top: number } | null = null
+      const centred = v.stove === 'inner' || v.stove === 'under' || v.stove === 'frame'
+      if (centred) chimney = { x: 0, z: 0, from: baseH + 0.1, top: rimY + 0.5 * D }
 
       if (v.stove === 'inner') {
+        // A hexagonal firebox under the bowl, arched door on the front.
+        const bodyR = rb * 1.02
         addMesh(
-          new THREE.CylinderGeometry(radius * 0.52, radius * 0.58, base, 20),
-          darkSteel(),
-          [0, base / 2, 0],
+          new THREE.CylinderGeometry(bodyR, bodyR * 0.96, baseH, 6).rotateY(Math.PI / 6),
+          shared.blackFlat,
+          [0, baseH / 2, 0],
         )
-        addMesh(new THREE.BoxGeometry(0.4, 0.28, 0.06), steel(), [0, base * 0.55, radius * 0.58 - 0.01])
-        return
+        const apothem = bodyR * Math.cos(Math.PI / 6)
+        const doorW = apothem * 0.78
+        const doorH = baseH * 0.62
+        addFireDoor(doorW, doorH, [0, baseH * 0.2, apothem * 0.98 + 0.002])
+        addMesh(
+          new THREE.BoxGeometry(doorW * 0.72, baseH * 0.07, 0.035),
+          shared.brushed,
+          [0, baseH * 0.12, apothem * 0.98 + 0.012],
+        )
       }
 
-      // Frame under the bowl for the layouts whose stove is elsewhere.
-      addMesh(
-        new THREE.CylinderGeometry(radius * 0.72, radius * 0.78, base, 20),
-        darkSteel(),
-        [0, base / 2, 0],
-      )
+      if (v.stove === 'under') {
+        // An open hearth hidden by a windshield skirt that has no floor.
+        const skirtR = rb * 1.18
+        addMesh(
+          new THREE.CylinderGeometry(skirtR, skirtR * 0.97, baseH, 8).rotateY(Math.PI / 8),
+          shared.blackFlat,
+          [0, baseH / 2, 0],
+        )
+      }
 
-      if (v.stove === 'external') {
-        const away = radius + 1.5
-        addMesh(new THREE.BoxGeometry(0.62, 0.72, 0.5), darkSteel(), [away, 0.36, 0])
-        addMesh(new THREE.BoxGeometry(0.34, 0.26, 0.05), steel(), [away, 0.42, 0.26])
-        // Pipes back to the bowl.
-        for (const z of [-0.14, 0.14]) {
+      if (v.stove === 'frame') {
+        // A compact water-circuit stove inside a welded octagonal frame.
+        const stoveW = 0.24 * D
+        addMesh(
+          new THREE.BoxGeometry(stoveW, 0.2 * D, stoveW),
+          shared.blackFlat,
+          [0, 0.1 * D + 0.03, 0],
+        )
+        addFireDoor(0.1 * D, 0.11 * D, [0, 0.05 * D, stoveW / 2 + 0.002])
+        addMesh(
+          new THREE.CylinderGeometry(rb * 1.1, rb * 0.9, 0.07 * D, 8).rotateY(Math.PI / 8),
+          shared.blackFlat,
+          [0, baseH - 0.035 * D, 0],
+        )
+        const frameR = 0.36 * D
+        const tube = 0.02
+        for (const y of [tube, baseH - 0.075 * D]) {
+          const ring = octagon(frameR)
+          for (let i = 0; i < 8; i += 1) {
+            const a = ring[i]!
+            const b = ring[(i + 1) % 8]!
+            const length = a.distanceTo(b)
+            const segment = addMesh(
+              new THREE.BoxGeometry(length, tube * 2, tube * 2),
+              shared.black,
+              [(a.x + b.x) / 2, y, (a.y + b.y) / 2],
+            )
+            segment.rotation.y = Math.atan2(-(b.y - a.y), b.x - a.x)
+          }
+        }
+        for (const corner of octagon(frameR)) {
           addMesh(
-            new THREE.CylinderGeometry(0.05, 0.05, 1.5, 12).rotateZ(Math.PI / 2),
-            steel(),
-            [radius + 0.75, 0.46, z],
+            new THREE.BoxGeometry(tube * 2, baseH - 0.075 * D, tube * 2),
+            shared.black,
+            [corner.x, (baseH - 0.075 * D) / 2 + tube, corner.y],
           )
         }
-        return
+      }
+
+      if (v.stove === 'external' || v.stove === 'side') {
+        // Short octagonal pedestal under the bowl.
+        addMesh(
+          new THREE.CylinderGeometry(rb * 1.02, rb * 0.98, baseH, 8).rotateY(Math.PI / 8),
+          shared.blackFlat,
+          [0, baseH / 2, 0],
+        )
+      }
+
+      if (v.stove === 'external') {
+        // A separate stove, joined to the bowl by two flexible hoses.
+        const x = R + 1.35
+        addMesh(new THREE.BoxGeometry(0.62, 0.72, 0.52), shared.blackFlat, [x, 0.4, 0])
+        addMesh(new THREE.BoxGeometry(0.4, 0.3, 0.03), shared.brushed, [x, 0.4, 0.27])
+        for (const dx of [-0.1, 0, 0.1]) {
+          addMesh(
+            new THREE.CylinderGeometry(0.022, 0.022, 0.034, 12).rotateX(Math.PI / 2),
+            shared.black,
+            [x + dx, 0.4, 0.29],
+          )
+        }
+        for (const [z, y] of [
+          [-0.14, 0.62],
+          [0.14, 0.34],
+        ] as const) {
+          const curve = new THREE.CatmullRomCurve3([
+            new THREE.Vector3(rb * 0.95, baseH * 0.55 + (y - 0.4) * 0.3, z),
+            new THREE.Vector3((rb + x) / 2, 0.12, z * 1.4),
+            new THREE.Vector3(x - 0.31, y, z),
+          ])
+          addMesh(new THREE.TubeGeometry(curve, 28, 0.035, 10), shared.hose)
+        }
+        chimney = { x, z: 0, from: 0.76, top: Math.max(rimY + 0.3 * D, 0.76 + 2) }
       }
 
       if (v.stove === 'side') {
-        addMesh(
-          new THREE.BoxGeometry(0.5, 0.8, 0.46),
-          darkSteel(),
-          [radius + 0.24, base + 0.4, 0],
+        // A wide firebox welded to the side of a low bowl.
+        const x0 = radiusAt(0.4) * 0.92
+        const profileShape = new THREE.Shape([
+          new THREE.Vector2(0, 0),
+          new THREE.Vector2(0.78, 0),
+          new THREE.Vector2(0.78, 0.6),
+          new THREE.Vector2(0.52, 0.86),
+          new THREE.Vector2(0, 0.86),
+        ])
+        const box = addMesh(
+          new THREE.ExtrudeGeometry(profileShape, { depth: 0.66, bevelEnabled: false }),
+          shared.blackFlat,
+          [x0, 0.06, -0.33],
         )
-        addMesh(new THREE.BoxGeometry(0.3, 0.24, 0.05), steel(), [radius + 0.24, base + 0.5, 0.24])
+        box.receiveShadow = true
+        addMesh(new THREE.BoxGeometry(0.42, 0.3, 0.03), shared.brushed, [x0 + 0.46, 0.34, 0.345])
+        for (const dx of [0.34, 0.46, 0.58]) {
+          addMesh(
+            new THREE.CylinderGeometry(0.02, 0.02, 0.034, 12).rotateX(Math.PI / 2),
+            shared.black,
+            [x0 + dx, 0.2, 0.36],
+          )
+        }
+        // The loading hatch on the sloped top.
+        const hatch = addMesh(new THREE.BoxGeometry(0.34, 0.03, 0.44), shared.brushed, [
+          x0 + 0.34,
+          0.9,
+          0,
+        ])
+        hatch.rotation.z = -0.32
+        chimney = {
+          x: x0 + 0.3,
+          z: 0,
+          from: 0.9,
+          top: Math.max(rimY + 0.3 * D, 0.9 + 2),
+        }
       }
-    }
 
-    const buildChimney = (v: TubVisual, radius: number, base: number, wall: number) => {
-      if (v.chimney === 'none') return
-      const sandwich = v.chimney === 'sandwich'
-      const outer = sandwich ? 0.1 : 0.07
-      const height = 3
+      // ---- chimney -------------------------------------------------------
 
-      const spot: [number, number] =
-        v.stove === 'external'
-          ? [radius + 1.5, 0]
-          : v.stove === 'side'
-            ? [radius + 0.24, 0]
-            : [0, 0]
-      const bottom = v.stove === 'external' ? 0.72 : v.stove === 'side' ? base + 0.8 : base + wall
-
-      addMesh(
-        new THREE.CylinderGeometry(outer, outer, height, 18),
-        sandwich ? steel() : darkSteel(),
-        [spot[0], bottom + height / 2, spot[1]],
-      )
-      // Spark arrester.
-      addMesh(
-        new THREE.CylinderGeometry(outer * 1.6, outer * 1.3, 0.16, 18),
-        steel(),
-        [spot[0], bottom + height + 0.08, spot[1]],
-      )
-      if (sandwich) {
-        // Visible joint between the two sections of the sandwich pipe.
+      if (chimney && v.chimney !== 'none') {
+        const sandwich = v.chimney === 'sandwich'
+        const r = sandwich ? 0.075 : 0.055
+        const length = chimney.top - chimney.from
         addMesh(
-          new THREE.CylinderGeometry(outer * 1.15, outer * 1.15, 0.1, 18),
-          darkSteel(),
-          [spot[0], bottom + height * 0.45, spot[1]],
+          new THREE.CylinderGeometry(r, r, length, 24),
+          shared.chrome,
+          [chimney.x, chimney.from + length / 2, chimney.z],
         )
-      }
-    }
-
-    const buildLadder = (v: TubVisual, radius: number, base: number, wall: number) => {
-      if (v.ladder === 'none') return
-      const top = base + wall * 0.95
-      const treadMaterial = v.ladder === 'wood' ? woodMaterial() : darkSteel()
-      const frame = darkSteel()
-      const steps = 3
-      const width = 0.66
-      const run = 0.22
-
-      // Built along +z inside its own group, then swung round to the side of
-      // the bowl opposite the stove so the two never fight for the frame.
-      const ladder = new THREE.Group()
-      const front = radius + 0.18 + run * steps
-
-      for (let i = 0; i < steps; i += 1) {
-        const y = (top / (steps + 1)) * (i + 1)
-        const z = front - run * i
-        addMesh(new THREE.BoxGeometry(width, 0.05, run * 0.95), treadMaterial, [0, y, z], ladder)
-        addMesh(new THREE.BoxGeometry(width, y, 0.035), frame, [0, y / 2, z + run * 0.45], ladder)
-      }
-
-      const platformZ = front - run * steps - run * 0.6
-      addMesh(new THREE.BoxGeometry(width, 0.06, run * 2.2), treadMaterial, [0, top, platformZ], ladder)
-
-      for (const x of [-(width / 2 - 0.04), width / 2 - 0.04]) {
-        for (const z of [platformZ + run * 0.9, platformZ - run * 0.9]) {
-          addMesh(new THREE.CylinderGeometry(0.022, 0.022, 0.8, 10), frame, [x, top + 0.4, z], ladder)
+        for (let y = chimney.from + 0.45; y < chimney.top - 0.2; y += 0.55) {
+          addMesh(
+            new THREE.TorusGeometry(r * 1.04, 0.009, 8, 24).rotateX(Math.PI / 2),
+            shared.brushed,
+            [chimney.x, y, chimney.z],
+          )
+        }
+        if (sandwich) {
+          addMesh(
+            new THREE.CylinderGeometry(r * 1.12, r * 1.12, 0.12, 24),
+            shared.black,
+            [chimney.x, chimney.from + length * 0.45, chimney.z],
+          )
         }
         addMesh(
-          new THREE.CylinderGeometry(0.022, 0.022, run * 1.8, 10).rotateX(Math.PI / 2),
-          frame,
-          [x, top + 0.8, platformZ],
-          ladder,
+          new THREE.ConeGeometry(r * 2.6, 0.12, 24),
+          shared.brushed,
+          [chimney.x, chimney.top + 0.06, chimney.z],
         )
+        addMesh(
+          new THREE.CylinderGeometry(r * 1.2, r * 1.2, 0.07, 24),
+          shared.brushed,
+          [chimney.x, chimney.top - 0.03, chimney.z],
+        )
+        if (centred) {
+          // Perforated shield where the pipe passes the rim.
+          addMesh(
+            new THREE.CylinderGeometry(r * 2.1, r * 2.1, 0.34, 24, 1, true),
+            shared.shield,
+            [chimney.x, rimY + 0.2, chimney.z],
+          )
+        }
       }
 
-      // The side and external stoves both stand at +x, so the ladder goes to
-      // the opposite side rather than climbing over the firebox.
-      const stoveSide = v.stove === 'side' || v.stove === 'external'
-      ladder.rotation.y = stoveSide ? -Math.PI / 2 : Math.PI / 2
-      tubRoot.add(ladder)
-    }
+      // ---- ladder: three larch treads on a black frame, left of the bowl --
 
-    const buildWater = (v: TubVisual, radius: number, base: number, wall: number) => {
-      const level = base + wall * 0.74
-      const segments = v.bowl === 'faceted' ? 8 : v.bowl === 'rect' ? 4 : 56
-      if (v.bowl === 'rect') {
-        const side = radius * 1.75 - 0.12
-        addMesh(new THREE.BoxGeometry(side, 0.02, side * 0.78 - 0.12), waterMaterial(v.light), [
-          0, level, 0,
-        ])
-        return
+      if (v.ladder !== 'none') {
+        const tread = v.ladder === 'wood' ? shared.wood : shared.brushed
+        const depth = 0.32
+        const width = 0.74
+        const heights = [0.22, 0.44, 0.66].map((f) => f * rimY)
+        const wallT = Math.min(Math.max((heights[2]! - baseH) / hb, 0), 1)
+        const innerEdge = -((heights[2]! < baseH ? rb : radiusAt(wallT)) + 0.04)
+
+        const centreX = (i: number) => innerEdge - depth / 2 - (2 - i) * depth
+        for (let i = 0; i < 3; i += 1) {
+          const y = heights[i]!
+          const x = centreX(i)
+          addMesh(new THREE.BoxGeometry(depth * 1.02, 0.05, width), tread, [x, y, 0])
+          for (const z of [-(width / 2 - 0.035), width / 2 - 0.035]) {
+            addMesh(new THREE.BoxGeometry(depth, 0.04, 0.04), shared.black, [x, y - 0.045, z])
+            addMesh(new THREE.BoxGeometry(0.04, y - 0.025, 0.04), shared.black, [
+              x - depth / 2 + 0.03,
+              (y - 0.025) / 2,
+              z,
+            ])
+            if (i === 2) {
+              addMesh(new THREE.BoxGeometry(0.04, y - 0.025, 0.04), shared.black, [
+                x + depth / 2 - 0.03,
+                (y - 0.025) / 2,
+                z,
+              ])
+            }
+          }
+        }
+
+        // Handrail on the far side: posts at the first and last tread, a larch
+        // rail between them.
+        const railZ = -(width / 2 - 0.035)
+        const postTop = 0.95
+        const a = new THREE.Vector3(centreX(0) - depth / 2 + 0.03, heights[0]! + postTop, railZ)
+        const b = new THREE.Vector3(centreX(2) + depth / 2 - 0.03, heights[2]! + postTop, railZ)
+        for (const point of [a, b]) {
+          addMesh(
+            new THREE.BoxGeometry(0.04, postTop, 0.04),
+            shared.black,
+            [point.x, point.y - postTop / 2, point.z],
+          )
+        }
+        const railLength = a.distanceTo(b)
+        const rail = addMesh(
+          new THREE.BoxGeometry(railLength, 0.05, 0.06),
+          shared.wood,
+          [(a.x + b.x) / 2, (a.y + b.y) / 2, railZ],
+        )
+        rail.rotation.z = Math.atan2(b.y - a.y, b.x - a.x)
       }
-      const r = radius * (0.9 + (1 - 0.9) * 0.74) - 0.02
-      addMesh(new THREE.CylinderGeometry(r, r, 0.02, segments), waterMaterial(v.light), [0, level, 0])
-    }
 
-    const buildExtras = (v: TubVisual, radius: number, base: number, wall: number) => {
-      const level = base + wall * 0.74
+      // ---- extras --------------------------------------------------------
 
       if (v.table) {
-        addMesh(new THREE.CylinderGeometry(0.05, 0.05, 0.5, 12), steel(), [0, level + 0.25, 0])
-        addMesh(new THREE.CylinderGeometry(0.34, 0.34, 0.05, 28), woodMaterial(), [
-          0, level + 0.5, 0,
+        const tx = centred ? 0.42 * R : 0
+        const tz = centred ? 0.2 * R : 0
+        addMesh(new THREE.CylinderGeometry(0.04, 0.04, 0.5, 12), shared.brushed, [
+          tx,
+          waterY + 0.25,
+          tz,
+        ])
+        addMesh(new THREE.CylinderGeometry(0.3, 0.3, 0.045, 8), shared.wood, [
+          tx,
+          waterY + 0.5,
+          tz,
         ])
       }
 
       if (v.hydro) {
-        const nozzle = track(
-          new THREE.MeshStandardMaterial({ color: 0xe6e9ec, metalness: 1, roughness: 0.18 }),
-        )
-        const count = 8
-        for (let i = 0; i < count; i += 1) {
-          const angle = (i / count) * Math.PI * 2
-          const r = radius * 0.78
-          addMesh(new THREE.SphereGeometry(0.055, 14, 10), nozzle, [
-            Math.cos(angle) * r,
-            base + wall * 0.42,
-            Math.sin(angle) * r,
+        const t = 0.42
+        const ringR = radiusAt(t) - 0.07
+        for (let i = 0; i < 8; i += 1) {
+          const angle = (i / 8) * Math.PI * 2 + Math.PI / 8
+          addMesh(new THREE.SphereGeometry(0.05, 14, 10), shared.chrome, [
+            Math.sin(angle) * ringR,
+            baseH + t * hb,
+            Math.cos(angle) * ringR,
           ])
         }
       }
 
       if (v.light) {
-        const glow = new THREE.PointLight(0x7fd4e6, 9, radius * 3.2, 2)
-        glow.position.set(0, level + 0.12, 0)
+        const glow = new THREE.PointLight(0x7fd4e6, 4, R * 3, 2)
+        glow.position.set(0, waterY - 0.15, 0)
         tubRoot.add(glow)
         addMesh(
-          new THREE.TorusGeometry(radius * 0.86, 0.018, 8, 48).rotateX(Math.PI / 2),
+          new THREE.TorusGeometry(radiusAt(0.4) - 0.06, 0.016, 8, 8).rotateX(Math.PI / 2),
           track(
             new THREE.MeshStandardMaterial({
               color: 0x8fdcef,
               emissive: 0x6fd0e8,
               emissiveIntensity: 2.4,
-              roughness: 0.4,
             }),
           ),
-          [0, base + wall * 0.52, 0],
+          [0, baseH + 0.4 * hb, 0],
         )
       }
 
       if (v.lid) {
-        // Leaned against the side rather than laid on top, so the inside of the
-        // bowl stays visible while the lid is still clearly part of the kit.
+        // Leaning on the back of the bowl, so the inside stays in view.
         const lid = addMesh(
-          new THREE.CylinderGeometry(radius * 0.74, radius * 0.74, 0.06, 36),
-          woodMaterial(),
-          [-(radius + 0.34), radius * 0.62, 0],
+          new THREE.CylinderGeometry(0.4 * D, 0.4 * D, 0.06, 8),
+          shared.cover,
+          [0, 0.42 * D, -(R + 0.3)],
         )
-        lid.rotation.z = Math.PI / 2 - 0.16
+        lid.rotation.x = Math.PI / 2 - 0.2
       }
+
+      // How far the build reaches, taken before the soft shadow is added.
+      const reach = new THREE.Box3().setFromObject(tubRoot)
+      const sideways = Math.max(
+        Math.abs(reach.min.x),
+        Math.abs(reach.max.x),
+        Math.abs(reach.min.z),
+        Math.abs(reach.max.z),
+      )
+
+      // ---- soft shadow under the whole thing ------------------------------
+
+      const blob = new THREE.Mesh(
+        track(new THREE.PlaneGeometry(D * 3.4, D * 3.4).rotateX(-Math.PI / 2)),
+        shared.blob,
+      )
+      blob.position.y = 0.003
+      blob.renderOrder = -1
+      tubRoot.add(blob)
+
+      tubRoot.userData.dims = { D, R, rimY, baseH, hb, top: reach.max.y, sideways }
     }
 
-    const rebuild = (v: TubVisual) => {
-      clearTub()
-      const radius = v.diameter / 2
-      const wall = v.stove === 'side' ? 0.62 : 0.74
-      const base = standHeight(v.stove)
-
-      buildStove(v, radius, base)
-      buildBowl(v, radius, wall, base)
-      buildCladding(v, radius, wall, base)
-      buildWater(v, radius, base, wall)
-      buildChimney(v, radius, base, wall)
-      buildLadder(v, radius, base, wall)
-      buildExtras(v, radius, base, wall)
-    }
+    // ---- camera ----------------------------------------------------------
 
     const setView = (next: CameraView) => {
-      const radius = Math.max(tubRoot.userData.radius ?? 1, 0.9)
+      const dims = tubRoot.userData.dims as
+        | { D: number; R: number; rimY: number; baseH: number; hb: number; top: number; sideways: number }
+        | undefined
+      if (!dims) return
       if (next === 'inside') {
-        camera.position.set(radius * 1.1, 2.6, radius * 1.5)
-        controls.target.set(0, 0.8, 0)
+        camera.position.set(dims.R * 0.55, dims.rimY + dims.D * 0.55, dims.R * 1.25)
+        controls.target.set(0, dims.baseH + dims.hb * 0.7, 0)
       } else {
-        camera.position.set(radius * 2.9, 2.3, radius * 3.7)
-        controls.target.set(0, 1.25, 0)
+        // Back off until the widest reach and the chimney both fit; the tub
+        // turns about its own axis, so reach is measured from that axis.
+        const half = Math.tan((camera.fov * Math.PI) / 360)
+        const wide = (dims.sideways * 1.12) / (half * Math.max(camera.aspect, 0.6))
+        const tall = (dims.top * 0.58) / half
+        const distance = Math.max(wide, tall) + dims.sideways * 0.45
+        camera.position.set(distance * 0.42, dims.rimY * 0.8 + 0.55, distance * 0.9)
+        controls.target.set(0, dims.top * 0.4, 0)
       }
       controls.update()
     }
@@ -465,19 +779,21 @@ export function TubScene({ visual, view }: { visual: TubVisual; view: CameraView
     let frame = 0
     const tick = () => {
       frame = requestAnimationFrame(tick)
+      const t = performance.now() / 1000
+      const flicker = 0.88 + 0.08 * Math.sin(t * 11) + 0.04 * Math.sin(t * 23.7)
+      for (const { light, base } of fireLights) light.intensity = base * flicker
+      shared.fire.emissiveIntensity = 2.4 * flicker
       controls.update()
       renderer.render(scene, camera)
     }
     tick()
 
     apiRef.current = {
-      rebuild: (v) => {
-        tubRoot.userData.radius = v.diameter / 2
-        rebuild(v)
-      },
+      rebuild,
       setView,
       dispose: () => {
         cancelAnimationFrame(frame)
+        window.clearTimeout(resumeTimer)
         observer.disconnect()
         clearTub()
         controls.dispose()
@@ -485,6 +801,10 @@ export function TubScene({ visual, view }: { visual: TubVisual; view: CameraView
         pmrem.dispose()
         ground.geometry.dispose()
         ;(ground.material as THREE.Material).dispose()
+        for (const material of Object.values(shared)) material.dispose()
+        larchTexture.dispose()
+        perforationTexture.dispose()
+        blobTexture.dispose()
         renderer.dispose()
         renderer.domElement.remove()
       },
@@ -502,7 +822,7 @@ export function TubScene({ visual, view }: { visual: TubVisual; view: CameraView
 
   useEffect(() => {
     apiRef.current?.setView(view)
-  }, [view, visual.diameter])
+  }, [view, visual.diameter, visual.stove, visual.bowl, visual.chimney])
 
   return <div ref={mountRef} className="size-full" aria-hidden="true" />
 }

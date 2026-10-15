@@ -17,7 +17,7 @@ export interface TubVisual {
   /** Outer diameter in metres — drives the scale of the whole scene. */
   diameter: number
   cladding: 'none' | 'larch' | 'thermo' | 'painted'
-  stove: 'under' | 'inner' | 'external' | 'side'
+  stove: 'under' | 'inner' | 'frame' | 'external' | 'side'
   ladder: 'none' | 'wood' | 'metal'
   chimney: 'none' | 'steel' | 'sandwich'
   lid: boolean
@@ -52,7 +52,7 @@ const stoveBySlug: Record<string, TubVisual['stove']> = {
   grafit: 'under',
   'cherny-brilliant': 'inner',
   valtsovavich: 'inner',
-  nefrit: 'under',
+  nefrit: 'frame',
   oniks: 'external',
   'oniks-pro': 'side',
   grant: 'side',

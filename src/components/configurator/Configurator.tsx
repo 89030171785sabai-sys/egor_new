@@ -94,14 +94,14 @@ export function Configurator() {
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:items-start">
       <div className="lg:sticky lg:top-28">
-        <div className="relative overflow-hidden rounded-panel bg-gradient-to-b from-[#2a2d33] to-[#101114]">
+        <div className="relative overflow-hidden rounded-panel bg-gradient-to-b from-white to-[#e3e6ea]">
           <div className="aspect-4/3 w-full sm:aspect-16/11">
             <Suspense fallback={<SceneFallback />}>
               <TubScene visual={visual} view={view} />
             </Suspense>
           </div>
 
-          <div className="absolute top-4 left-4 flex rounded-full bg-black/40 p-1 backdrop-blur">
+          <div className="absolute top-4 left-4 flex rounded-full bg-white/85 p-1 shadow-sm ring-1 ring-ink-200 backdrop-blur">
             {(['outside', 'inside'] as const).map((item) => (
               <button
                 key={item}
@@ -109,7 +109,7 @@ export function Configurator() {
                 onClick={() => setView(item)}
                 aria-pressed={view === item}
                 className={`rounded-full px-4 py-1.5 text-xs font-medium transition-colors ${
-                  view === item ? 'bg-white text-ink-900' : 'text-white/80 hover:text-white'
+                  view === item ? 'bg-ink-900 text-white' : 'text-ink-500 hover:text-ink-900'
                 }`}
               >
                 {item === 'outside' ? 'Снаружи' : 'Внутри'}
@@ -117,8 +117,8 @@ export function Configurator() {
             ))}
           </div>
 
-          <p className="absolute right-4 bottom-4 left-4 text-center text-xs text-white/50">
-            Схематичная 3D-модель: показывает комплектацию, а не фотографию изделия. Покрутите
+          <p className="absolute right-4 bottom-4 left-4 text-center text-xs text-ink-400">
+            Упрощённая 3D-модель: показывает комплектацию, а не фотографию изделия. Покрутите
             мышью или пальцем.
           </p>
         </div>
@@ -219,7 +219,7 @@ function pickOptions(selection: Selection): ConfigOption[] {
 
 function SceneFallback() {
   return (
-    <div className="grid size-full place-items-center text-sm text-white/50">
+    <div className="grid size-full place-items-center text-sm text-ink-400">
       Загружаем 3D-модель…
     </div>
   )
