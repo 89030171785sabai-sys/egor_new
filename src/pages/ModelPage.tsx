@@ -295,7 +295,7 @@ function ModelVideoBlock({
               src={photoUrl(photo.file)}
               alt={photo.alt}
               loading="lazy"
-              className="absolute inset-0 size-full object-cover"
+              className="absolute inset-0 size-full object-cover object-[50%_65%]"
             />
           </div>
         ))}

@@ -266,7 +266,7 @@ export const models: Model[] = [
     bowlShape: 'faceted',
     theme: 'jade',
     badge: 'Хит продаж',
-    photos: { stove: 'nefrit-stove.webp', banner: 'nefrit-banner.webp', card: 'nefrit-card.webp', cardTop: '#efeff1', hero: 'nefrit-hero.webp', heroWidth: 0.5, heroTone: '#3f4148' },
+    photos: { scene: 'nefrit-scene.webp', stove: 'nefrit-stove.webp', banner: 'nefrit-banner.webp', card: 'nefrit-card.webp', cardTop: '#efeff1', hero: 'nefrit-hero.webp', heroWidth: 0.5, heroTone: '#3f4148' },
     video: { src: 'nefrit-obzor.mp4', poster: 'nefrit-obzor-poster.webp' },
     offers: [
       { cm: 175, price: 187000 },
