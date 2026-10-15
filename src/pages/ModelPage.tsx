@@ -238,26 +238,35 @@ function ModelVideoBlock({
   video: ModelVideo
   photos: Array<{ file: string; alt: string }>
 }) {
-  // An upright clip beside a pair of upright photographs: all three in one
-  // row, cut to one shape, rather than a lone narrow video above a grid.
+  const heading = (
+    <h2 className="mx-auto max-w-(--container-content) px-4 text-2xl font-bold text-navy-700 sm:px-6">
+      Видеообзор комплекта
+    </h2>
+  )
+
+  // The clip and the two photographs run the full width of the screen, edge to
+  // edge: three upright frames of a third each, or a wide clip over two
+  // columns with a photograph on either side, all one height.
   if (video.portrait) {
     return (
-      <section className="mx-auto max-w-4xl">
-        <h2 className="text-2xl font-bold text-navy-700">Видеообзор комплекта</h2>
-        <div className="mt-6 grid grid-cols-3 gap-3 sm:gap-5">
-          <VideoPlayer
-            file={video.src}
-            poster={video.poster}
-            label={`Видеообзор комплекта: ${model.name}`}
-            className="aspect-2/3"
-          />
+      <section>
+        {heading}
+        <div className="mt-6 flex snap-x snap-mandatory gap-2 overflow-x-auto px-2 [scrollbar-width:none] sm:grid sm:grid-cols-3 sm:gap-3 sm:overflow-visible sm:px-3 [&::-webkit-scrollbar]:hidden">
+          <div className="w-[78vw] shrink-0 snap-center sm:w-auto">
+            <VideoPlayer
+              file={video.src}
+              poster={video.poster}
+              label={`Видеообзор комплекта: ${model.name}`}
+              className="aspect-2/3"
+            />
+          </div>
           {photos.slice(0, 2).map((photo) => (
             <img
               key={photo.file}
               src={photoUrl(photo.file)}
               alt={photo.alt}
               loading="lazy"
-              className="aspect-2/3 w-full rounded-panel object-cover"
+              className="aspect-2/3 w-[78vw] shrink-0 snap-center rounded-panel object-cover sm:w-full"
             />
           ))}
         </div>
@@ -265,20 +274,23 @@ function ModelVideoBlock({
     )
   }
 
-  // A wide clip takes two columns, the photographs one each, all one height:
-  // the clip sets the height and the photographs are cut to fit it.
   return (
     <section>
-      <h2 className="text-2xl font-bold text-navy-700">Видеообзор комплекта</h2>
-      <div className="mt-6 grid grid-cols-[2fr_1fr_1fr] gap-3 sm:gap-5">
-        <VideoPlayer
-          file={video.src}
-          poster={video.poster}
-          label={`Видеообзор комплекта: ${model.name}`}
-          className="aspect-video"
-        />
+      {heading}
+      <div className="mt-6 grid grid-cols-2 gap-2 px-2 sm:grid-cols-[2fr_1fr_1fr] sm:gap-3 sm:px-3">
+        <div className="col-span-2 sm:col-span-1">
+          <VideoPlayer
+            file={video.src}
+            poster={video.poster}
+            label={`Видеообзор комплекта: ${model.name}`}
+            className="aspect-video"
+          />
+        </div>
         {photos.slice(0, 2).map((photo) => (
-          <div key={photo.file} className="relative overflow-hidden rounded-panel">
+          <div
+            key={photo.file}
+            className="relative aspect-4/5 overflow-hidden rounded-panel sm:aspect-auto"
+          >
             <img
               src={photoUrl(photo.file)}
               alt={photo.alt}
@@ -478,7 +490,7 @@ function ModelDetail({ model }: { model: Model }) {
       </section>
 
       {model.video && (
-        <div className="mx-auto max-w-(--container-content) px-4 pb-10 sm:px-6 lg:pb-14">
+        <div className="pb-10 lg:pb-14">
           <ModelVideoBlock model={model} video={model.video} photos={galleryPhotos(model)} />
         </div>
       )}
