@@ -4,6 +4,6 @@
  * canonicals and the sitemap pointing at wherever the build actually lives.
  */
 export const SITE_ORIGIN =
-  import.meta.env.VITE_SITE_ORIGIN ?? 'https://xn----7sbnf7av3f.xn--p1ai'
+  import.meta.env.VITE_SITE_ORIGIN ?? 'https://xn----7sbbc6db2aay0a.xn--p1ai'
 
 export const SITE_NAME = 'HOTTUB'
