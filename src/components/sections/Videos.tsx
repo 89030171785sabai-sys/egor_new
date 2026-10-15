@@ -25,7 +25,6 @@ const clips: Clip[] = [
   { file: 'obzor-topki.mp4', poster: 'obzor-topki-poster.webp', title: 'Обзор топки чана с боковой приварной печью', shape: 'upright' },
   { file: 'tehprotsess.mp4', poster: 'tehprotsess-poster.webp', title: 'Технический процесс: сварка швов и зачистка нержавеющей стали', shape: 'upright' },
   { file: 'bystrosemnaya-otdelka.mp4', poster: 'bystrosemnaya-otdelka-poster.webp', title: 'Быстросъёмная отделка внутри чана', shape: 'upright' },
-  { file: 'proizvodstvo.mp4', poster: 'proizvodstvo-poster.webp', title: 'Наше производство: от раскроя стали до сборки', shape: 'wide' },
 ]
 
 const rutube = contacts.social.find((item) => item.id === 'rutube')
