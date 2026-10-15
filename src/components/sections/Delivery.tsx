@@ -52,11 +52,21 @@ const gallery: Array<{ file: string; alt: string }> = [
 ]
 
 /**
- * The map is always shown. `withPhotos` adds the dispatch photographs under
- * it: the delivery page has them, the home page asks for the section without.
+ * The map is always shown. `withPhotos` adds the dispatch photographs above
+ * it, full width: the delivery page has them, the home page asks for the section without.
  */
 export function Delivery({ withPhotos = true }: { withPhotos?: boolean }) {
   return (
+    <>
+      {/* Four frames edge to edge, one screen tall, before the text. */}
+      {withPhotos && gallery.length > 0 && (
+        <PhotoGallery
+          photos={gallery}
+          className="grid grid-cols-2 gap-1 px-1 pt-1 sm:gap-2 sm:px-2 lg:grid-cols-4"
+          thumbClassName="aspect-3/4 lg:aspect-auto lg:h-[min(78vh,42rem)]"
+        />
+      )}
+
     <section id="delivery" className="scroll-mt-28 py-10 lg:py-14">
       <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
         <div className="rounded-panel bg-sand-50 p-6 ring-1 ring-sand-200 sm:p-10">
@@ -113,16 +123,6 @@ export function Delivery({ withPhotos = true }: { withPhotos?: boolean }) {
               </Reveal>
             ))}
           </div>
-
-          {withPhotos && gallery.length > 0 && (
-            <PhotoGallery
-              photos={gallery}
-              className={`mt-12 grid gap-4 ${
-                gallery.length === 1 ? '' : 'grid-cols-2 lg:grid-cols-4'
-              }`}
-              thumbClassName={gallery.length === 1 ? 'aspect-4/3 sm:aspect-16/9' : 'aspect-4/5'}
-            />
-          )}
 
           <div className="mt-14">
             <div className="flex flex-wrap items-baseline gap-x-6 gap-y-3">
@@ -187,6 +187,7 @@ export function Delivery({ withPhotos = true }: { withPhotos?: boolean }) {
         </div>
       </div>
     </section>
+    </>
   )
 }
 
