@@ -251,13 +251,13 @@ function ModelVideoBlock({
     return (
       <section>
         {heading}
-        <div className="mt-6 flex snap-x snap-mandatory gap-2 overflow-x-auto px-2 [scrollbar-width:none] sm:grid sm:grid-cols-3 sm:gap-3 sm:overflow-visible sm:px-3 [&::-webkit-scrollbar]:hidden">
-          <div className="w-[78vw] shrink-0 snap-center sm:w-auto">
+        <div className="mt-6 grid grid-cols-2 gap-2 px-2 sm:grid-cols-3 sm:gap-3 sm:px-3">
+          <div className="col-span-2 sm:col-span-1">
             <VideoPlayer
               file={video.src}
               poster={video.poster}
               label={`Видеообзор комплекта: ${model.name}`}
-              className="aspect-2/3"
+              className="aspect-4/5 sm:aspect-2/3"
             />
           </div>
           {photos.slice(0, 2).map((photo) => (
@@ -266,7 +266,7 @@ function ModelVideoBlock({
               src={photoUrl(photo.file)}
               alt={photo.alt}
               loading="lazy"
-              className="aspect-2/3 w-[78vw] shrink-0 snap-center rounded-panel object-cover object-[50%_65%] sm:w-full"
+              className="aspect-3/4 w-full rounded-panel object-cover sm:aspect-2/3"
             />
           ))}
         </div>
@@ -289,7 +289,7 @@ function ModelVideoBlock({
         {photos.slice(0, 2).map((photo) => (
           <div
             key={photo.file}
-            className="relative aspect-4/5 overflow-hidden rounded-panel sm:aspect-auto"
+            className="relative aspect-3/4 overflow-hidden rounded-panel sm:aspect-auto"
           >
             <img
               src={photoUrl(photo.file)}
@@ -378,7 +378,7 @@ function ModelDetail({ model }: { model: Model }) {
               slot="hero"
               contain
               style={heroWidthVars(model)}
-              className="mt-6 w-(--hero-sm) mx-auto lg:hidden"
+              className="mt-6 w-full lg:hidden"
             />
           )}
 
@@ -496,14 +496,16 @@ function ModelDetail({ model }: { model: Model }) {
             <h2 className="mx-auto max-w-(--container-content) px-4 text-2xl font-bold text-navy-700 sm:px-6">
               Фото
             </h2>
-            <div className="mt-6 flex snap-x snap-mandatory gap-2 overflow-x-auto px-2 [scrollbar-width:none] sm:grid sm:grid-cols-3 sm:gap-3 sm:overflow-visible sm:px-3 [&::-webkit-scrollbar]:hidden">
-              {galleryPhotos(model).slice(0, 3).map((photo) => (
+            <div className="mt-6 grid grid-cols-2 gap-2 px-2 sm:grid-cols-3 sm:gap-3 sm:px-3">
+              {galleryPhotos(model).slice(0, 3).map((photo, index) => (
                 <img
                   key={photo.file}
                   src={photoUrl(photo.file)}
                   alt={photo.alt}
                   loading="lazy"
-                  className="aspect-2/3 w-[78vw] shrink-0 snap-center rounded-panel object-cover object-[50%_78%] sm:w-full"
+                  className={`w-full rounded-panel object-cover object-[50%_78%] sm:aspect-2/3 ${
+                    index === 0 ? 'col-span-2 aspect-4/5 sm:col-span-1' : 'aspect-3/4'
+                  }`}
                 />
               ))}
             </div>
