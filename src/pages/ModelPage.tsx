@@ -360,27 +360,31 @@ function ModelDetail({ model }: { model: Model }) {
             )}
           </p>
 
-          <h1 className="mt-4 max-w-xl text-white lg:max-w-2xl">
-            <span className="block text-xl sm:text-2xl">{model.kind}</span>
-            <span className="font-display mt-1 block text-[2.75rem] sm:text-[4rem] lg:text-[5rem]">
-              {model.name}
-            </span>
-          </h1>
-
           {/*
-            On a phone the shot sits in the flow, under the name: behind the
-            copy it would be lost under the wash that keeps the headline
-            readable across the full width.
+            On a phone the name is set over the top of the shot, and the
+            description follows under it. The shot is faded at both ends and
+            padded at the top, so the name has clear room above the bowl. From
+            lg up the shot is the hero's own backdrop and the name stands alone.
           */}
-          {model.photos?.hero && (
-            <ModelShot
-              model={model}
-              slot="hero"
-              contain
-              style={heroWidthVars(model)}
-              className="mt-6 w-full lg:hidden"
-            />
-          )}
+          <div className="relative mt-4 lg:contents">
+            {model.photos?.hero && (
+              <div className="-mx-4 pt-16 sm:-mx-6 lg:hidden">
+                <div className="[mask-image:linear-gradient(to_bottom,transparent,black_30%,black_80%,transparent)]">
+                  <ModelShot model={model} slot="hero" contain className="w-full" />
+                </div>
+              </div>
+            )}
+            <h1
+              className={`max-w-xl text-white [text-shadow:0_2px_18px_rgb(0_0_0/0.65)] lg:max-w-2xl lg:[text-shadow:none] ${
+                model.photos?.hero ? 'absolute inset-x-0 top-0 lg:static lg:mt-4' : ''
+              }`}
+            >
+              <span className="block text-xl sm:text-2xl">{model.kind}</span>
+              <span className="font-display mt-1 block text-[2.75rem] sm:text-[4rem] lg:text-[5rem]">
+                {model.name}
+              </span>
+            </h1>
+          </div>
 
           <p className="mt-5 max-w-xl text-base leading-relaxed text-white/85 sm:text-lg">
             {model.accent}. {model.description}
