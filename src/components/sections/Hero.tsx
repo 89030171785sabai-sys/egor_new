@@ -6,7 +6,6 @@ const promises = [
   'Сталь служит до 50 лет',
   'Доставка по всей РФ',
   '2 подарка при заказе',
-  'Расчёт за 5 минут в Telegram',
 ]
 
 export function Hero() {
@@ -47,11 +46,13 @@ export function Hero() {
             <span className="whitespace-nowrap">— от {formatPrice(priceFrom)}</span>
           </h1>
 
-          <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/85 sm:text-lg">
+          <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-balance text-white/85 sm:text-lg">
             В собственном цеху полного цикла —{' '}
-            <strong className="font-semibold text-brand-300">изготовим и доставим под ключ за 8 дней</strong>.
-            Начинаем работу с предоплаты всего{' '}
-            <strong className="font-semibold text-brand-300">10%</strong> — работаем по договору.
+            <strong className="font-semibold text-white">
+              изготовим и доставим под ключ <span className="whitespace-nowrap">за 8 дней</span>
+            </strong>
+            . Начинаем работу с предоплаты всего{' '}
+            <strong className="font-semibold text-white">10%</strong> — работаем по договору.
           </p>
 
           <ul className="mt-8 flex flex-wrap justify-center gap-2">
