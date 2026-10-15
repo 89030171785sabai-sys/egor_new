@@ -10,6 +10,7 @@ import { Reveal } from '../components/ui/Reveal'
 import { LeadForm } from '../components/forms/LeadForm'
 import { heatingForModel } from '../data/heating'
 import { useSeo } from '../lib/seo'
+import { photoUrl, videoUrl } from '../lib/photos'
 import {
   modelPriceFrom,
   modelSizes,
@@ -21,6 +22,7 @@ import {
   modelBySlug,
   models,
   type Model,
+  type ModelVideo,
 } from '../data/models'
 
 /**
@@ -225,6 +227,28 @@ function HowItHeats({ model }: { model: Model }) {
   )
 }
 
+/**
+ * The review of the set, played from the site's own server. The file is only
+ * fetched when someone presses play, so the page weighs the same without it.
+ */
+function ModelVideoBlock({ model, video }: { model: Model; video: ModelVideo }) {
+  return (
+    <section className="mt-14">
+      <h2 className="text-2xl font-bold text-navy-700">Видеообзор комплекта</h2>
+      <video
+        controls
+        playsInline
+        preload="none"
+        poster={photoUrl(video.poster)}
+        aria-label={`Видеообзор комплекта: ${model.name}`}
+        className="mt-6 aspect-video w-full rounded-panel bg-ink-900"
+      >
+        <source src={videoUrl(video.src)} type="video/mp4" />
+      </video>
+    </section>
+  )
+}
+
 function ModelDetail({ model }: { model: Model }) {
   useSeo({
     title: model.seoTitle,
@@ -359,6 +383,8 @@ function ModelDetail({ model }: { model: Model }) {
               </ul>
 
               <HowItHeats model={model} />
+
+              {model.video && <ModelVideoBlock model={model} video={model.video} />}
 
               <div className="mt-10 grid gap-5 sm:grid-cols-2">
                 <PlaceholderImage

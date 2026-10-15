@@ -70,6 +70,12 @@ export const promo = {
  * keeps the procedural stand-in, so the line can be photographed one model at
  * a time without touching any component.
  */
+/** A walkthrough video hosted with the site: file in `public/video`, poster in `public/photos`. */
+export interface ModelVideo {
+  src: string
+  poster: string
+}
+
 export interface ModelPhotos {
   /** Full-bleed shot behind the model page's opening screen. */
   hero?: string
@@ -142,6 +148,8 @@ export interface Model {
   badge?: string
   offers: Offer[]
   photos?: ModelPhotos
+  /** Review of the set, shown on the model page. */
+  video?: ModelVideo
   /** Kit contents, as the catalogue lists them. */
   includes: string[]
   seoTitle: string
@@ -307,6 +315,7 @@ export const models: Model[] = [
     theme: 'terracotta',
     badge: 'Решение 4 в 1',
     photos: { banner: 'oniks-pro-banner.webp', card: 'oniks-pro-card.webp', cardTop: '#f2f4f6', hero: 'oniks-pro-hero.webp', heroWidth: 0.663, heroTone: '#692713' },
+    video: { src: 'oniks-pro-obzor.mp4', poster: 'oniks-pro-obzor-poster.webp' },
     offers: [
       { cm: 210, price: 294000 },
       { cm: 235, price: 353000 },

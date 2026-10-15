@@ -11,3 +11,6 @@ export const photoUrl = (name: string) => {
 
   return fingerprint ? `${url}?v=${fingerprint}` : url
 }
+
+/** Videos live in `public/video`; same rule as for photographs, no hard-coded leading slash. */
+export const videoUrl = (name: string) => `${import.meta.env.BASE_URL}video/${name}`
