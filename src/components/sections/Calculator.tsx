@@ -1,5 +1,4 @@
 import { ButtonLink } from '../ui/Button'
-import { photoUrl } from '../../lib/photos'
 
 const steps = [
   'Модель и размер чаши',
@@ -14,47 +13,40 @@ const steps = [
 export function Calculator() {
   return (
     <section className="bg-ink-900 py-20 lg:py-28">
-      <div className="mx-auto grid max-w-(--container-content) items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16">
-        <div>
-          <h2 className="font-display text-4xl text-white sm:text-5xl">
-            Рассчитайте свой банный чан в калькуляторе
-          </h2>
-          <p className="mt-5 max-w-lg text-lg leading-relaxed text-white/75">
-            Соберите чан под себя и сразу увидите стоимость. Чан на экране перестраивается на
-            каждом шаге.
-          </p>
+      <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
+        <h2 className="font-display text-4xl text-balance text-white sm:text-5xl">
+          Рассчитайте свой банный чан в калькуляторе
+        </h2>
+        <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-white/75">
+          Соберите чан под себя и сразу увидите стоимость. Чан на экране перестраивается на
+          каждом шаге.
+        </p>
 
-          <ul className="mt-8 space-y-3">
-            {steps.map((step) => (
-              <li key={step} className="flex items-start gap-3 text-white/90">
-                <span className="mt-1 grid size-5 shrink-0 place-items-center rounded-full bg-brand-500 text-white">
-                  <svg viewBox="0 0 12 12" aria-hidden="true" className="size-2.5">
-                    <path
-                      d="m2 6.4 2.6 2.6L10 3.4"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </span>
-                {step}
-              </li>
-            ))}
-          </ul>
+        <ul className="mx-auto mt-8 inline-flex flex-col items-start space-y-3 text-left">
+          {steps.map((step) => (
+            <li key={step} className="flex items-start gap-3 text-white/90">
+              <span className="mt-1 grid size-5 shrink-0 place-items-center rounded-full bg-brand-500 text-white">
+                <svg viewBox="0 0 12 12" aria-hidden="true" className="size-2.5">
+                  <path
+                    d="m2 6.4 2.6 2.6L10 3.4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
+              {step}
+            </li>
+          ))}
+        </ul>
 
-          <ButtonLink to="/calculator" size="lg" arrow className="mt-10">
+        <div className="mt-10">
+          <ButtonLink to="/calculator" size="lg" arrow>
             Открыть калькулятор
           </ButtonLink>
         </div>
-
-        <img
-          src={photoUrl('cherny-brilliant-hero.webp')}
-          alt="Банный чан «Чёрный бриллиант» с горящей печью в студийном свете"
-          loading="lazy"
-          className="aspect-10/9 w-full rounded-panel object-cover"
-        />
       </div>
     </section>
   )
