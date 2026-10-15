@@ -315,6 +315,7 @@ function galleryPhotos(model: Model): Array<{ file: string; alt: string }> {
       alt: model.photos?.scene ? `${model.name} во дворе дома` : `Банный чан «${model.name}» в студии`,
     })
   }
+  if (model.photos?.extra) list.push({ file: model.photos.extra, alt: `${model.name}: подсветка воды вечером` })
   return list
 }
 
@@ -452,7 +453,7 @@ function ModelDetail({ model }: { model: Model }) {
               <HowItHeats model={model} />
 
               {/* Without an upright clip the photographs stand on their own. */}
-              {!model.video && galleryPhotos(model).length > 0 && (
+              {!model.video && galleryPhotos(model).length > 0 && galleryPhotos(model).length < 3 && (
                 <div className="mt-10 grid gap-5 sm:grid-cols-2">
                   {galleryPhotos(model).map((photo) => (
                     <img
@@ -488,6 +489,27 @@ function ModelDetail({ model }: { model: Model }) {
           </div>
         </div>
       </section>
+
+      {!model.video && galleryPhotos(model).length >= 3 && (
+        <div className="pb-10 lg:pb-14">
+          <section>
+            <h2 className="mx-auto max-w-(--container-content) px-4 text-2xl font-bold text-navy-700 sm:px-6">
+              Фото
+            </h2>
+            <div className="mt-6 flex snap-x snap-mandatory gap-2 overflow-x-auto px-2 [scrollbar-width:none] sm:grid sm:grid-cols-3 sm:gap-3 sm:overflow-visible sm:px-3 [&::-webkit-scrollbar]:hidden">
+              {galleryPhotos(model).slice(0, 3).map((photo) => (
+                <img
+                  key={photo.file}
+                  src={photoUrl(photo.file)}
+                  alt={photo.alt}
+                  loading="lazy"
+                  className="aspect-2/3 w-[78vw] shrink-0 snap-center rounded-panel object-cover object-[50%_78%] sm:w-full"
+                />
+              ))}
+            </div>
+          </section>
+        </div>
+      )}
 
       {model.video && (
         <div className="pb-10 lg:pb-14">

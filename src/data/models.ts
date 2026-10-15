@@ -89,6 +89,8 @@ export interface ModelPhotos {
   banner?: string
   /** Enlarged close-up of the stove for «Как греется вода», cut from the studio shot. */
   stove?: string
+  /** A third photograph on the model page, after the banner and the scene. */
+  extra?: string
   /** Second scene on the model page, in place of the studio hero shot. */
   scene?: string
   /** Product shot on the catalogue card — the studio set on a white sweep. */
@@ -352,7 +354,7 @@ export const models: Model[] = [
     stove: 'Боковая приварная расширенная, водяной контур и теплосъёмные трубы',
     bowlShape: 'faceted',
     theme: 'copper',
-    photos: { scene: 'grant-scene.webp', stove: 'grant-stove.webp', banner: 'grant-banner.webp', card: 'grant-card.webp', cardTop: '#efeff2', hero: 'grant-hero.webp', heroWidth: 0.783, heroTone: '#60220b' },
+    photos: { extra: 'grant-extra.webp', scene: 'grant-scene.webp', stove: 'grant-stove.webp', banner: 'grant-banner.webp', card: 'grant-card.webp', cardTop: '#efeff2', hero: 'grant-hero.webp', heroWidth: 0.783, heroTone: '#60220b' },
     offers: [
       { cm: 235, price: 459000 },
       { cm: 250, price: 588000 },
