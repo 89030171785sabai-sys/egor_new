@@ -9,13 +9,13 @@ const photos = [
 ]
 
 /**
- * Four frames across the whole screen, edge to edge, one screen tall: the
- * shop floor first, before any text. On a phone they fall into a two by two.
- * Each opens full size on click.
+ * Four frames across the whole screen, edge to edge, one screen tall, after
+ * the light block of stages. On a phone they fall into a two by two. Each
+ * opens full size on click.
  */
 export function ProductionGallery() {
   return (
-    <section className="pt-1">
+    <section className="pb-10 lg:pb-14">
       <PhotoGallery
         photos={photos}
         className="grid grid-cols-2 gap-1 px-1 sm:gap-2 sm:px-2 lg:grid-cols-4"

@@ -73,9 +73,9 @@ export function ProductionPage() {
         />
       </PageHeader>
 
-      <ProductionGallery />
       <ProductionVideos />
       <Production />
+      <ProductionGallery />
       <Customization />
       <Process />
       <FinalCta />
