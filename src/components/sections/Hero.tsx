@@ -46,12 +46,13 @@ export function Hero() {
             <span className="whitespace-nowrap">— от {formatPrice(priceFrom)}</span>
           </h1>
 
-          <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-balance text-white/85 sm:text-lg">
+          <p className="mx-auto mt-6 max-w-3xl text-base leading-relaxed text-white/85 sm:text-lg">
             В собственном цеху полного цикла —{' '}
             <strong className="font-semibold text-white">
               изготовим и доставим под ключ <span className="whitespace-nowrap">за 8 дней</span>
             </strong>
-            . Начинаем работу с предоплаты всего{' '}
+            .{/* Два предложения — две строки; на узком экране текст течёт сам. */}
+            <br className="hidden lg:inline" /> Начинаем работу с предоплаты всего{' '}
             <strong className="font-semibold text-white">10%</strong> — работаем по договору.
           </p>
 
