@@ -32,7 +32,7 @@ export function Customization() {
           значит парение получается мягче и дольше. Каждое изделие разрабатываем под ваш участок.
         </p>
 
-        <div className="mt-14 grid gap-8 lg:grid-cols-2 lg:items-center lg:gap-14">
+        <div className="mt-14 grid gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-stretch lg:gap-12">
           <div>
             <div className="space-y-3">
               {options.map((option, index) => {
@@ -95,11 +95,13 @@ export function Customization() {
             * scene says more about what the thing is for than four tinted
             * illustrations did.
             */}
+          {/* On a phone the photograph runs edge to edge and taller than the
+              column: a postcard-sized picture of people in a tub says little. */}
           <img
             src={photoUrl('customization-scene.webp')}
             alt="Компания отдыхает в банном чане на участке"
             loading="lazy"
-            className="aspect-3/2 w-full rounded-panel object-cover"
+            className="-mx-4 aspect-4/3 w-[calc(100%+2rem)] max-w-none object-cover sm:mx-0 sm:w-full sm:max-w-full sm:rounded-panel lg:aspect-auto lg:h-full lg:min-h-[36rem]"
           />
         </div>
       </div>
