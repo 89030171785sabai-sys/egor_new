@@ -32,8 +32,7 @@ export function CatalogPage() {
     <>
       <PageHeader
         title="Каталог банных чанов"
-        tone="dusk"
-        photo="несколько чанов линейки на площадке"
+        image="hero-home.webp"
         lead="Семь моделей: своя печь, своё время нагрева и своя марка стали. Любую собираем под ваш размер и отделку."
       >
         <PageFigures
@@ -62,8 +61,7 @@ export function ProductionPage() {
       <PageHeader
         title="Производство банных чанов"
         breadcrumb="Производство"
-        tone="graphite"
-        photo="сварка чаши в цеху"
+        image="proizvodstvo-poster.webp"
         lead="От отбора древесины до финальной сборки — всё на своём производстве. Поэтому держим срок в 8 дней и отвечаем за качество швов."
       >
         <PageFigures
@@ -92,8 +90,7 @@ export function DeliveryPage() {
     <>
       <PageHeader
         title="Доставка и оплата"
-        tone="ink"
-        photo="погрузка чана в машину на площадке"
+        image="oniks-banner.webp"
         lead="Отгружаем со своих площадок в Москве и Коркино, везём по всей России. Работаем по договору, начинаем с предоплаты 10%."
       />
       <Delivery />
@@ -109,8 +106,7 @@ export function GuaranteesPage() {
     <>
       <PageHeader
         title="Гарантии и документы"
-        tone="copper"
-        photo="сварной шов чаши крупным планом"
+        image="ritual-steel.webp"
         lead="Отвечаем за герметичность швов и качество изделия 13 лет. К каждому чану — паспорт, инструкция и документы на сталь."
       />
       <Guarantees />
@@ -127,8 +123,7 @@ export function FaqPage() {
       <PageHeader
         title="Вопросы и ответы"
         breadcrumb="Вопросы"
-        tone="olive"
-        photo="чан с паром на участке зимой"
+        image="ritual-water.webp"
         lead="Собрали то, о чём спрашивают чаще всего: от ухода за нержавейкой до подготовки площадки."
       />
       <Faq />
@@ -144,8 +139,7 @@ export function ContactsPage() {
     <>
       <PageHeader
         title="Контакты"
-        tone="terracotta"
-        photo="площадка производства снаружи"
+        image="grant-banner.webp"
         lead="Позвоните или напишите в мессенджер — ответим в рабочее время и посчитаем стоимость по вашей комплектации."
       />
       <Contacts />

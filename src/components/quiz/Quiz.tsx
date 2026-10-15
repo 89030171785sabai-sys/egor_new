@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Button } from '../ui/Button'
-import { PlaceholderImage } from '../ui/PlaceholderImage'
+import { photoUrl } from '../../lib/photos'
 import { LeadForm } from '../forms/LeadForm'
 import { quizSteps, summariseAnswers, type QuizOption, type QuizStep } from '../../data/quiz'
 
@@ -192,12 +192,12 @@ function Option({
           : 'ring-1 ring-sand-200 hover:bg-sand-50 hover:ring-sand-300'
       }`}
     >
-      {step.withImages && (
-        <PlaceholderImage
-          tone={option.tone ?? 'studio'}
-          ratio="4/3"
-          className="mb-4 rounded-card"
-          label={option.title}
+      {step.withImages && option.photo && (
+        <img
+          src={photoUrl(option.photo)}
+          alt=""
+          loading="lazy"
+          className="mb-4 aspect-10/9 w-full rounded-card object-cover"
         />
       )}
 

@@ -2,7 +2,6 @@ import type { CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 import { NotFoundPage } from './NotFoundPage'
 import { ButtonLink } from '../components/ui/Button'
-import { PlaceholderImage } from '../components/ui/PlaceholderImage'
 import { ModelShot } from '../components/ui/ModelShot'
 import { StoveShot } from '../components/ui/StoveShot'
 import { SectionHeading } from '../components/ui/SectionHeading'
@@ -215,12 +214,7 @@ function HowItHeats({ model }: { model: Model }) {
         {heating.photo ? (
           <StoveShot photo={heating.photo} title={`${heating.title} — ${model.name}`} />
         ) : (
-          <PlaceholderImage
-            tone="studio"
-            ratio="4/3"
-            className="rounded-panel"
-            label={`${heating.title} — крупный план печи`}
-          />
+          <ModelShot model={model} slot="card" ratio="10/9" className="w-full rounded-panel" />
         )}
       </div>
     </section>
@@ -386,20 +380,26 @@ function ModelDetail({ model }: { model: Model }) {
 
               {model.video && <ModelVideoBlock model={model} video={model.video} />}
 
-              <div className="mt-10 grid gap-5 sm:grid-cols-2">
-                <PlaceholderImage
-                  tone={model.theme}
-                  ratio="4/3"
-                  className="rounded-panel"
-                  label={`${model.name} — вид изнутри чаши`}
-                />
-                <PlaceholderImage
-                  tone="studio"
-                  ratio="4/3"
-                  className="rounded-panel"
-                  label={`${model.name} — дымоход и защитный экран`}
-                />
-              </div>
+              {(model.photos?.banner || model.photos?.hero) && (
+                <div className="mt-10 grid gap-5 sm:grid-cols-2">
+                  {model.photos?.banner && (
+                    <img
+                      src={photoUrl(model.photos.banner)}
+                      alt={`${model.name} на участке`}
+                      loading="lazy"
+                      className="aspect-4/5 w-full rounded-panel object-cover"
+                    />
+                  )}
+                  {model.photos?.hero && (
+                    <img
+                      src={photoUrl(model.photos.hero)}
+                      alt={`Банный чан «${model.name}» в студии`}
+                      loading="lazy"
+                      className="aspect-4/5 w-full rounded-panel object-cover"
+                    />
+                  )}
+                </div>
+              )}
             </div>
 
             <aside id="request" className="scroll-mt-28 lg:sticky lg:top-28">
@@ -435,12 +435,7 @@ function ModelDetail({ model }: { model: Model }) {
                   to={`/${other.slug}`}
                   className="group block h-full overflow-hidden rounded-panel bg-white transition-shadow hover:shadow-lg hover:shadow-ink-900/10"
                 >
-                  <PlaceholderImage
-                    tone={other.theme}
-                    ratio="4/3"
-                    label={other.name}
-                    showLabel={false}
-                  />
+                  <ModelShot model={other} slot="card" ratio="10/9" className="w-full" />
                   <span className="block p-4">
                     <span className="block font-semibold group-hover:text-brand-600">
                       {other.name}

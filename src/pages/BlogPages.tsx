@@ -1,16 +1,27 @@
 import { Link, useParams } from 'react-router-dom'
 import { NotFoundPage } from './NotFoundPage'
 import { PageHeader } from '../components/ui/PageHeader'
-import { PlaceholderImage } from '../components/ui/PlaceholderImage'
+import { photoUrl } from '../lib/photos'
 import { Reveal } from '../components/ui/Reveal'
 import { FinalCta } from '../components/sections/FinalCta'
 import { useSeo } from '../lib/seo'
 import { formatPostDate, postBySlug, posts, sortedPosts, type Post } from '../data/posts'
 
-const tones = ['dusk', 'graphite', 'copper', 'olive', 'ink', 'terracotta'] as const
+/** Real photographs for the articles, taken in turn so neighbours differ. */
+const pictures = [
+  'customization-scene.webp',
+  'ritual-water.webp',
+  'grafit-banner.webp',
+  'nefrit-banner.webp',
+  'valtsovavich-banner.webp',
+  'cherny-brilliant-banner.webp',
+  'oniks-banner.webp',
+  'grant-banner.webp',
+  'ritual-winter.webp',
+]
 
-/** Keeps a post's illustration stable across renders and pages. */
-const toneFor = (index: number) => tones[index % tones.length]
+/** Keeps a post's picture stable across renders and pages. */
+const pictureFor = (index: number) => photoUrl(pictures[index % pictures.length]!)
 
 export function BlogPage() {
   useSeo({
@@ -26,8 +37,7 @@ export function BlogPage() {
     <>
       <PageHeader
         title="Блог"
-        tone="olive"
-        photo="чан на участке, общий план"
+        image="customization-scene.webp"
         lead="Пишем о том, о чём нас спрашивают: как выбрать размер, чем топить, как ухаживать и что подготовить к доставке."
       />
 
@@ -39,12 +49,11 @@ export function BlogPage() {
                 to={`/blog/${lead.slug}`}
                 className="group grid gap-6 rounded-panel bg-white p-5 transition-shadow hover:shadow-lg hover:shadow-ink-900/10 lg:grid-cols-2 lg:gap-10 lg:p-6"
               >
-                <PlaceholderImage
-                  tone={toneFor(0)}
-                  ratio="16/10"
-                  className="rounded-card"
-                  label={lead.title}
-                  showLabel={false}
+                <img
+                  src={pictureFor(0)}
+                  alt=""
+                  loading="lazy"
+                  className="aspect-16/10 w-full rounded-card object-cover"
                 />
                 <div className="flex flex-col justify-center">
                   <Meta post={lead} />
@@ -67,11 +76,11 @@ export function BlogPage() {
                   to={`/blog/${post.slug}`}
                   className="group flex h-full flex-col overflow-hidden rounded-panel bg-white transition-shadow hover:shadow-lg hover:shadow-ink-900/10"
                 >
-                  <PlaceholderImage
-                    tone={toneFor(index + 1)}
-                    ratio="16/10"
-                    label={post.title}
-                    showLabel={false}
+                  <img
+                    src={pictureFor(index + 1)}
+                    alt=""
+                    loading="lazy"
+                    className="aspect-16/10 w-full object-cover"
                   />
                   <span className="flex flex-1 flex-col p-5">
                     <Meta post={post} />
@@ -137,11 +146,11 @@ function PostContent({ post }: { post: Post }) {
         </div>
 
         <div className="mx-auto mt-10 max-w-4xl px-4 sm:px-6">
-          <PlaceholderImage
-            tone={toneFor(index)}
-            ratio="16/9"
-            className="rounded-panel"
-            label={`иллюстрация к статье «${post.title}»`}
+          <img
+            src={pictureFor(index)}
+            alt=""
+            loading="lazy"
+            className="aspect-16/9 w-full rounded-panel object-cover"
           />
         </div>
 
@@ -183,11 +192,11 @@ function PostContent({ post }: { post: Post }) {
                   to={`/blog/${other.slug}`}
                   className="group flex h-full flex-col overflow-hidden rounded-panel bg-white transition-shadow hover:shadow-lg hover:shadow-ink-900/10"
                 >
-                  <PlaceholderImage
-                    tone={toneFor(position + 2)}
-                    ratio="16/10"
-                    label={other.title}
-                    showLabel={false}
+                  <img
+                    src={pictureFor(position + 2)}
+                    alt=""
+                    loading="lazy"
+                    className="aspect-16/10 w-full object-cover"
                   />
                   <span className="flex flex-1 flex-col p-5">
                     <Meta post={other} />

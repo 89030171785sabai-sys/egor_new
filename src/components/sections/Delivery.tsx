@@ -1,5 +1,5 @@
 import { SectionHeading } from '../ui/SectionHeading'
-import { PlaceholderImage } from '../ui/PlaceholderImage'
+import { photoUrl } from '../../lib/photos'
 import { ButtonLink } from '../ui/Button'
 import { Reveal } from '../ui/Reveal'
 import { contacts } from '../../data/contacts'
@@ -55,20 +55,12 @@ export function Delivery() {
               </dl>
             </div>
 
-            <div className="relative">
-              <PlaceholderImage
-                tone="studio"
-                ratio="16/10"
-                silhouette={false}
-                className="rounded-panel ring-1 ring-sand-200"
-                label="карта доставки по России"
-              />
-              <ul className="absolute inset-0 p-5">
-                <CityPin className="top-[38%] left-[16%]">Москва · площадка</CityPin>
-                <CityPin className="top-[58%] left-[42%]">Коркино · производство</CityPin>
-                <CityPin className="top-[24%] right-[10%]">доставка по всей РФ</CityPin>
-              </ul>
-            </div>
+            <img
+              src={photoUrl('delivery-map.webp')}
+              alt="Карта России: площадка в Москве, производство в Коркино, доставка по всей стране"
+              loading="lazy"
+              className="w-full rounded-panel"
+            />
           </div>
 
           <div className="mt-12 grid gap-6 sm:grid-cols-2">
@@ -171,15 +163,5 @@ function Stat({ value, unit, caption }: { value: string; unit: string; caption: 
         <p className="mt-2 text-sm text-ink-500">{caption}</p>
       </dd>
     </div>
-  )
-}
-
-function CityPin({ children, className }: { children: React.ReactNode; className: string }) {
-  return (
-    <li className={`absolute ${className}`}>
-      <span className="rounded-full bg-white/95 px-3 py-1.5 text-xs font-medium shadow-sm backdrop-blur">
-        {children}
-      </span>
-    </li>
   )
 }

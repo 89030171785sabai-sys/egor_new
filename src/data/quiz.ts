@@ -1,5 +1,3 @@
-import type { PlaceholderTone } from '../components/ui/PlaceholderImage'
-
 /**
  * The configurator. Eight steps of data — the component that renders them
  * knows nothing about tubs, so adding an option is a data change.
@@ -9,8 +7,8 @@ export interface QuizOption {
   title: string
   /** Short clarification under the title. */
   note?: string
-  /** Steps whose options are shown with a product shot set this. */
-  tone?: PlaceholderTone
+  /** Product shot of the option, by file name in `public/photos`. */
+  photo?: string
 }
 
 export interface QuizStep {
@@ -60,12 +58,11 @@ export const quizSteps: QuizStep[] = [
     id: 'finish',
     title: 'Отделка',
     mode: 'single',
-    withImages: true,
-    options: [
-      { id: 'standard', title: 'Лиственница — базовая отделка', note: 'входит в комплект: чаша с отделкой и спинки под углом 67°', tone: 'sand' },
-      { id: 'thermo', title: 'Термодерево', note: 'тёмный тон, устойчиво к влаге и перепадам температур', tone: 'ink' },
-      { id: 'painted', title: 'Термостойкая покраска', note: 'матовый чёрный по металлу, без деревянной обшивки', tone: 'graphite' },
-      { id: 'undecided', title: 'Пока не определились', note: 'подберём вместе с менеджером', tone: 'studio' },
+        options: [
+      { id: 'standard', title: 'Лиственница — базовая отделка', note: 'входит в комплект: чаша с отделкой и спинки под углом 67°' },
+      { id: 'thermo', title: 'Термодерево', note: 'тёмный тон, устойчиво к влаге и перепадам температур' },
+      { id: 'painted', title: 'Термостойкая покраска', note: 'матовый чёрный по металлу, без деревянной обшивки' },
+      { id: 'undecided', title: 'Пока не определились', note: 'подберём вместе с менеджером' },
     ],
   },
   {
@@ -74,22 +71,21 @@ export const quizSteps: QuizStep[] = [
     mode: 'single',
     withImages: true,
     options: [
-      { id: 'hearth', title: 'Открытый очаг с ветрозащитой', note: 'дрова на земле под чашей, корпус закрыт ветрозащитой. Базовое решение «Графита», нагрев 5 часов', tone: 'graphite' },
-      { id: 'enlarged', title: 'Стационарная или разборная печь', note: 'чугунный колосник и зольный ящик, нагрев 3 часа', tone: 'ink' },
-      { id: 'water-circuit', title: 'Печь с водяным контуром', note: 'змеевик и ускоренный нагрев за 1,5 часа', tone: 'jade' },
-      { id: 'external', title: 'Выносная печь', note: 'топка в стороне от чаши, подключение шлангами', tone: 'olive' },
-      { id: 'side', title: 'Боковая приварная расширенная', note: 'теплосъёмные трубы, низкий борт, вертикальная загрузка', tone: 'terracotta' },
+      { id: 'hearth', title: 'Открытый очаг с ветрозащитой', note: 'дрова на земле под чашей, корпус закрыт ветрозащитой. Базовое решение «Графита», нагрев 5 часов', photo: 'grafit-card.webp' },
+      { id: 'enlarged', title: 'Стационарная или разборная печь', note: 'чугунный колосник и зольный ящик, нагрев 3 часа', photo: 'cherny-brilliant-card.webp' },
+      { id: 'water-circuit', title: 'Печь с водяным контуром', note: 'змеевик и ускоренный нагрев за 1,5 часа', photo: 'nefrit-card.webp' },
+      { id: 'external', title: 'Выносная печь', note: 'топка в стороне от чаши, подключение шлангами', photo: 'oniks-card.webp' },
+      { id: 'side', title: 'Боковая приварная расширенная', note: 'теплосъёмные трубы, низкий борт, вертикальная загрузка', photo: 'oniks-pro-card.webp' },
     ],
   },
   {
     id: 'chimney',
     title: 'Дымоход',
     mode: 'single',
-    withImages: true,
-    options: [
-      { id: 'three-meters', title: 'Дымоход 3 м и защитный экран', note: 'высокая тяга и защита от случайных ожогов', tone: 'studio' },
-      { id: 'two-meters', title: 'Дымоход 2 м', note: 'комплектация моделей с выносной печью', tone: 'studio' },
-      { id: 'sandwich', title: 'Дымоход 1 м и 1 м сэндвич-трубы', note: 'утеплённая вставка снижает нагрев трубы — безопаснее', tone: 'studio' },
+        options: [
+      { id: 'three-meters', title: 'Дымоход 3 м и защитный экран', note: 'высокая тяга и защита от случайных ожогов' },
+      { id: 'two-meters', title: 'Дымоход 2 м', note: 'комплектация моделей с выносной печью' },
+      { id: 'sandwich', title: 'Дымоход 1 м и 1 м сэндвич-трубы', note: 'утеплённая вставка снижает нагрев трубы — безопаснее' },
     ],
   },
   {
@@ -98,9 +94,9 @@ export const quizSteps: QuizStep[] = [
     mode: 'single',
     withImages: true,
     options: [
-      { id: 'straight', title: 'Металлическая прямая', note: 'простой и надёжный вход в чан', tone: 'studio' },
-      { id: 'platform', title: 'Металлокаркасная с площадкой и поручнем', note: 'удобный и безопасный подъём с опорой', tone: 'studio' },
-      { id: 'hooks', title: 'С площадкой и крючками под халаты', note: 'место для халатов и полотенец рядом с чаном', tone: 'studio' },
+      { id: 'straight', title: 'Металлическая прямая', note: 'простой и надёжный вход в чан' },
+      { id: 'platform', title: 'Металлокаркасная с площадкой и поручнем', note: 'удобный и безопасный подъём с опорой' },
+      { id: 'hooks', title: 'С площадкой и крючками под халаты', note: 'место для халатов и полотенец рядом с чаном' },
     ],
   },
   {
