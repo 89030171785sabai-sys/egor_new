@@ -50,8 +50,8 @@ export function Calculator() {
         </div>
 
         <img
-          src={photoUrl('nefrit-card.webp')}
-          alt="Банный чан «Нефрит» на белом фоне"
+          src={photoUrl('cherny-brilliant-hero.webp')}
+          alt="Банный чан «Чёрный бриллиант» с горящей печью в студийном свете"
           loading="lazy"
           className="aspect-10/9 w-full rounded-panel object-cover"
         />
