@@ -1,6 +1,6 @@
 import { SectionHeading } from '../ui/SectionHeading'
 import { Reveal } from '../ui/Reveal'
-import { photoUrl, videoUrl } from '../../lib/photos'
+import { VideoPlayer } from '../ui/VideoPlayer'
 
 const stages = [
   {
@@ -52,16 +52,12 @@ export function Production({ withVideo = false }: { withVideo?: boolean }) {
 
         {withVideo && (
           <Reveal>
-            <video
-              controls
-              playsInline
-              preload="none"
-              poster={photoUrl('proizvodstvo-poster.webp')}
-              aria-label="Видео о производстве: цех, где собираются банные чаны"
-              className="mt-12 aspect-video w-full rounded-panel bg-ink-900"
-            >
-              <source src={videoUrl('proizvodstvo.mp4')} type="video/mp4" />
-            </video>
+            <VideoPlayer
+              file="proizvodstvo.mp4"
+              poster="proizvodstvo-poster.webp"
+              label="Видео о производстве: цех, где собираются банные чаны"
+              className="mt-12 aspect-video"
+            />
           </Reveal>
         )}
 

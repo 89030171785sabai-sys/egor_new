@@ -1,4 +1,4 @@
-import { photoUrl, videoUrl } from '../../lib/photos'
+import { VideoPlayer } from '../ui/VideoPlayer'
 import { Reveal } from '../ui/Reveal'
 
 /**
@@ -12,16 +12,12 @@ export function ProductionVideos() {
       <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
         <Reveal>
           <figure>
-            <video
-              controls
-              playsInline
-              preload="none"
-              poster={photoUrl('proizvodstvo-poster.webp')}
-              aria-label="Видео о производстве: цех, где собираются банные чаны"
-              className="aspect-video w-full rounded-panel bg-ink-900"
-            >
-              <source src={videoUrl('proizvodstvo.mp4')} type="video/mp4" />
-            </video>
+            <VideoPlayer
+              file="proizvodstvo.mp4"
+              poster="proizvodstvo-poster.webp"
+              label="Видео о производстве: цех, где собираются банные чаны"
+              className="aspect-video"
+            />
             <figcaption className="mt-4 text-sm text-ink-500">
               Наш цех: раскрой и гибка стали, сварка чаши, заготовка и шлифовка лиственницы,
               сборка.

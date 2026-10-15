@@ -10,7 +10,7 @@ import { Guarantees } from '../components/sections/Guarantees'
 import { Process } from '../components/sections/Process'
 import { Delivery } from '../components/sections/Delivery'
 import { Reviews } from '../components/sections/Reviews'
-import { Faq } from '../components/sections/Faq'
+import { Videos } from '../components/sections/Videos'
 import { Contacts } from '../components/sections/Contacts'
 import { FinalCta } from '../components/sections/FinalCta'
 import { useSeo } from '../lib/seo'
@@ -37,7 +37,7 @@ export function HomePage() {
       <Guarantees />
       <Delivery />
       <Reviews />
-      <Faq />
+      <Videos />
       <Contacts />
       <FinalCta />
     </>

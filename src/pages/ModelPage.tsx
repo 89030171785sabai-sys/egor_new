@@ -9,7 +9,8 @@ import { Reveal } from '../components/ui/Reveal'
 import { LeadForm } from '../components/forms/LeadForm'
 import { heatingForModel } from '../data/heating'
 import { useSeo } from '../lib/seo'
-import { photoUrl, videoUrl } from '../lib/photos'
+import { VideoPlayer } from '../components/ui/VideoPlayer'
+import { photoUrl } from '../lib/photos'
 import {
   modelPriceFrom,
   modelSizes,
@@ -229,16 +230,12 @@ function ModelVideoBlock({ model, video }: { model: Model; video: ModelVideo }) 
   return (
     <section className="mt-14">
       <h2 className="text-2xl font-bold text-navy-700">Видеообзор комплекта</h2>
-      <video
-        controls
-        playsInline
-        preload="none"
-        poster={photoUrl(video.poster)}
-        aria-label={`Видеообзор комплекта: ${model.name}`}
-        className="mt-6 aspect-video w-full rounded-panel bg-ink-900"
-      >
-        <source src={videoUrl(video.src)} type="video/mp4" />
-      </video>
+      <VideoPlayer
+        file={video.src}
+        poster={video.poster}
+        label={`Видеообзор комплекта: ${model.name}`}
+        className="mt-6 aspect-video"
+      />
     </section>
   )
 }
