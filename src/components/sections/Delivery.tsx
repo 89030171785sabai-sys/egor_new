@@ -33,8 +33,20 @@ const steps = [
 /** Photographs from the dispatch yard, in the order they should read. */
 const gallery: Array<{ file: string; alt: string }> = [
   {
+    file: 'delivery-bowl-pallet.webp',
+    alt: 'Чаша чана в плёнке на поддоне, готова к отгрузке',
+  },
+  {
     file: 'delivery-loading.webp',
     alt: 'Погрузчик загружает чан в плёнке в кузов грузовика на площадке отгрузки',
+  },
+  {
+    file: 'delivery-skidsteer.webp',
+    alt: 'Мини-погрузчик снимает чан в плёнке с кузова на участке',
+  },
+  {
+    file: 'delivery-crane.webp',
+    alt: 'Чан в плёнке на стропах разгружают на участке у дома',
   },
 ]
 
