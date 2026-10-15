@@ -41,7 +41,9 @@ jobs:
         env:
           VITE_YANDEX_METRIKA_ID: ${{ secrets.YANDEX_METRIKA_ID }}
           # Адрес приёма заявок (Google Apps Script). Пока не задан — формы в демо-режиме.
-          VITE_LEADS_ENDPOINT: ${{ secrets.LEADS_ENDPOINT }}
+          # Адрес не секретный: он всё равно попадает в код сайта, который видит
+          # каждый посетитель. Секрет LEADS_ENDPOINT, если задан, главнее.
+          VITE_LEADS_ENDPOINT: ${{ secrets.LEADS_ENDPOINT || 'https://script.google.com/macros/s/AKfycbzwpQzG45E3f8VzF9sAInhfK3qAuCSs_XdG8tdh0Z6L25SdKH993moO_XObNdu5cnDOmw/exec' }}
 
       # Пока доступы не заведены, шаг пропускается и сборка просто проверяется.
       - name: Загрузка на хостинг
