@@ -74,6 +74,8 @@ export const promo = {
 export interface ModelVideo {
   src: string
   poster: string
+  /** Shot upright on a phone: shown tall and narrow instead of cropped to 16:9. */
+  portrait?: boolean
 }
 
 export interface ModelPhotos {
@@ -85,6 +87,8 @@ export interface ModelPhotos {
    * stays in frame.
    */
   banner?: string
+  /** Enlarged close-up of the stove for «Как греется вода», cut from the studio shot. */
+  stove?: string
   /** Second scene on the model page, in place of the studio hero shot. */
   scene?: string
   /** Product shot on the catalogue card — the studio set on a white sweep. */
@@ -186,7 +190,8 @@ export const models: Model[] = [
     ],
     // Only the model page's own hero: the home page and the catalogue card
     // are waiting for their own shots.
-    photos: { banner: 'grafit-banner.webp', card: 'grafit-card.webp', cardTop: '#f2f3f5', hero: 'grafit-hero.webp', heroWidth: 0.596, heroTone: '#263b44', heroBoost: 1.18 },
+    photos: { stove: 'grafit-stove.webp', scene: 'grafit-scene.webp', banner: 'grafit-banner.webp', card: 'grafit-card.webp', cardTop: '#f2f3f5', hero: 'grafit-hero.webp', heroWidth: 0.596, heroTone: '#263b44', heroBoost: 1.18 },
+    video: { src: 'grafit-obzor.mp4', poster: 'grafit-obzor-poster.webp', portrait: true },
     includes: [...commonIncludes, 'Ветрозащита без дна', 'Дымоход 3 м и защитный экран'],
     seoTitle: 'Банный чан «Графит»',
     seoDescription:
@@ -204,7 +209,7 @@ export const models: Model[] = [
     stove: 'Стационарная, чугунный колосник и выдвижной зольный ящик',
     bowlShape: 'faceted',
     theme: 'ink',
-    photos: { banner: 'cherny-brilliant-banner.webp', card: 'cherny-brilliant-card.webp', cardTop: '#eeeff1', hero: 'cherny-brilliant-hero.webp', heroWidth: 0.517, heroTone: '#441403' },
+    photos: { stove: 'cherny-brilliant-stove.webp', banner: 'cherny-brilliant-banner.webp', card: 'cherny-brilliant-card.webp', cardTop: '#eeeff1', hero: 'cherny-brilliant-hero.webp', heroWidth: 0.517, heroTone: '#441403' },
     video: { src: 'cherny-brilliant-obzor.mp4', poster: 'cherny-brilliant-obzor-poster.webp' },
     offers: [
       { cm: 175, price: 133000 },
@@ -232,7 +237,8 @@ export const models: Model[] = [
     stove: 'Разборная, жаропрочная сталь 09Г2С',
     bowlShape: 'rolled',
     theme: 'sand',
-    photos: { banner: 'valtsovavich-banner.webp', card: 'valtsovavich-card.webp', cardTop: '#f6f7f9', hero: 'valtsovavich-hero.webp', heroWidth: 0.701, heroTone: '#3f4c5a' },
+    photos: { stove: 'valtsovavich-stove.webp', banner: 'valtsovavich-banner.webp', card: 'valtsovavich-card.webp', cardTop: '#f6f7f9', hero: 'valtsovavich-hero.webp', heroWidth: 0.701, heroTone: '#3f4c5a' },
+    video: { src: 'valtsovavich-obzor.mp4', poster: 'valtsovavich-obzor-poster.webp', portrait: true },
     offers: [
       { cm: 175, price: 135000 },
       { cm: 210, price: 159000 },
@@ -260,7 +266,7 @@ export const models: Model[] = [
     bowlShape: 'faceted',
     theme: 'jade',
     badge: 'Хит продаж',
-    photos: { banner: 'nefrit-banner.webp', card: 'nefrit-card.webp', cardTop: '#efeff1', hero: 'nefrit-hero.webp', heroWidth: 0.5, heroTone: '#3f4148' },
+    photos: { stove: 'nefrit-stove.webp', banner: 'nefrit-banner.webp', card: 'nefrit-card.webp', cardTop: '#efeff1', hero: 'nefrit-hero.webp', heroWidth: 0.5, heroTone: '#3f4148' },
     video: { src: 'nefrit-obzor.mp4', poster: 'nefrit-obzor-poster.webp' },
     offers: [
       { cm: 175, price: 187000 },
@@ -289,7 +295,7 @@ export const models: Model[] = [
     stove: 'Выносная, водяной контур и теплосъёмные трубы',
     bowlShape: 'faceted',
     theme: 'olive',
-    photos: { banner: 'oniks-banner.webp', card: 'oniks-card.webp', cardTop: '#f1f2f4', hero: 'oniks-hero.webp', heroWidth: 0.751, heroTone: '#1a3935' },
+    photos: { stove: 'oniks-stove.webp', banner: 'oniks-banner.webp', card: 'oniks-card.webp', cardTop: '#f1f2f4', hero: 'oniks-hero.webp', heroWidth: 0.751, heroTone: '#1a3935' },
     offers: [
       { cm: 175, price: 188000 },
       { cm: 210, price: 199000 },
@@ -318,7 +324,7 @@ export const models: Model[] = [
     bowlShape: 'faceted',
     theme: 'terracotta',
     badge: 'Решение 4 в 1',
-    photos: { scene: 'oniks-pro-scene.webp', banner: 'oniks-pro-banner.webp', card: 'oniks-pro-card.webp', cardTop: '#f2f4f6', hero: 'oniks-pro-hero.webp', heroWidth: 0.663, heroTone: '#692713' },
+    photos: { stove: 'oniks-pro-stove.webp', scene: 'oniks-pro-scene.webp', banner: 'oniks-pro-banner.webp', card: 'oniks-pro-card.webp', cardTop: '#f2f4f6', hero: 'oniks-pro-hero.webp', heroWidth: 0.663, heroTone: '#692713' },
     video: { src: 'oniks-pro-obzor.mp4', poster: 'oniks-pro-obzor-poster.webp' },
     offers: [
       { cm: 210, price: 294000 },
@@ -346,7 +352,7 @@ export const models: Model[] = [
     stove: 'Боковая приварная расширенная, водяной контур и теплосъёмные трубы',
     bowlShape: 'faceted',
     theme: 'copper',
-    photos: { banner: 'grant-banner.webp', card: 'grant-card.webp', cardTop: '#efeff2', hero: 'grant-hero.webp', heroWidth: 0.783, heroTone: '#60220b' },
+    photos: { stove: 'grant-stove.webp', banner: 'grant-banner.webp', card: 'grant-card.webp', cardTop: '#efeff2', hero: 'grant-hero.webp', heroWidth: 0.783, heroTone: '#60220b' },
     offers: [
       { cm: 235, price: 459000 },
       { cm: 250, price: 588000 },

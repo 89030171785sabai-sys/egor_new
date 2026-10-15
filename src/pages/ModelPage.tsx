@@ -202,7 +202,7 @@ function HowItHeats({ model }: { model: Model }) {
   return (
     <section className="group mt-14">
       <h2 className="text-2xl font-bold text-navy-700">Как греется вода</h2>
-      <div className="mt-6 grid gap-6 sm:grid-cols-[minmax(0,1fr)_minmax(0,20rem)] sm:items-center">
+      <div className="mt-6 grid gap-6 sm:grid-cols-[minmax(0,1fr)_minmax(0,27rem)] sm:items-center">
         <div>
           <p className="text-lg font-semibold text-navy-700">{heating.title}</p>
           <p className="mt-3 leading-relaxed text-ink-500">{heating.text}</p>
@@ -215,7 +215,12 @@ function HowItHeats({ model }: { model: Model }) {
         {heating.photo ? (
           <StoveShot photo={heating.photo} title={`${heating.title} — ${model.name}`} />
         ) : (
-          <ModelShot model={model} slot="card" ratio="10/9" className="w-full rounded-panel" />
+          <img
+            src={photoUrl(model.photos?.stove ?? model.photos?.card ?? '')}
+            alt={`Печь банного чана «${model.name}» крупным планом`}
+            loading="lazy"
+            className="aspect-4/3 w-full rounded-panel object-cover"
+          />
         )}
       </div>
     </section>
@@ -234,7 +239,7 @@ function ModelVideoBlock({ model, video }: { model: Model; video: ModelVideo }) 
         file={video.src}
         poster={video.poster}
         label={`Видеообзор комплекта: ${model.name}`}
-        className="mt-6 aspect-video"
+        className={video.portrait ? 'mx-auto mt-6 aspect-9/16 max-w-xs' : 'mt-6 aspect-video'}
       />
     </section>
   )
