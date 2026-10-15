@@ -24,9 +24,9 @@ export const homeRoute: RouteMeta = {
 export const calculatorRoute: RouteMeta = {
   path: '/calculator',
   label: 'Калькулятор',
-  title: '3D-калькулятор банного чана',
+  title: 'Калькулятор банного чана',
   description:
-    'Соберите банный чан онлайн: модель, размер, отделка, дымоход и опции — 3D-модель перестраивается на каждом шаге, цена считается сразу.',
+    'Соберите банный чан онлайн: модель, размер, отделка, дымоход и опции — цена считается сразу, расчёт пришлём в удобный канал.',
 }
 
 export const modelRoutes: RouteMeta[] = models.map((model) => ({

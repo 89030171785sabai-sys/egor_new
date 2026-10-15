@@ -15,12 +15,15 @@ export function PhotoGallery({
   photos,
   className = '',
   thumbClassName = '',
+  single = false,
 }: {
   photos: LightboxPhoto[]
   /** Layout of the thumbnails. */
   className?: string
   /** Shape of each thumbnail. */
   thumbClassName?: string
+  /** Shows only the first thumbnail; the viewer still pages through them all. */
+  single?: boolean
 }) {
   const [open, setOpen] = useState<number | null>(null)
 
@@ -56,7 +59,7 @@ export function PhotoGallery({
   return (
     <>
       <div className={className}>
-        {photos.map((photo, index) => (
+        {photos.map((photo, index) => (single && index > 0 ? null : (
           <button
             key={photo.file}
             type="button"
@@ -80,7 +83,7 @@ export function PhotoGallery({
               </svg>
             </span>
           </button>
-        ))}
+        )))}
       </div>
 
       {current && open !== null && (

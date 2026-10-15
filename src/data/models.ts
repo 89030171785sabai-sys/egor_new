@@ -146,7 +146,7 @@ export interface Model {
   /** Stove layout — the trait that separates the models. */
   stove: string
   /**
-   * Bowl shape, for the 3D configurator. Only «Вальцовавич» is known from the
+   * Bowl shape. Only «Вальцовавич» is known from the
    * catalogue (the name is the rolled forming process); the rest are assumed
    * faceted and need confirming with the client.
    */
@@ -297,7 +297,7 @@ export const models: Model[] = [
     stove: 'Выносная, водяной контур и теплосъёмные трубы',
     bowlShape: 'faceted',
     theme: 'olive',
-    photos: { scene: 'oniks-scene.webp', stove: 'oniks-stove.webp', banner: 'oniks-banner.webp', card: 'oniks-card.webp', cardTop: '#f1f2f4', hero: 'oniks-hero.webp', heroWidth: 0.751, heroTone: '#1a3935' },
+    photos: { extra: 'oniks-extra.webp', scene: 'oniks-scene.webp', stove: 'oniks-stove.webp', banner: 'oniks-banner.webp', card: 'oniks-card.webp', cardTop: '#f1f2f4', hero: 'oniks-hero.webp', heroWidth: 0.751, heroTone: '#1a3935' },
     offers: [
       { cm: 175, price: 188000 },
       { cm: 210, price: 199000 },

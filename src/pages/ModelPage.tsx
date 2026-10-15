@@ -315,7 +315,7 @@ function galleryPhotos(model: Model): Array<{ file: string; alt: string }> {
       alt: model.photos?.scene ? `${model.name} во дворе дома` : `Банный чан «${model.name}» в студии`,
     })
   }
-  if (model.photos?.extra) list.push({ file: model.photos.extra, alt: `${model.name}: подсветка воды вечером` })
+  if (model.photos?.extra) list.push({ file: model.photos.extra, alt: `${model.name} вечером` })
   return list
 }
 

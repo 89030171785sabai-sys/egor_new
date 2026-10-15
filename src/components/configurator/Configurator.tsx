@@ -1,15 +1,12 @@
-import { Suspense, lazy, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import {
   basePrice,
   defaultModelSlug,
   defaultSelection,
-  diameterOf,
-  modelVisual,
   optionGroups,
   optionPrice,
   type ConfigGroup,
   type ConfigOption,
-  type TubVisual,
 } from '../../data/configurator'
 import {
   formatHours,
@@ -26,11 +23,8 @@ import {
   type SizeCm,
 } from '../../data/models'
 import { LeadForm } from '../forms/LeadForm'
-import type { CameraView } from './TubScene'
-
-// The 3D viewport carries the whole of three.js, so it loads only once the
-// configurator itself is on screen.
-const TubScene = lazy(() => import('./TubScene'))
+import { PhotoGallery } from '../ui/Lightbox'
+import { photoUrl } from '../../lib/photos'
 
 type Selection = Record<string, string[]>
 
@@ -44,25 +38,9 @@ export function Configurator() {
   const size: SizeCm = sizes.includes(cm) ? cm : sizes[0]!
 
   const [selection, setSelection] = useState<Selection>(defaultSelection)
-  const [view, setView] = useState<CameraView>('outside')
+  const shots = modelShots(model)
 
   const chosen = useMemo(() => pickOptions(selection), [selection])
-
-  const visual = useMemo<TubVisual>(() => {
-    const base: TubVisual = {
-      ...modelVisual(model),
-      diameter: diameterOf(size),
-      cladding: 'none',
-      ladder: 'metal',
-      chimney: 'steel',
-      lid: false,
-      light: false,
-      table: false,
-      hydro: false,
-    }
-    for (const option of chosen) Object.assign(base, option.visual ?? {})
-    return base
-  }, [model, size, chosen])
 
   const offer = offerFor(model, size)
   const base = basePrice(model, size)
@@ -95,33 +73,13 @@ export function Configurator() {
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:items-start">
       <div className="lg:sticky lg:top-28">
-        <div className="relative overflow-hidden rounded-panel bg-gradient-to-b from-white to-[#e3e6ea]">
-          <div className="aspect-4/3 w-full sm:aspect-16/11">
-            <Suspense fallback={<SceneFallback />}>
-              <TubScene visual={visual} view={view} />
-            </Suspense>
-          </div>
-
-          <div className="absolute top-4 left-4 flex rounded-full bg-white/85 p-1 shadow-sm ring-1 ring-ink-200 backdrop-blur">
-            {(['outside', 'inside'] as const).map((item) => (
-              <button
-                key={item}
-                type="button"
-                onClick={() => setView(item)}
-                aria-pressed={view === item}
-                className={`rounded-full px-4 py-1.5 text-xs font-medium transition-colors ${
-                  view === item ? 'bg-ink-900 text-white' : 'text-ink-500 hover:text-ink-900'
-                }`}
-              >
-                {item === 'outside' ? 'Снаружи' : 'Внутри'}
-              </button>
-            ))}
-          </div>
-
-          <p className="absolute right-4 bottom-4 left-4 text-center text-xs text-ink-400">
-            Упрощённая 3D-модель: показывает комплектацию, а не фотографию изделия. Покрутите
-            мышью или пальцем.
-          </p>
+        <div className="overflow-hidden rounded-panel bg-white ring-1 ring-sand-200">
+          <PhotoGallery
+            single
+            photos={shots}
+            className="block"
+            thumbClassName="aspect-10/9 bg-white"
+          />
         </div>
 
         <PriceBar
@@ -219,12 +177,15 @@ function pickOptions(selection: Selection): ConfigOption[] {
   return result
 }
 
-function SceneFallback() {
-  return (
-    <div className="grid size-full place-items-center text-sm text-ink-400">
-      Загружаем 3D-модель…
-    </div>
-  )
+/** The photographs of a model, studio shot first, for the preview and its viewer. */
+function modelShots(model: Model): Array<{ file: string; alt: string }> {
+  const photos = model.photos
+  const list: Array<{ file: string; alt: string }> = []
+  if (photos?.card) list.push({ file: photos.card, alt: `Банный чан «${model.name}» в студии` })
+  if (photos?.banner) list.push({ file: photos.banner, alt: `«${model.name}» на участке` })
+  if (photos?.scene) list.push({ file: photos.scene, alt: `«${model.name}» во дворе дома` })
+  if (photos?.extra) list.push({ file: photos.extra, alt: `«${model.name}»` })
+  return list
 }
 
 function Group({
@@ -263,6 +224,14 @@ function ModelTile({
         active ? 'border-brand-500 bg-brand-50' : 'border-sand-200 bg-white hover:border-ink-300'
       }`}
     >
+      {model.photos?.card && (
+        <img
+          src={photoUrl(model.photos.card)}
+          alt=""
+          loading="lazy"
+          className="mb-3 aspect-10/9 w-full rounded-card bg-white object-cover"
+        />
+      )}
       <span className="flex items-start justify-between gap-2">
         <span className="font-semibold">{model.name}</span>
         {model.badge && (
