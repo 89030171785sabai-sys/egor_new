@@ -1,10 +1,11 @@
 import { Outlet, useLocation } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useLayoutEffect } from 'react'
 import { Header } from './Header'
 import { Footer } from './Footer'
 import { FloatingWidgets } from '../widgets/FloatingWidgets'
 import { CookieNotice } from './CookieNotice'
 import { trackPageView } from '../../lib/analytics'
+import { setUpScrollReveal } from '../../lib/scrollReveal'
 
 export function Layout() {
   const { pathname, hash } = useLocation()
@@ -21,6 +22,10 @@ export function Layout() {
   useEffect(() => {
     trackPageView(pathname + hash)
   }, [pathname, hash])
+
+  // Blocks below the fold rise into place as the page is scrolled. Set up
+  // before the browser paints, so nothing flashes at full strength first.
+  useLayoutEffect(() => setUpScrollReveal(), [pathname])
 
   // Anchors that arrive with the navigation need the target to exist first.
   useEffect(() => {
