@@ -8,10 +8,22 @@ import tailwindcss from '@tailwindcss/vite'
 import { models } from './src/data/models'
 import { contentRoutes } from './src/lib/routes'
 import { generatedArticles } from './src/data/articles.generated'
+import { releasedCount } from './src/data/release'
 
 // хоттаб-чан.рф in punycode, which is the form a canonical link and a sitemap
 // have to carry. It had been left pointing at жар-дым.рф, a different project's
 // domain, so every canonical and every sitemap entry named the wrong site.
+/**
+ * How many articles the build shows (see src/data/release.ts). ARTICLES_RELEASED
+ * overrides the schedule for one build: a number, or `all`.
+ */
+const articlesReleased = (() => {
+  const forced = process.env.ARTICLES_RELEASED
+  if (forced === 'all') return generatedArticles.length
+  if (forced && /^\d+$/.test(forced)) return Number(forced)
+  return releasedCount()
+})()
+
 const PRODUCTION_ORIGIN = 'https://xn----7sbbc6db2aay0a.xn--p1ai'
 
 /**
@@ -59,7 +71,9 @@ function staticHostAssets(origin: string): Plugin {
         '/',
         ...contentRoutes.map((route) => route.path),
         ...models.map((model) => `/${model.slug}`),
-        ...generatedArticles.map((article) => `/blog/${article.slug}`),
+        ...generatedArticles
+          .slice(0, articlesReleased)
+          .map((article) => `/blog/${article.slug}`),
       ]
 
       const urls = paths
@@ -119,6 +133,7 @@ export default defineConfig(({ mode }) => {
     define: {
       'import.meta.env.VITE_SITE_ORIGIN': JSON.stringify(origin),
       __PHOTO_FINGERPRINTS__: JSON.stringify(photoFingerprints()),
+      __ARTICLES_RELEASED__: JSON.stringify(articlesReleased),
     },
     plugins: [react(), tailwindcss(), verificationTags(), staticHostAssets(origin)],
     build: { target: 'es2022', sourcemap: mode !== 'production' },

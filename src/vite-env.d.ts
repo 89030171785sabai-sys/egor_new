@@ -12,3 +12,6 @@ interface ImportMeta {
 
 /** Отпечатки файлов из `public/photos`, подставляются при сборке. */
 declare const __PHOTO_FINGERPRINTS__: Record<string, string>
+
+/** Сколько статей блога показывает эта сборка; считается по расписанию в data/release.ts. */
+declare const __ARTICLES_RELEASED__: number

@@ -244,7 +244,7 @@ function ArticleContent({ article }: { article: ArticleSummary }) {
 
         <div className="mx-auto mt-10 max-w-4xl px-4 sm:px-6">
           <img
-            src={article.hasHero ? publicUrl(`blog/${article.slug}/hero.webp`) : pictureFor(article.order)}
+            src={article.hasHero ? publicUrl(`blog-img/${article.slug}/hero.webp`) : pictureFor(article.order)}
             alt={article.hasHero ? article.heroAlt : ''}
             className="aspect-16/9 w-full rounded-panel object-cover"
           />
@@ -299,7 +299,7 @@ function ArticleBody({ slug }: { slug: string }) {
     let current = true
     void loadArticleBody(slug).then((text) => {
       if (current && text)
-        setHtml(text.replaceAll('src="/blog/', `src="${import.meta.env.BASE_URL}blog/`))
+        setHtml(text.replaceAll('src="/blog-img/', `src="${import.meta.env.BASE_URL}blog-img/`))
     })
     return () => {
       current = false

@@ -10,7 +10,8 @@ import type { ArticleSummary } from './articles.types'
 
 export type { ArticleSummary }
 
-export const articles: ArticleSummary[] = generatedArticles
+/** Only the articles whose turn has come; the rest stay hidden (see release.ts). */
+export const articles: ArticleSummary[] = generatedArticles.slice(0, __ARTICLES_RELEASED__)
 
 const loaders = import.meta.glob('../content/articles/*.html', {
   query: '?raw',

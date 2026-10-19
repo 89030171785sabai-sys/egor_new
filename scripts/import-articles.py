@@ -6,7 +6,7 @@
   * берёт из метафайла адрес, заголовок, описание, рубрику и время чтения;
   * из «Статья.html» — вводный абзац, главное фото и тело статьи (разделы,
     таблицы, схемы); схемы остаются встроенным SVG, фото выносятся в файлы;
-  * фото сжимает в webp: `public/blog/<slug>/hero.webp`, `thumb.webp`, `NN.webp`;
+  * фото сжимает в webp: `public/blog-img/<slug>/hero.webp`, `thumb.webp`, `NN.webp`;
   * тело статьи кладёт в `src/content/articles/<slug>.html`;
   * общий список пишет в `src/data/articles.generated.ts`.
 
@@ -25,17 +25,18 @@ from pathlib import Path
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parent.parent
-OUT_IMAGES = ROOT / 'public' / 'blog'
+# Не `public/blog`: на хостинге папка с таким именем заняла бы адрес самих статей (/blog/<адрес>).
+OUT_IMAGES = ROOT / 'public' / 'blog-img'
 OUT_BODIES = ROOT / 'src' / 'content' / 'articles'
 OUT_DATA = ROOT / 'src' / 'data' / 'articles.generated.ts'
 
 HERO_WIDTH, THUMB_WIDTH, BODY_WIDTH = 1280, 640, 1100
 
-# В исходных файлах дат нет. По просьбе заказчика статья № 1 датирована днём
-# FIRST_DATE, каждая следующая — на STEP_DAYS дней раньше: в блоге новее всех
-# первая, порядок 001 → 129 сохраняется. Чтобы сдвинуть даты, поправьте здесь.
+# В исходных файлах дат нет. Статьи выходят пачками: по PER_DAY штук в день,
+# начиная с FIRST_DATE, в порядке номеров. Дата статьи — день её выхода.
+# Те же два числа стоят в src/data/release.ts, менять их надо вместе.
 FIRST_DATE = date(2026, 10, 19)
-STEP_DAYS = 2
+PER_DAY = 10
 
 DATA_URI = re.compile(r'data:image/(?:jpeg|jpg|png|webp);base64,([A-Za-z0-9+/=]+)')
 
@@ -159,7 +160,7 @@ def main():
             counter += 1
             name = f'{counter:02d}.webp'
             (image_dir / name).write_bytes(to_webp(base64.b64decode(match.group(1)), BODY_WIDTH))
-            return f'/blog/{slug}/{name}'
+            return f'/blog-img/{slug}/{name}'
 
         content = DATA_URI.sub(save_photo, body.group(1)).strip()
         content = content.replace(' loading="eager"', ' loading="lazy"')
@@ -178,7 +179,7 @@ def main():
         articles.append({
             'slug': slug,
             'order': number,
-            'date': (FIRST_DATE - timedelta(days=STEP_DAYS * (number - 1))).isoformat(),
+            'date': (FIRST_DATE + timedelta(days=(number - 1) // PER_DAY)).isoformat(),
             'title': meta['h1'] or meta['title'],
             'excerpt': strip_tags(lead.group(1)),
             'tag': meta['tag'] or 'Статьи',

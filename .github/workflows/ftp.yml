@@ -7,6 +7,10 @@ on:
   push:
     branches: [claude/practical-dijkstra-a0c9pq, main]
   workflow_dispatch:
+  # Каждую ночь в 00:10 по Москве сайт собирается заново: так в блоге
+  # появляются очередные 10 статей (расписание — src/data/release.ts).
+  schedule:
+    - cron: '10 21 * * *'
 
 # Два деплоя подряд не должны класть файлы друг поверх друга.
 concurrency:

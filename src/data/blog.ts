@@ -11,8 +11,10 @@ export interface BlogEntry {
   readingMinutes: number
   /** ISO date, newest first in the listing. */
   date?: string
-  /** Card picture inside `public/`, e.g. `blog/<slug>/thumb.webp`; null → a site photo. */
+  /** Card picture inside `public/`, e.g. `blog-img/<slug>/thumb.webp`; null → a site photo. */
   thumb: string | null
+  /** Number in the series; breaks ties between articles of one day. */
+  order: number
 }
 
 export const blogEntries: BlogEntry[] = [
@@ -23,9 +25,10 @@ export const blogEntries: BlogEntry[] = [
     tag: article.tag,
     readingMinutes: article.readingMinutes,
     date: article.date,
-    thumb: article.hasHero ? `blog/${article.slug}/thumb.webp` : null,
+    order: article.order,
+    thumb: article.hasHero ? `blog-img/${article.slug}/thumb.webp` : null,
   })),
-].sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''))
+].sort((a, b) => (b.date ?? '').localeCompare(a.date ?? '') || a.order - b.order)
 
 /** Rubrics, the most populated first. */
 export const blogTags = Object.entries(
