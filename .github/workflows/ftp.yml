@@ -41,7 +41,7 @@ jobs:
         env:
           VITE_YANDEX_METRIKA_ID: ${{ secrets.YANDEX_METRIKA_ID || '113673011' }}
           # Коды подтверждения сайта в Вебмастере и Search Console — не секретные.
-          VITE_YANDEX_VERIFICATION: ${{ vars.YANDEX_VERIFICATION }}
+          VITE_YANDEX_VERIFICATION: ${{ vars.YANDEX_VERIFICATION || 'a211b52f326f55d4' }}
           VITE_GOOGLE_VERIFICATION: ${{ vars.GOOGLE_VERIFICATION }}
           # Адрес приёма заявок (Google Apps Script). Пока не задан — формы в демо-режиме.
           # Адрес не секретный: он всё равно попадает в код сайта, который видит
