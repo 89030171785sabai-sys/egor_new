@@ -1,5 +1,13 @@
 import { Reveal } from '../ui/Reveal'
 
+/** The figures that used to float over the first screen. */
+const figures = [
+  { value: '45–50', unit: 'лет', caption: 'Служит сталь AISI 304' },
+  { value: '13', unit: 'лет', caption: 'Гарантия на изделие' },
+  { value: '8', unit: 'дней', caption: 'Под ключ — от заказа до участка' },
+  { value: '10', unit: '%', caption: 'Предоплата, остальное — потом' },
+]
+
 const advantages = [
   {
     title: 'Качество стали',
@@ -21,6 +29,21 @@ const advantages = [
 export function Advantages() {
   return (
     <section className="bg-ink-800">
+      <div className="mx-auto max-w-(--container-content) px-4 pt-10 sm:px-6">
+        <dl className="grid grid-cols-2 gap-x-6 gap-y-8 border-b border-white/12 pb-9 lg:grid-cols-4">
+          {figures.map((figure, index) => (
+            <Reveal key={figure.caption} delay={index * 70}>
+              <dt className="sr-only">{figure.caption}</dt>
+              <dd>
+                <span className="font-display text-4xl text-white">{figure.value}</span>{' '}
+                <span className="text-sm text-ink-300">{figure.unit}</span>
+                <p className="mt-1 text-sm text-ink-300">{figure.caption}</p>
+              </dd>
+            </Reveal>
+          ))}
+        </dl>
+      </div>
+
       <div className="mx-auto grid max-w-(--container-content) gap-px px-4 sm:px-6 lg:grid-cols-3">
         {advantages.map((advantage, index) => (
           <Reveal
