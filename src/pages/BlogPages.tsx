@@ -6,7 +6,6 @@ import { photoUrl } from '../lib/photos'
 import { Reveal } from '../components/ui/Reveal'
 import { FinalCta } from '../components/sections/FinalCta'
 import { useSeo } from '../lib/seo'
-import { formatPostDate, postBySlug, type Post } from '../data/posts'
 import { articles, loadArticleBody, type ArticleSummary } from '../data/articles'
 import { blogEntries, blogTags, type BlogEntry } from '../data/blog'
 
@@ -175,131 +174,15 @@ function TagChip({
 
 export function PostPage() {
   const { slug } = useParams<{ slug: string }>()
-  const post = slug ? postBySlug(slug) : undefined
   const article = slug ? articles.find((candidate) => candidate.slug === slug) : undefined
 
-  if (article) return <ArticleContent key={article.slug} article={article} />
-  if (!post) return <NotFoundPage />
+  if (!article) return <NotFoundPage />
 
-  return <PostContent post={post} />
+  return <ArticleContent key={article.slug} article={article} />
 }
 
-function PostContent({ post }: { post: Post }) {
-  useSeo({ title: post.seoTitle, description: post.seoDescription, path: `/blog/${post.slug}` })
-
-  const others = blogEntries.filter((candidate) => candidate.slug !== post.slug).slice(0, 3)
-  const index = blogEntries.findIndex((candidate) => candidate.slug === post.slug)
-
-  return (
-    <>
-      <article className="pt-32 pb-16 lg:pt-40">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <nav aria-label="Хлебные крошки" className="text-sm text-ink-400">
-            <Link to="/" className="transition-colors hover:text-ink-700">
-              Главная
-            </Link>
-            <span aria-hidden="true" className="mx-2">
-              /
-            </span>
-            <Link to="/blog" className="transition-colors hover:text-ink-700">
-              Блог
-            </Link>
-            <span aria-hidden="true" className="mx-2">
-              /
-            </span>
-            <span className="text-ink-700">{post.title}</span>
-          </nav>
-
-          <Meta entry={asEntry(post)} className="mt-6" />
-          <h1 className="font-display mt-3 text-[2rem] text-navy-700 sm:text-[2.75rem]">
-            {post.title}
-          </h1>
-          <p className="mt-5 text-lg leading-relaxed text-ink-500">{post.excerpt}</p>
-        </div>
-
-        <div className="mx-auto mt-10 max-w-4xl px-4 sm:px-6">
-          <img
-            src={pictureFor(index)}
-            alt=""
-            loading="lazy"
-            className="aspect-16/9 w-full rounded-panel object-cover"
-          />
-        </div>
-
-        <div className="mx-auto mt-12 max-w-3xl px-4 sm:px-6">
-          {post.sections.map((section) => (
-            <section key={section.heading} className="mt-10 first:mt-0">
-              <h2 className="text-xl font-bold text-navy-700 sm:text-2xl">{section.heading}</h2>
-              {section.paragraphs.map((paragraph) => (
-                <p key={paragraph.slice(0, 32)} className="mt-4 leading-relaxed text-ink-600">
-                  {paragraph}
-                </p>
-              ))}
-              {section.list && (
-                <ul className="mt-4 space-y-2">
-                  {section.list.map((item) => (
-                    <li key={item} className="flex items-start gap-3 leading-relaxed text-ink-600">
-                      <span
-                        aria-hidden="true"
-                        className="mt-2.5 size-1.5 shrink-0 rounded-full bg-brand-500"
-                      />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </section>
-          ))}
-        </div>
-      </article>
-
-      {others.length > 0 && (
-        <section className="pb-10 lg:pb-14">
-          <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
-            <h2 className="text-xl font-bold text-navy-700 sm:text-2xl">Читайте также</h2>
-            <div className="mt-8 grid gap-6 md:grid-cols-3">
-              {others.map((other, position) => (
-                <Link
-                  key={other.slug}
-                  to={`/blog/${other.slug}`}
-                  className="group flex h-full flex-col overflow-hidden rounded-panel bg-white transition-shadow hover:shadow-lg hover:shadow-ink-900/10"
-                >
-                  <img
-                    src={thumbFor(other, position + 2)}
-                    alt=""
-                    loading="lazy"
-                    className="aspect-16/10 w-full object-cover"
-                  />
-                  <span className="flex flex-1 flex-col p-5">
-                    <Meta entry={other} />
-                    <span className="mt-2 block font-semibold text-navy-700 group-hover:text-brand-600">
-                      {other.title}
-                    </span>
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      <FinalCta />
-    </>
-  )
-}
-
-function asEntry(post: Post): BlogEntry {
-  return {
-    slug: post.slug,
-    title: post.title,
-    excerpt: post.excerpt,
-    tag: post.tag,
-    readingMinutes: post.readingMinutes,
-    date: post.date,
-    thumb: null,
-    kind: 'post',
-  }
-}
+const formatDate = (iso: string) =>
+  new Date(iso).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })
 
 function Meta({ entry, className = '' }: { entry: BlogEntry; className?: string }) {
   return (
@@ -309,7 +192,7 @@ function Meta({ entry, className = '' }: { entry: BlogEntry; className?: string 
       </span>
       {entry.date && (
         <>
-          <span>{formatPostDate(entry.date)}</span>
+          <span>{formatDate(entry.date)}</span>
           <span aria-hidden="true">·</span>
         </>
       )}

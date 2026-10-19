@@ -11,6 +11,13 @@
   RewriteCond %{SERVER_PORT} !^443$
   RewriteRule .* https://%{SERVER_NAME}%{REQUEST_URI} [R=301,L]
 
+  # Четыре первые статьи блога заменены большой серией; старые адреса ведут
+  # на статьи с той же темой, чтобы ссылки на них не превращались в «404».
+  RewriteRule ^blog/kakoy-razmer-chana-vybrat/?$ /blog/kak-vybrat-bannyj-chan [R=301,L]
+  RewriteRule ^blog/skolko-drov-i-kak-topit/?$ /blog/bannyj-chan-na-drovah [R=301,L]
+  RewriteRule ^blog/uhod-za-chanom/?$ /blog/uhod-za-bannym-chanom [R=301,L]
+  RewriteRule ^blog/podgotovka-ploshchadki/?$ /blog/ustanovka-bannogo-chana [R=301,L]
+
   # Сайт одностраничный: адреса вроде /catalog или /grafit разбирает сам сайт в
   # браузере, на диске таких папок нет. Поэтому всё, что не является реальным
   # файлом, отдаём index.html — иначе прямая ссылка на раздел вернёт «404».

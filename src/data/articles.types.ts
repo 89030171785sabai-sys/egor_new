@@ -3,6 +3,8 @@ export interface ArticleSummary {
   slug: string
   /** Number in the client's plan; keeps the series in its intended order. */
   order: number
+  /** ISO date; the sources carry none, so the import script assigns them. */
+  date: string
   title: string
   /** The opening paragraph, shown on cards and under the title. */
   excerpt: string

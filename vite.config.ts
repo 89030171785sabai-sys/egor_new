@@ -7,7 +7,6 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { models } from './src/data/models'
 import { contentRoutes } from './src/lib/routes'
-import { posts } from './src/data/posts'
 import { generatedArticles } from './src/data/articles.generated'
 
 // хоттаб-чан.рф in punycode, which is the form a canonical link and a sitemap
@@ -60,7 +59,6 @@ function staticHostAssets(origin: string): Plugin {
         '/',
         ...contentRoutes.map((route) => route.path),
         ...models.map((model) => `/${model.slug}`),
-        ...posts.map((post) => `/blog/${post.slug}`),
         ...generatedArticles.map((article) => `/blog/${article.slug}`),
       ]
 

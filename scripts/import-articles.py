@@ -19,6 +19,7 @@ import io
 import json
 import re
 import sys
+from datetime import date, timedelta
 from pathlib import Path
 
 from PIL import Image
@@ -29,6 +30,12 @@ OUT_BODIES = ROOT / 'src' / 'content' / 'articles'
 OUT_DATA = ROOT / 'src' / 'data' / 'articles.generated.ts'
 
 HERO_WIDTH, THUMB_WIDTH, BODY_WIDTH = 1280, 640, 1100
+
+# В исходных файлах дат нет. По просьбе заказчика статья № 1 датирована днём
+# FIRST_DATE, каждая следующая — на STEP_DAYS дней раньше: в блоге новее всех
+# первая, порядок 001 → 129 сохраняется. Чтобы сдвинуть даты, поправьте здесь.
+FIRST_DATE = date(2026, 10, 19)
+STEP_DAYS = 2
 
 DATA_URI = re.compile(r'data:image/(?:jpeg|jpg|png|webp);base64,([A-Za-z0-9+/=]+)')
 
@@ -171,6 +178,7 @@ def main():
         articles.append({
             'slug': slug,
             'order': number,
+            'date': (FIRST_DATE - timedelta(days=STEP_DAYS * (number - 1))).isoformat(),
             'title': meta['h1'] or meta['title'],
             'excerpt': strip_tags(lead.group(1)),
             'tag': meta['tag'] or 'Статьи',

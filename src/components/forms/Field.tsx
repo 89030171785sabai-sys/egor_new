@@ -34,8 +34,9 @@ export function Field({
   )
 }
 
+/** `ym-disable-keys`: Вебвизор Метрики не записывает, что вводят в поле — там имя и телефон. */
 const controlClasses =
-  'w-full bg-transparent text-base text-ink-900 outline-none placeholder:text-ink-300'
+  'ym-disable-keys w-full bg-transparent text-base text-ink-900 outline-none placeholder:text-ink-300'
 
 export function Input(props: React.ComponentPropsWithoutRef<'input'>) {
   return <input {...props} className={controlClasses} />
