@@ -42,7 +42,7 @@ export function Hero() {
       <div className="mx-auto w-full max-w-(--container-content) px-4 pt-32 pb-16 sm:px-6 lg:pt-40 lg:pb-28">
         <div className="mx-auto max-w-3xl text-center">
           <h1 className="font-display text-balance text-[2.25rem] text-white sm:text-[2.75rem] lg:text-[3rem]">
-            Банные чаны от производителя с гарантией 13 лет и доставкой по всей России
+            Банные чаны от производителя с гарантией <span className="whitespace-nowrap">13 лет</span> и доставкой <span className="whitespace-nowrap">по всей России</span>
           </h1>
 
           <p className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-white/90 sm:text-xl">
