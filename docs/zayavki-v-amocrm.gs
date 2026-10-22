@@ -1,7 +1,8 @@
 /**
- * Приём заявок с сайта: amoCRM, запись в Google-таблицу (запасная копия) и
- * уведомление в Telegram. Вставляется в Apps Script таблицы
- * (Расширения → Apps Script). Инструкция — docs/zayavki-v-amocrm.md
+ * Приём заявок с сайта: заявка уходит в amoCRM (контакт и сделка), по желанию
+ * ещё и уведомлением в Telegram. В таблицу ничего не пишется. Если amoCRM не
+ * ответила, заявка приходит письмом владельцу скрипта, чтобы её не потерять.
+ * Инструкция — docs/zayavki-v-amocrm.md
  *
  * Ключи НЕ пишутся в этот файл. Они лежат в «Свойствах скрипта»
  * (Параметры проекта → Свойства скрипта):
@@ -10,49 +11,20 @@
  *   AMO_PIPELINE_ID, AMO_STATUS_ID, AMO_USER_ID — необязательные, см. инструкцию
  *   TG_TOKEN, TG_CHAT_ID — по желанию, для уведомлений в Telegram
  */
-const SHEET_NAME = 'Заявки'
-
 function doPost(e) {
   const lead = JSON.parse(e.postData.contents)
-
-  // 1. Таблица — главное, делается первой.
-  const sheet =
-    SpreadsheetApp.getActive().getSheetByName(SHEET_NAME) ||
-    SpreadsheetApp.getActive().insertSheet(SHEET_NAME)
-
-  if (sheet.getLastRow() === 0) {
-    sheet.appendRow(['Дата', 'Откуда', 'Имя', 'Телефон', 'Город / сообщение', 'Что выбрал', 'Страница', 'amoCRM'])
-    sheet.setFrozenRows(1)
-  }
-
   const payload = lead.payload || {}
-  const details = Object.keys(payload)
-    .map((key) => key + ': ' + payload[key])
-    .join('\n')
 
-  const row = sheet.getLastRow() + 1
-  sheet.appendRow([
-    new Date(lead.sentAt),
-    lead.source || '',
-    lead.name || '',
-    "'" + (lead.phone || ''), // апостроф, чтобы таблица не превратила номер в формулу
-    lead.message || payload['Город'] || '',
-    details,
-    lead.page || '',
-    '',
-  ])
-
-  // 2. amoCRM. Если она не ответила, заявка уже в таблице, а в последней
-  // колонке остаётся пометка — по ней видно, что в CRM её нужно внести вручную.
+  // 1. amoCRM — главное. Если она не ответила, заявка уходит письмом,
+  // иначе её никто бы не увидел.
   try {
-    const result = sendToAmo(lead, payload)
-    if (result) sheet.getRange(row, 8).setValue('amoCRM: сделка ' + result)
+    if (!sendToAmo(lead, payload)) throw new Error('не заданы AMO_SUBDOMAIN или AMO_TOKEN')
   } catch (error) {
     console.error('amoCRM: ' + error)
-    sheet.getRange(row, 8).setValue('amoCRM: ОШИБКА — внести вручную (' + error + ')')
+    mailLead(lead, payload, String(error))
   }
 
-  // 3. Telegram. Если он не ответил, заявка в таблице всё равно сохранена.
+  // 2. Telegram — по желанию; его сбой заявке не мешает.
   try {
     notifyTelegram(lead, payload)
   } catch (error) {
@@ -60,6 +32,20 @@ function doPost(e) {
   }
 
   return ContentService.createTextOutput('ok')
+}
+
+/** Письмо владельцу скрипта: заявка, которую не удалось передать в amoCRM. */
+function mailLead(lead, payload, reason) {
+  const lines = ['Заявка с сайта НЕ попала в amoCRM — внесите её вручную.', 'Причина: ' + reason, '']
+  if (lead.name) lines.push('Имя: ' + lead.name)
+  if (lead.phone) lines.push('Телефон: ' + lead.phone)
+  if (lead.email) lines.push('Email: ' + lead.email)
+  if (lead.message) lines.push(lead.message)
+  Object.keys(payload).forEach((key) => lines.push(key + ': ' + payload[key]))
+  lines.push('Откуда: ' + (SOURCES[lead.source] || lead.source || '—'))
+  if (lead.page) lines.push('Страница: ' + lead.page)
+
+  MailApp.sendEmail(Session.getEffectiveUser().getEmail(), 'Заявка с сайта: amoCRM не ответила', lines.join('\n'))
 }
 
 const SOURCES = {
@@ -103,7 +89,7 @@ function notifyTelegram(lead, payload) {
   })
 }
 
-/** Заявка → сделка и контакт в amoCRM. Возвращает номер сделки или '' если amoCRM не настроена. */
+/** Заявка → сделка и контакт в amoCRM. Возвращает номер сделки; если amoCRM не настроена — пустую строку. */
 function sendToAmo(lead, payload) {
   const props = PropertiesService.getScriptProperties()
   const subdomain = props.getProperty('AMO_SUBDOMAIN')
