@@ -48,6 +48,9 @@ function mailLead(lead, payload, reason) {
   MailApp.sendEmail(Session.getEffectiveUser().getEmail(), 'Заявка с сайта: amoCRM не ответила', lines.join('\n'))
 }
 
+/** Название сайта: попадает в название сделки, тег и примечание. */
+const SITE = 'хоттаб-чан.рф'
+
 const SOURCES = {
   'header-callback': 'Обратный звонок (шапка)',
   hero: 'Первый экран',
@@ -114,8 +117,8 @@ function sendToAmo(lead, payload) {
   }
 
   const deal = {
-    name: 'Заявка с сайта: ' + source,
-    _embedded: { contacts: [contact], tags: [{ name: 'Сайт' }] },
+    name: 'Заявка с сайта ' + SITE + ': ' + source,
+    _embedded: { contacts: [contact], tags: [{ name: 'Сайт' }, { name: SITE }] },
   }
   const pipeline = props.getProperty('AMO_PIPELINE_ID')
   const status = props.getProperty('AMO_STATUS_ID')
@@ -129,7 +132,7 @@ function sendToAmo(lead, payload) {
   if (!dealId) throw new Error('amoCRM не вернула номер сделки')
 
   // Всё остальное — примечанием к сделке: что выбрал клиент, откуда пришёл.
-  const lines = ['Источник: ' + source]
+  const lines = ['Сайт: ' + SITE, 'Источник: ' + source]
   if (lead.message) lines.push(lead.message)
   Object.keys(payload).forEach((key) => lines.push(key + ': ' + payload[key]))
   if (lead.page) lines.push('Страница: ' + lead.page)
