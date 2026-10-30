@@ -49,7 +49,10 @@ export function Header() {
 
   return (
     <>
-      <header className="pointer-events-none fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4 sm:pt-4">
+      <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#dc2626', color: '#fff', fontSize: 14, fontWeight: 700, textAlign: 'center', padding: '0 12px' }}>
+        Тест обновления сайта — изменения работают!
+      </div>
+      <header className="pointer-events-none fixed inset-x-0 top-10 z-50 px-3 pt-3 sm:px-4 sm:pt-4">
         <div className="mx-auto max-w-(--container-content)">
           <div
             className={`pointer-events-auto mx-auto flex w-fit max-w-full items-center gap-1 rounded-full transition-all duration-300 ${
