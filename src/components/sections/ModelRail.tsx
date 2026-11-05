@@ -142,7 +142,7 @@ const productFraming: Record<string, { width: string; left: string; bottom: stri
   'grant-front.png': { width: '79.8%', left: '10.3%', bottom: '1.4%' },
   'nefrit-front.png': { width: '72.5%', left: '13.8%', bottom: '5.0%' },
   'oniks-front.png': { width: '107.2%', left: '-1.8%', bottom: '6.1%' },
-  'oniks-pro-front.png': { width: '96.7%', left: '4.3%', bottom: '3.3%' },
+  'oniks-pro-front.png': { width: '98.0%', left: '4.3%', bottom: '3.6%' },
   'valtsovavich-catalog.png': { width: '75.7%', left: '12.3%', bottom: '0.1%' },
 }
 

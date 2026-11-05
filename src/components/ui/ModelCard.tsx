@@ -19,7 +19,7 @@ const floorFadeStart: Record<string, string> = {
   "valtsovavich-catalog.png": "91.6%",
   "nefrit-front.png": "97.2%",
   "oniks-front.png": "98.8%",
-  "oniks-pro-front.png": "95.2%",
+  "oniks-pro-front.png": "95.6%",
   "grant-front.png": "91.2%",
 };
 
