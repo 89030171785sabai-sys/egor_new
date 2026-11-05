@@ -12,6 +12,17 @@ import {
   type Model,
 } from "../../data/models";
 
+// Start fading the floor reflection below the measured base of each tub.
+const floorFadeStart: Record<string, string> = {
+  "grafit-front.png": "90.8%",
+  "cherny-brilliant-front.png": "92.8%",
+  "valtsovavich-catalog.png": "91.6%",
+  "nefrit-front.png": "97.2%",
+  "oniks-front.png": "98.8%",
+  "oniks-pro-front.png": "95.2%",
+  "grant-front.png": "91.2%",
+};
+
 /**
  * Catalogue card: product shot beside the name, the kit, the price and the
  * call to action.
@@ -57,12 +68,17 @@ export function ModelCard({
         className="relative flex items-center justify-center overflow-hidden rounded-card"
       >
         {cataloguePhoto ? (
-          <img
-            src={photoUrl(cataloguePhoto)}
-            alt={`Банный чан «${model.name}»`}
-            loading="lazy"
-            className="h-auto max-h-[32rem] w-full object-contain p-3 pt-12"
-          />
+          <div className="flex w-full justify-center px-3 pt-12 pb-3">
+            <img
+              src={photoUrl(cataloguePhoto)}
+              alt={`Банный чан «${model.name}»`}
+              loading="lazy"
+              className="h-auto max-h-[28.25rem] w-auto max-w-full [mask-composite:intersect]"
+              style={{
+                maskImage: `linear-gradient(to right, transparent, black 7%, black 93%, transparent), linear-gradient(to bottom, transparent, black 1.2%, black ${floorFadeStart[cataloguePhoto] ?? "99%"}, transparent)`,
+              }}
+            />
+          </div>
         ) : photo && model.photos?.card ? (
           <ModelShot
             model={model}
