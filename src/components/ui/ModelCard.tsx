@@ -36,6 +36,8 @@ export function ModelCard({
   model: Model;
   photo?: boolean;
 }) {
+  const cataloguePhoto = photo ? model.photos?.catalogue : undefined;
+
   return (
     <article className="rounded-panel bg-white p-5 shadow-sm shadow-ink-900/5 transition-shadow hover:shadow-lg hover:shadow-ink-900/10 sm:p-6 lg:grid lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)] lg:gap-8">
       {/*
@@ -51,15 +53,15 @@ export function ModelCard({
         * leaves nothing to see a join in — the whole half reads as one sweep.
         */}
       <div
-        style={{ backgroundColor: model.photos?.cardTop ?? '#f1f2f4' }}
+        style={{ backgroundColor: cataloguePhoto ? '#fff' : (model.photos?.cardTop ?? '#f1f2f4') }}
         className="relative flex items-center justify-center overflow-hidden rounded-card"
       >
-        {photo && model.photos?.catalogue ? (
+        {cataloguePhoto ? (
           <img
-            src={photoUrl(model.photos.catalogue)}
+            src={photoUrl(cataloguePhoto)}
             alt={`Банный чан «${model.name}»`}
             loading="lazy"
-            className="h-auto max-h-[32rem] w-full object-contain"
+            className="h-auto max-h-[32rem] w-full object-contain p-3 pt-12"
           />
         ) : photo && model.photos?.card ? (
           <ModelShot

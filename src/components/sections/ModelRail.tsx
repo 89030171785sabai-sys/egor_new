@@ -135,7 +135,19 @@ export function ModelRail({
   )
 }
 
+// Match the visible bowl width and bottom edge while keeping tall chimneys in frame.
+const productFraming: Record<string, { width: string; left: string; bottom: string }> = {
+  'cherny-brilliant-front.png': { width: '78.6%', left: '12.3%', bottom: '1.5%' },
+  'grafit-front.png': { width: '66.1%', left: '16.8%', bottom: '1.8%' },
+  'grant-front.png': { width: '66.5%', left: '16.9%', bottom: '1.4%' },
+  'nefrit-front.png': { width: '60.4%', left: '19.8%', bottom: '5.0%' },
+  'oniks-front.png': { width: '89.3%', left: '6.8%', bottom: '6.1%' },
+  'oniks-pro-front.png': { width: '80.6%', left: '11.9%', bottom: '3.3%' },
+  'valtsovavich-catalog.png': { width: '63.1%', left: '18.6%', bottom: '0.1%' },
+}
+
 function RailCard({ model }: { model: Model }) {
+  const framing = productFraming[model.photos?.card ?? '']
   const sizes = modelSizes(model)
   const from = modelPriceFrom(model)
 
@@ -146,13 +158,25 @@ function RailCard({ model }: { model: Model }) {
         className="relative block overflow-hidden rounded-panel bg-white transition-shadow hover:shadow-lg hover:shadow-ink-900/10"
       >
         <Loupe>
-          <ModelShot
-            model={model}
-            slot="card"
-            ratio="10/9"
-            contain={model.photos?.cardContain}
-            className={model.photos?.cardContain ? 'aspect-10/9 w-full' : undefined}
-          />
+          {framing ? (
+            <div className="relative aspect-square">
+              <ModelShot
+                model={model}
+                slot="card"
+                contain
+                className="absolute h-auto max-w-none"
+                style={framing}
+              />
+            </div>
+          ) : (
+            <ModelShot
+              model={model}
+              slot="card"
+              ratio="10/9"
+              contain={model.photos?.cardContain}
+              className={model.photos?.cardContain ? 'aspect-10/9 w-full' : undefined}
+            />
+          )}
         </Loupe>
         {model.badge && (
           <span className="absolute top-3 left-3 rounded-full bg-brand-500 px-3 py-1 text-xs font-semibold text-white">
