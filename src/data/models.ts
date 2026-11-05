@@ -219,7 +219,7 @@ export const models: Model[] = [
     stove: 'Стационарная, чугунный колосник и выдвижной зольный ящик',
     bowlShape: 'faceted',
     theme: 'ink',
-    photos: { scene: 'cherny-brilliant-scene.webp', stove: 'cherny-brilliant-front.png', stoveCrop: { scale: 1.67, origin: '45% 129%' }, banner: 'cherny-brilliant-banner.webp', card: 'cherny-brilliant-front.png', cardContain: true, catalogue: 'cherny-brilliant-front.png', cardTop: '#eeeff1', hero: 'cherny-brilliant-hero.webp', heroWidth: 0.517, heroTone: '#441403' },
+    photos: { scene: 'cherny-brilliant-scene.webp', stove: 'cherny-brilliant-front.png', stoveCrop: { scale: 1.67, origin: '45% 129%' }, banner: 'cherny-brilliant-banner.webp', card: 'cherny-brilliant-front.png', cardContain: true, catalogue: 'cherny-brilliant-front.png', cardTop: '#eeeff1', hero: 'cherny-brilliant-page-hero.png', heroWidth: 0.517, heroTone: '#441403' },
     video: { src: 'cherny-brilliant-obzor.mp4', poster: 'cherny-brilliant-obzor-poster.webp' },
     offers: [
       { cm: 175, price: 133000 },
