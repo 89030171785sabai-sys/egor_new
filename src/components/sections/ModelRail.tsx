@@ -146,7 +146,13 @@ function RailCard({ model }: { model: Model }) {
         className="relative block overflow-hidden rounded-panel bg-white transition-shadow hover:shadow-lg hover:shadow-ink-900/10"
       >
         <Loupe>
-          <ModelShot model={model} slot="card" ratio="10/9" />
+          <ModelShot
+            model={model}
+            slot="card"
+            ratio="10/9"
+            contain={model.photos?.cardContain}
+            className={model.photos?.cardContain ? 'aspect-10/9 w-full' : undefined}
+          />
         </Loupe>
         {model.badge && (
           <span className="absolute top-3 left-3 rounded-full bg-brand-500 px-3 py-1 text-xs font-semibold text-white">
