@@ -30,15 +30,17 @@ export function ModelShowcase() {
 }
 
 function Banner({ model }: { model: Model }) {
+  const photo = model.photos?.showcase ?? model.photos?.banner
+
   return (
     <article
       className="relative isolate w-[78vw] shrink-0 snap-start overflow-hidden rounded-panel first:ml-4 last:mr-4 sm:w-[22rem] lg:w-[26rem] sm:first:ml-6 sm:last:mr-6"
       style={{ aspectRatio: '4/5' }}
     >
-      {model.photos?.banner ? (
+      {photo ? (
         <>
           <img
-            src={photoUrl(model.photos.banner)}
+            src={photoUrl(photo)}
             alt={`${model.name} на участке`}
             loading="lazy"
             className="absolute inset-0 -z-10 size-full object-cover"
