@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ButtonLink } from "./Button";
 import { ModelShot } from "./ModelShot";
+import { photoUrl } from "../../lib/photos";
 import { PlaceholderImage } from "./PlaceholderImage";
 import {
   formatHours,
@@ -53,7 +54,14 @@ export function ModelCard({
         style={{ backgroundColor: model.photos?.cardTop ?? '#f1f2f4' }}
         className="relative flex items-center justify-center overflow-hidden rounded-card"
       >
-        {photo && model.photos?.card ? (
+        {photo && model.photos?.catalogue ? (
+          <img
+            src={photoUrl(model.photos.catalogue)}
+            alt={`Банный чан «${model.name}»`}
+            loading="lazy"
+            className="h-auto max-h-[32rem] w-full object-contain"
+          />
+        ) : photo && model.photos?.card ? (
           <ModelShot
             model={model}
             slot="card"
