@@ -332,7 +332,7 @@ export const models: Model[] = [
     bowlShape: 'faceted',
     theme: 'terracotta',
     badge: 'Решение 4 в 1',
-    photos: { stove: 'oniks-pro-stove-white.jpg', scene: 'oniks-pro-scene.webp', banner: 'oniks-pro-banner.webp', card: 'oniks-pro-front.png', cardContain: true, catalogue: 'oniks-pro-front.png', cardTop: '#f2f4f6', hero: 'oniks-pro-page-hero.png', heroWidth: 0.663, heroTone: '#692713' },
+    photos: { stove: 'oniks-pro-stove-closed-white.jpg', scene: 'oniks-pro-scene.webp', banner: 'oniks-pro-banner.webp', card: 'oniks-pro-front.png', cardContain: true, catalogue: 'oniks-pro-front.png', cardTop: '#f2f4f6', hero: 'oniks-pro-page-hero.png', heroWidth: 0.663, heroTone: '#692713' },
     video: { src: 'oniks-pro-obzor.mp4', poster: 'oniks-pro-obzor-poster.webp' },
     offers: [
       { cm: 210, price: 294000 },
