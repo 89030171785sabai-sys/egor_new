@@ -197,6 +197,8 @@ function HowItHeats({ model }: { model: Model }) {
   const heating = heatingForModel(model.slug)
   if (!heating) return null
 
+  const stoveCrop = model.photos?.stoveCrop
+
   return (
     <section className="group mt-14">
       <h2 className="text-2xl font-bold text-navy-700">Как греется вода</h2>
@@ -213,12 +215,18 @@ function HowItHeats({ model }: { model: Model }) {
         {heating.photo ? (
           <StoveShot photo={heating.photo} title={`${heating.title} — ${model.name}`} />
         ) : (
-          <img
-            src={photoUrl(model.photos?.stove ?? model.photos?.card ?? '')}
-            alt={`Печь банного чана «${model.name}» крупным планом`}
-            loading="lazy"
-            className="aspect-4/3 w-full rounded-panel object-cover"
-          />
+          <div className="aspect-4/3 overflow-hidden rounded-panel">
+            <img
+              src={photoUrl(model.photos?.stove ?? model.photos?.card ?? '')}
+              alt={`Печь банного чана «${model.name}» крупным планом`}
+              loading="lazy"
+              className="size-full object-cover"
+              style={stoveCrop && {
+                transform: `scale(${stoveCrop.scale})`,
+                transformOrigin: stoveCrop.origin,
+              }}
+            />
+          </div>
         )}
       </div>
     </section>
