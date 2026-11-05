@@ -91,8 +91,6 @@ export interface ModelPhotos {
   showcase?: string
   /** Enlarged close-up of the stove for «Как греется вода», cut from the studio shot. */
   stove?: string
-  /** Zoom and focal point when the stove is shown from a wider photograph. */
-  stoveCrop?: { scale: number; origin: string }
   /** A third photograph on the model page, after the banner and the scene. */
   extra?: string
   /** Second scene on the model page, in place of the studio hero shot. */
@@ -245,7 +243,7 @@ export const models: Model[] = [
     stove: 'Разборная, жаропрочная сталь 09Г2С',
     bowlShape: 'rolled',
     theme: 'sand',
-    photos: { scene: 'valtsovavich-scene.webp', stove: 'valtsovavich-page-hero.png', stoveCrop: { scale: 2.38, origin: '50% 93%' }, banner: 'valtsovavich-new.png', card: 'valtsovavich-card.webp', catalogue: 'valtsovavich-catalog.png', cardTop: '#f6f7f9', hero: 'valtsovavich-page-hero.png', heroWidth: 0.701, heroTone: '#3f4c5a' },
+    photos: { scene: 'valtsovavich-scene.webp', stove: 'valtsovavich-stove-white.jpg', banner: 'valtsovavich-new.png', card: 'valtsovavich-card.webp', catalogue: 'valtsovavich-catalog.png', cardTop: '#f6f7f9', hero: 'valtsovavich-page-hero.png', heroWidth: 0.701, heroTone: '#3f4c5a' },
     video: { src: 'valtsovavich-obzor.mp4', poster: 'valtsovavich-obzor-poster.webp', portrait: true },
     offers: [
       { cm: 175, price: 135000 },
