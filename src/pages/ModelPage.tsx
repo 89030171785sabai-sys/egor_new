@@ -215,15 +215,15 @@ function HowItHeats({ model }: { model: Model }) {
         {heating.photo ? (
           <StoveShot photo={heating.photo} title={`${heating.title} — ${model.name}`} />
         ) : (
-          <div className="aspect-4/3 overflow-hidden rounded-panel">
+          <div className="relative aspect-4/3 overflow-hidden rounded-panel">
             <img
               src={photoUrl(model.photos?.stove ?? model.photos?.card ?? '')}
               alt={`Печь банного чана «${model.name}» крупным планом`}
               loading="lazy"
-              className="size-full object-cover"
+              className={stoveCrop ? 'absolute top-0 left-1/2 h-auto max-w-none' : 'size-full object-cover'}
               style={stoveCrop && {
-                transform: `scale(${stoveCrop.scale})`,
-                transformOrigin: stoveCrop.origin,
+                width: stoveCrop.width,
+                transform: `translate(${stoveCrop.offset})`,
               }}
             />
           </div>

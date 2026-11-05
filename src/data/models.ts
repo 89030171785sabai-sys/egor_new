@@ -92,7 +92,7 @@ export interface ModelPhotos {
   /** Enlarged close-up of the stove for «Как греется вода», cut from the studio shot. */
   stove?: string
   /** Optional framing for a stove close-up taken from a full product photo. */
-  stoveCrop?: { scale: number; origin: string }
+  stoveCrop?: { width: string; offset: string }
   /** A third photograph on the model page, after the banner and the scene. */
   extra?: string
   /** Second scene on the model page, in place of the studio hero shot. */
@@ -200,7 +200,7 @@ export const models: Model[] = [
     ],
     // Only the model page's own hero: the home page and the catalogue card
     // are waiting for their own shots.
-    photos: { stove: 'grafit-front.png', stoveCrop: { scale: 1.65, origin: '50% 110%' }, scene: 'grafit-scene.webp', banner: 'grafit-banner.webp', card: 'grafit-front.png', cardContain: true, catalogue: 'grafit-front.png', cardTop: '#f2f3f5', hero: 'grafit-page-hero.png', heroWidth: 0.596, heroTone: '#263b44', heroBoost: 1.18 },
+    photos: { stove: 'grafit-front.png', stoveCrop: { width: '165%', offset: '-50%, -44.5%' }, scene: 'grafit-scene.webp', banner: 'grafit-banner.webp', card: 'grafit-front.png', cardContain: true, catalogue: 'grafit-front.png', cardTop: '#f2f3f5', hero: 'grafit-page-hero.png', heroWidth: 0.596, heroTone: '#263b44', heroBoost: 1.18 },
     video: { src: 'grafit-obzor.mp4', poster: 'grafit-obzor-poster.webp', portrait: true },
     includes: [...commonIncludes, 'Ветрозащита без дна', 'Дымоход 3 м и защитный экран'],
     seoTitle: 'Банный чан «Графит»',
@@ -219,7 +219,7 @@ export const models: Model[] = [
     stove: 'Стационарная, чугунный колосник и выдвижной зольный ящик',
     bowlShape: 'faceted',
     theme: 'ink',
-    photos: { scene: 'cherny-brilliant-scene.webp', stove: 'cherny-brilliant-front.png', stoveCrop: { scale: 1.67, origin: '45% 129%' }, banner: 'cherny-brilliant-banner.webp', card: 'cherny-brilliant-front.png', cardContain: true, catalogue: 'cherny-brilliant-front.png', cardTop: '#eeeff1', hero: 'cherny-brilliant-page-hero.png', heroWidth: 0.517, heroTone: '#441403' },
+    photos: { scene: 'cherny-brilliant-scene.webp', stove: 'cherny-brilliant-front.png', stoveCrop: { width: '178%', offset: '-48%, -54%' }, banner: 'cherny-brilliant-banner.webp', card: 'cherny-brilliant-front.png', cardContain: true, catalogue: 'cherny-brilliant-front.png', cardTop: '#eeeff1', hero: 'cherny-brilliant-page-hero.png', heroWidth: 0.517, heroTone: '#441403' },
     video: { src: 'cherny-brilliant-obzor.mp4', poster: 'cherny-brilliant-obzor-poster.webp' },
     offers: [
       { cm: 175, price: 133000 },
