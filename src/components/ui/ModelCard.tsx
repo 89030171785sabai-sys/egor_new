@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ButtonLink } from "./Button";
 import { ModelShot } from "./ModelShot";
-import { photoUrl } from "../../lib/photos";
+import { photoUrl, studioPhotoBlend } from "../../lib/photos";
 import { PlaceholderImage } from "./PlaceholderImage";
 import {
   formatHours,
@@ -11,17 +11,6 @@ import {
   steelGrades,
   type Model,
 } from "../../data/models";
-
-// Start fading the floor reflection below the measured base of each tub.
-const floorFadeStart: Record<string, string> = {
-  "grafit-front.png": "90.8%",
-  "cherny-brilliant-front.png": "92.8%",
-  "valtsovavich-catalog.png": "91.6%",
-  "nefrit-front.png": "97.2%",
-  "oniks-front.png": "98.8%",
-  "oniks-pro-front.png": "95.6%",
-  "grant-front.png": "91.2%",
-};
 
 /**
  * Catalogue card: product shot beside the name, the kit, the price and the
@@ -73,10 +62,8 @@ export function ModelCard({
               src={photoUrl(cataloguePhoto)}
               alt={`Банный чан «${model.name}»`}
               loading="lazy"
-              className="h-auto max-h-[28.25rem] w-auto max-w-full [mask-composite:intersect]"
-              style={{
-                maskImage: `linear-gradient(to right, transparent, black 7%, black 93%, transparent), linear-gradient(to bottom, transparent, black 1.2%, black ${floorFadeStart[cataloguePhoto] ?? "99%"}, transparent)`,
-              }}
+              className="h-auto max-h-[28.25rem] w-auto max-w-full"
+              style={studioPhotoBlend(cataloguePhoto)}
             />
           </div>
         ) : photo && model.photos?.card ? (

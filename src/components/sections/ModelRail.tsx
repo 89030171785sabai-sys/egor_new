@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent } fr
 import { Link } from 'react-router-dom'
 import { SectionHeading } from '../ui/SectionHeading'
 import { ModelShot } from '../ui/ModelShot'
+import { studioPhotoBlend } from '../../lib/photos'
 import { Reveal } from '../ui/Reveal'
 import {
   formatPrice,
@@ -135,19 +136,20 @@ export function ModelRail({
   )
 }
 
-// Match the visible bowl width and bottom edge while keeping tall chimneys in frame.
+// Align the bases. Match bowl widths on frontal photos and overall heights on the side-stove photos.
 const productFraming: Record<string, { width: string; left: string; bottom: string }> = {
   'cherny-brilliant-front.png': { width: '94.3%', left: '4.8%', bottom: '1.5%' },
   'grafit-front.png': { width: '79.3%', left: '10.2%', bottom: '1.8%' },
-  'grant-front.png': { width: '79.8%', left: '10.3%', bottom: '1.4%' },
+  'grant-front.png': { width: '107.7%', left: '-3.6%', bottom: '-0.8%' },
   'nefrit-front.png': { width: '72.5%', left: '13.8%', bottom: '5.0%' },
-  'oniks-front.png': { width: '107.2%', left: '-1.8%', bottom: '6.1%' },
-  'oniks-pro-front.png': { width: '98.0%', left: '4.3%', bottom: '3.6%' },
+  'oniks-front.png': { width: '93.0%', left: '5.0%', bottom: '6.3%' },
+  'oniks-pro-front.png': { width: '97.0%', left: '4.8%', bottom: '3.6%' },
   'valtsovavich-catalog.png': { width: '75.7%', left: '12.3%', bottom: '0.1%' },
 }
 
 function RailCard({ model }: { model: Model }) {
-  const framing = productFraming[model.photos?.card ?? '']
+  const photo = model.photos?.card ?? ''
+  const framing = productFraming[photo]
   const sizes = modelSizes(model)
   const from = modelPriceFrom(model)
 
@@ -165,7 +167,7 @@ function RailCard({ model }: { model: Model }) {
                 slot="card"
                 contain
                 className="absolute h-auto max-w-none"
-                style={framing}
+                style={{ ...framing, ...studioPhotoBlend(photo) }}
               />
             </div>
           ) : (
