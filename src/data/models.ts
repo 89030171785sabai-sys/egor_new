@@ -303,7 +303,7 @@ export const models: Model[] = [
     stove: 'Выносная, водяной контур и теплосъёмные трубы',
     bowlShape: 'faceted',
     theme: 'olive',
-    photos: { extra: 'oniks-extra.webp', scene: 'oniks-scene.webp', stove: 'oniks-stove.webp', banner: 'oniks-banner.webp', card: 'oniks-card.webp', cardTop: '#f1f2f4', hero: 'oniks-hero.webp', heroWidth: 0.751, heroTone: '#1a3935' },
+    photos: { extra: 'oniks-extra.webp', scene: 'oniks-scene.webp', stove: 'oniks-stove-white.jpg', banner: 'oniks-winter-terrace.png', card: 'oniks-front.png', cardContain: true, catalogue: 'oniks-front.png', cardTop: '#f1f2f4', hero: 'oniks-page-hero.png', heroWidth: 0.751, heroTone: '#1a3935' },
     offers: [
       { cm: 175, price: 188000 },
       { cm: 210, price: 199000 },
