@@ -243,7 +243,7 @@ export const models: Model[] = [
     stove: 'Разборная, жаропрочная сталь 09Г2С',
     bowlShape: 'rolled',
     theme: 'sand',
-    photos: { scene: 'valtsovavich-scene.webp', stove: 'valtsovavich-stove.webp', banner: 'valtsovavich-banner.webp', showcase: 'valtsovavich-new.png', card: 'valtsovavich-card.webp', catalogue: 'valtsovavich-catalog.png', cardTop: '#f6f7f9', hero: 'valtsovavich-page-hero.png', heroWidth: 0.701, heroTone: '#3f4c5a' },
+    photos: { scene: 'valtsovavich-scene.webp', stove: 'valtsovavich-stove.webp', banner: 'valtsovavich-page-hero.png', showcase: 'valtsovavich-new.png', card: 'valtsovavich-card.webp', catalogue: 'valtsovavich-catalog.png', cardTop: '#f6f7f9', hero: 'valtsovavich-page-hero.png', heroWidth: 0.701, heroTone: '#3f4c5a' },
     video: { src: 'valtsovavich-obzor.mp4', poster: 'valtsovavich-obzor-poster.webp', portrait: true },
     offers: [
       { cm: 175, price: 135000 },
