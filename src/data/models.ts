@@ -217,7 +217,7 @@ export const models: Model[] = [
     stove: 'Стационарная, чугунный колосник и выдвижной зольный ящик',
     bowlShape: 'faceted',
     theme: 'ink',
-    photos: { scene: 'cherny-brilliant-scene.webp', stove: 'cherny-brilliant-stove-white.jpg', banner: 'cherny-brilliant-banner.webp', card: 'cherny-brilliant-front.png', cardContain: true, catalogue: 'cherny-brilliant-front.png', cardTop: '#eeeff1', hero: 'cherny-brilliant-page-hero.png', heroWidth: 0.517, heroTone: '#441403' },
+    photos: { scene: 'cherny-brilliant-scene.webp', stove: 'cherny-brilliant-stove-white.jpg', banner: 'cherny-brilliant-banner.webp', card: 'cherny-brilliant-front.jpg', cardContain: true, catalogue: 'cherny-brilliant-front.jpg', cardTop: '#eeeff1', hero: 'cherny-brilliant-page-hero.jpg', heroWidth: 0.517, heroTone: '#441403' },
     video: { src: 'cherny-brilliant-obzor.mp4', poster: 'cherny-brilliant-obzor-poster.webp' },
     offers: [
       { cm: 175, price: 133000 },
@@ -245,7 +245,7 @@ export const models: Model[] = [
     stove: 'Разборная, жаропрочная сталь 09Г2С',
     bowlShape: 'rolled',
     theme: 'sand',
-    photos: { scene: 'valtsovavich-scene.webp', stove: 'valtsovavich-stove-white.jpg', banner: 'valtsovavich-new.png', card: 'valtsovavich-catalog.png', cardContain: true, catalogue: 'valtsovavich-catalog.png', cardTop: '#f6f7f9', hero: 'valtsovavich-page-hero.png', heroWidth: 0.701, heroTone: '#3f4c5a' },
+    photos: { scene: 'valtsovavich-scene.webp', stove: 'valtsovavich-stove-white.jpg', banner: 'valtsovavich-garden.jpg', card: 'valtsovavich-catalog.jpg', cardContain: true, catalogue: 'valtsovavich-catalog.jpg', cardTop: '#f6f7f9', hero: 'valtsovavich-page-hero.jpg', heroWidth: 0.701, heroTone: '#3f4c5a' },
     video: { src: 'valtsovavich-obzor.mp4', poster: 'valtsovavich-obzor-poster.webp', portrait: true },
     offers: [
       { cm: 175, price: 135000 },
@@ -274,7 +274,7 @@ export const models: Model[] = [
     bowlShape: 'faceted',
     theme: 'jade',
     badge: 'Хит продаж',
-    photos: { scene: 'nefrit-scene.webp', stove: 'nefrit-stove-white.jpg', banner: 'nefrit-banner.webp', card: 'nefrit-front.png', cardContain: true, catalogue: 'nefrit-front.png', cardTop: '#efeff1', hero: 'nefrit-page-hero.png', heroWidth: 0.5, heroTone: '#3f4148' },
+    photos: { scene: 'nefrit-scene.webp', stove: 'nefrit-stove-white.jpg', banner: 'nefrit-banner.webp', card: 'nefrit-front.jpg', cardContain: true, catalogue: 'nefrit-front.jpg', cardTop: '#efeff1', hero: 'nefrit-page-hero.jpg', heroWidth: 0.5, heroTone: '#3f4148' },
     video: { src: 'nefrit-obzor.mp4', poster: 'nefrit-obzor-poster.webp' },
     offers: [
       { cm: 175, price: 187000 },

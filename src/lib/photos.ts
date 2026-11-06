@@ -20,9 +20,9 @@ export const videoUrl = (name: string) => `${import.meta.env.BASE_URL}video/${na
 // Start fading the floor reflection below the measured base of each tub.
 const floorFadeStart: Record<string, string> = {
   "grafit-front.png": "90.8%",
-  "cherny-brilliant-front.png": "92.8%",
-  "valtsovavich-catalog.png": "91.6%",
-  "nefrit-front.png": "97.2%",
+  "cherny-brilliant-front.jpg": "92.8%",
+  "valtsovavich-catalog.jpg": "91.6%",
+  "nefrit-front.jpg": "97.2%",
   "oniks-front.png": "98.8%",
   "oniks-pro-front.png": "95.6%",
   "grant-front.png": "91.2%",
