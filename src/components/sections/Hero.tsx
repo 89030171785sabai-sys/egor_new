@@ -26,17 +26,15 @@ export function Hero() {
         // The first thing on the page, so it is fetched ahead of everything else.
         loading="eager"
         fetchPriority="high"
-        className="absolute inset-x-0 top-0 -z-20 h-[30rem] w-full object-cover lg:inset-0 lg:h-full lg:object-[50%_67%]"
+        className="absolute inset-x-0 top-0 -z-20 h-[30rem] w-full object-cover lg:inset-0 lg:h-full lg:object-[50%_67%] lg:origin-[50%_62%] lg:scale-[1.22] min-[2100px]:scale-110 min-[2350px]:scale-100"
       />
       {/*
-       * The shot is bright where the sun sits, so a flat wash is not enough to
-       * carry white type across it: the veil is heaviest top and bottom, where
-       * the headline and the buttons fall, and thinnest across the middle,
-       * where the water and the terrace are worth seeing.
+       * Keep the sky and headline area dark enough for white text. On desktop,
+       * ease off below the copy so the dark tub and stove remain visible.
        */}
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 top-0 -z-10 h-[30rem] bg-gradient-to-b from-ink-900/65 via-ink-900/20 via-60% to-ink-900 lg:inset-0 lg:h-full lg:from-ink-900/75 lg:via-ink-900/45 lg:via-50% lg:to-ink-900/75"
+        className="absolute inset-x-0 top-0 -z-10 h-[30rem] bg-gradient-to-b from-ink-900/65 via-ink-900/20 via-60% to-ink-900 lg:inset-0 lg:h-full lg:from-ink-900/75 lg:via-ink-900/45 lg:via-50% lg:to-ink-900/42"
       />
 
       <div className="mx-auto w-full max-w-(--container-content) px-4 pt-32 pb-16 sm:px-6 lg:pt-40 lg:pb-28">
