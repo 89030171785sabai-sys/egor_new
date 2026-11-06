@@ -15,6 +15,7 @@ export function PhotoGallery({
   photos,
   className = '',
   thumbClassName = '',
+  thumbFit = 'cover',
   single = false,
 }: {
   photos: LightboxPhoto[]
@@ -22,6 +23,8 @@ export function PhotoGallery({
   className?: string
   /** Shape of each thumbnail. */
   thumbClassName?: string
+  /** Fit only the preview; the full-size viewer always contains the photo. */
+  thumbFit?: 'cover' | 'contain'
   /** Shows only the first thumbnail; the viewer still pages through them all. */
   single?: boolean
 }) {
@@ -71,7 +74,7 @@ export function PhotoGallery({
               src={photoUrl(photo.file)}
               alt={photo.alt}
               loading="lazy"
-              className={`w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] ${thumbClassName}`}
+              className={`w-full ${thumbFit === 'contain' ? 'object-contain' : 'object-cover'} transition-transform duration-500 group-hover:scale-[1.03] ${thumbClassName}`}
             />
             <span
               aria-hidden="true"

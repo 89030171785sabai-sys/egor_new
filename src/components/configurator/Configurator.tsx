@@ -1,22 +1,16 @@
 import { useMemo, useState } from 'react'
 import {
-  basePrice,
   defaultModelSlug,
   defaultSelection,
   optionGroups,
-  optionPrice,
   type ConfigGroup,
   type ConfigOption,
 } from '../../data/configurator'
 import {
   formatHours,
-  formatPrice,
-  isPromo,
   modelBySlug,
   models,
   modelSizes,
-  offerFor,
-  promo,
   sizeTier,
   steelGrades,
   type Model,
@@ -42,13 +36,6 @@ export function Configurator() {
 
   const chosen = useMemo(() => pickOptions(selection), [selection])
 
-  const offer = offerFor(model, size)
-  const base = basePrice(model, size)
-  const promoHere = isPromo(model, size)
-  const surcharge = chosen.reduce((sum, option) => sum + (optionPrice(option, size) ?? 0), 0)
-  const pending = chosen.filter((option) => optionPrice(option, size) === null)
-  const total = base === null ? null : base + surcharge
-
   const choose = (group: ConfigGroup, optionId: string) =>
     setSelection((current) => {
       if (group.kind === 'single') return { ...current, [group.id]: [optionId] }
@@ -66,8 +53,8 @@ export function Configurator() {
     Размер: `${size} см — до ${sizeTier(size)?.people} человек`,
     Сталь: model.steel,
     'Время нагрева': formatHours(model.heatingHours),
-    Комплектация: chosen.map((option) => option.label).join('; ') || 'базовая',
-    'Расчёт на сайте': total === null ? 'по запросу' : formatPrice(total),
+    Комплектация: chosen.map((option) => option.note ? `${option.label} — ${option.note}` : option.label).join('; ') || 'базовая',
+    'Расчёт на сайте': 'по запросу',
   }
 
   return (
@@ -78,17 +65,18 @@ export function Configurator() {
             single
             photos={shots}
             className="block"
-            thumbClassName="aspect-10/9 bg-white"
+            thumbFit="contain"
+            thumbClassName="aspect-10/9 bg-white p-3 sm:p-4"
           />
         </div>
 
-        <PriceBar
-          total={total}
-          base={base}
-          was={promoHere ? offer?.price : undefined}
-          pending={pending.length}
-          promo={promoHere}
-        />
+        <div className="mt-4 rounded-panel bg-ink-900 p-5 text-white sm:p-6">
+          <p className="text-xs tracking-wider text-white/70 uppercase">Стоимость комплектации</p>
+          <p className="font-display mt-1.5 text-3xl sm:text-4xl">По запросу</p>
+          <p className="mt-3 text-sm leading-relaxed text-white/70">
+            Уточним цену чана с выбранными опциями и доставкой после заявки.
+          </p>
+        </div>
       </div>
 
       <div className="space-y-8">
@@ -136,7 +124,6 @@ export function Configurator() {
                 <OptionRow
                   key={option.id}
                   option={option}
-                  price={optionPrice(option, size)}
                   kind={group.kind}
                   active={(selection[group.id] ?? []).includes(option.id)}
                   onSelect={() => choose(group, option.id)}
@@ -149,9 +136,7 @@ export function Configurator() {
         <div id="configurator-lead" className="scroll-mt-28 rounded-panel bg-white p-6 sm:p-8">
           <h3 className="text-xl font-semibold text-navy-700">Прислать точный расчёт</h3>
           <p className="mt-2 text-sm leading-relaxed text-ink-500">
-            Соберём смету по выбранной комплектации, добавим доставку до вашего участка и пришлём
-            в удобный канал. Опции, у которых сейчас стоит «по запросу», посчитаем по актуальному
-            прайсу.
+            Посчитаем выбранную комплектацию и доставку до вашего участка.
           </p>
           <LeadForm
             source="calculator"
@@ -229,7 +214,7 @@ function ModelTile({
           src={photoUrl(model.photos.card)}
           alt=""
           loading="lazy"
-          className="mb-3 aspect-10/9 w-full rounded-card bg-white object-cover"
+          className="mb-3 aspect-10/9 w-full rounded-card bg-white object-contain p-2"
         />
       )}
       <span className="flex items-start justify-between gap-2">
@@ -251,14 +236,11 @@ function ModelTile({
 
 function OptionRow({
   option,
-  price,
   kind,
   active,
   onSelect,
 }: {
   option: ConfigOption
-  /** Surcharge at the chosen size; null when it has to be quoted. */
-  price: number | null
   kind: ConfigGroup['kind']
   active: boolean
   onSelect: () => void
@@ -297,75 +279,7 @@ function OptionRow({
         {option.note && <span className="mt-0.5 block text-xs text-ink-400">{option.note}</span>}
       </span>
 
-      <span className="shrink-0 text-sm whitespace-nowrap">
-        {option.included ? (
-          <span className="text-ink-400">в комплекте</span>
-        ) : price === null ? (
-          <span className="text-ink-400">по запросу</span>
-        ) : price === 0 ? (
-          <span className="text-ink-400">—</span>
-        ) : (
-          <span className="font-medium">+ {formatPrice(price)}</span>
-        )}
-      </span>
+      <span className="shrink-0 whitespace-nowrap text-xs text-ink-600 sm:text-sm">по запросу</span>
     </button>
   )
-}
-
-function PriceBar({
-  total,
-  base,
-  was,
-  pending,
-  promo: isPromoPrice,
-}: {
-  total: number | null
-  base: number | null
-  was?: number
-  pending: number
-  promo: boolean
-}) {
-  return (
-    <div className="mt-4 rounded-panel bg-ink-900 p-5 text-white sm:p-6">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="text-xs tracking-wider text-white/50 uppercase">Предварительная стоимость</p>
-          <p className="mt-1.5 flex flex-wrap items-baseline gap-3">
-            <span className="font-display text-3xl sm:text-4xl">
-              {total === null ? 'по запросу' : formatPrice(total)}
-            </span>
-            {was !== undefined && was !== base && (
-              <span className="text-lg text-white/40 line-through">{formatPrice(was)}</span>
-            )}
-          </p>
-        </div>
-
-        {isPromoPrice && (
-          <span className="rounded-full bg-brand-500 px-3 py-1.5 text-xs font-medium">
-            {promo.label}
-          </span>
-        )}
-      </div>
-
-      {pending > 0 && (
-        <p className="mt-3 border-t border-white/10 pt-3 text-sm text-white/60">
-          Плюс {pending} {plural(pending, 'опция', 'опции', 'опций')} по запросу — посчитаем в
-          ответе на заявку.
-        </p>
-      )}
-
-      <p className="mt-3 text-xs leading-relaxed text-white/40">
-        Расчёт предварительный: цена комплекта по прайсу плюс выбранные опции. Доставка и монтаж
-        считаются отдельно.
-      </p>
-    </div>
-  )
-}
-
-const plural = (n: number, one: string, few: string, many: string) => {
-  const mod10 = n % 10
-  const mod100 = n % 100
-  if (mod10 === 1 && mod100 !== 11) return one
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return few
-  return many
 }

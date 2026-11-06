@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { photoUrl } from '../../lib/photos'
 import { SectionHeading } from '../ui/SectionHeading'
 import { Reveal } from '../ui/Reveal'
@@ -58,45 +59,62 @@ export function Ritual() {
             </Cell>
           </Reveal>
 
-          <Reveal className="h-full">
-            <Cell height="h-full" className="flex flex-col justify-center px-7 py-10 text-center">
-              <p className="text-lg text-ink-500">
-                Как <span className="font-display text-4xl text-ink-900">баня</span>
-                <span aria-hidden="true" className="ml-1 inline-block size-2 rounded-full bg-brand-500 align-super" />
-                <span className="mt-1 block text-xl text-ink-700">только под небом</span>
-              </p>
-              <p className="mt-4 text-sm leading-relaxed text-ink-500">
-                Вы дышите свежим воздухом и не перегреваете голову
-              </p>
-            </Cell>
-          </Reveal>
+          <div className="grid gap-5 sm:col-span-2 md:grid-cols-3 lg:col-span-3">
+            <RitualLink to="/catalog">
+              <div className="flex flex-1 flex-col justify-center px-6 py-9 lg:px-8">
+                <svg
+                  viewBox="0 0 48 48"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  aria-hidden="true"
+                  className="mb-6 size-12 text-brand-600"
+                >
+                  <path d="M6 18h23a5 5 0 1 0-5-5M6 25h32a4 4 0 1 0-4-4M10 32h15a5 5 0 1 1-5 5" />
+                </svg>
+                <h3 className="font-display text-3xl leading-tight text-ink-900 lg:text-4xl">
+                  Как баня,<br />только под небом
+                </h3>
+                <p className="mt-4 max-w-[27ch] text-sm leading-relaxed text-ink-600">
+                  Горячая вода и свежий воздух. Поставьте чан во дворе или на террасе.
+                </p>
+              </div>
+              <RitualAction>Выбрать чан</RitualAction>
+            </RitualLink>
 
-          <Reveal delay={70} className="h-full">
-            <Cell height="h-full" className="flex flex-col">
-              <p className="px-7 pt-7 pb-4 text-center text-lg leading-snug text-ink-700">
+            <RitualLink to="/cherny-brilliant">
+              <h3 className="px-5 pt-6 pb-4 text-center text-lg font-medium leading-snug text-ink-900">
                 Одна закладка дров на весь вечер
-              </p>
-              <img
-                src={photoUrl('ritual-stove.webp')}
-                alt="Открытая топка банного чана с горящими дровами"
-                loading="lazy"
-                className="mt-auto aspect-16/10 w-full rounded-card object-cover"
-              />
-            </Cell>
-          </Reveal>
+              </h3>
+              <div className="relative flex-1 overflow-hidden rounded-card">
+                <img
+                  src={photoUrl('ritual-stove.webp')}
+                  alt="Банный чан «Чёрный бриллиант» с лестницей и дымоходом на заснеженном участке"
+                  loading="lazy"
+                  className="absolute inset-0 size-full object-cover object-[50%_78%] motion-safe:transition-transform motion-safe:duration-500 motion-safe:group-hover:scale-[1.03] motion-safe:group-focus-visible:scale-[1.03]"
+                />
+              </div>
+              <RitualAction>Смотреть «Чёрный бриллиант»</RitualAction>
+            </RitualLink>
 
-          <Reveal delay={140} className="h-full">
-            <Cell height="h-full" className="flex flex-col justify-center px-7 py-10 text-center">
-              <p className="text-ink-700">
-                <span className="text-sm text-ink-400">до</span>{' '}
-                <span className="font-display text-5xl">12</span>{' '}
-                <span className="text-sm text-ink-400">человек</span>
-              </p>
-              <p className="mt-4 text-sm leading-relaxed text-ink-500">
-                Самый большой размер в линейке — для мероприятий и банных комплексов
-              </p>
-            </Cell>
-          </Reveal>
+            <RitualLink to="/grant">
+              <div className="flex flex-1 flex-col justify-center px-6 py-9 lg:px-8">
+                <h3 className="font-display text-3xl leading-tight text-ink-900 lg:text-4xl">
+                  Для большой<br />компании
+                </h3>
+                <p className="mt-5 flex items-baseline gap-2 text-ink-600">
+                  <span>до</span>
+                  <span className="font-display text-6xl leading-none text-ink-900">14</span>
+                  <span>человек</span>
+                </p>
+                <p className="mt-4 max-w-[27ch] text-sm leading-relaxed text-ink-600">
+                  Чан «Грант» диаметром 250 см для встреч с друзьями и банных комплексов.
+                </p>
+              </div>
+              <RitualAction>Смотреть «Грант»</RitualAction>
+            </RitualLink>
+          </div>
 
           {/* Фактура — фон карточки, а не отдельная серая полоса: текст стоит на самом материале. */}
           <Reveal delay={210} className="sm:col-span-2 lg:col-span-3">
@@ -120,6 +138,37 @@ export function Ritual() {
         </div>
       </div>
     </section>
+  )
+}
+
+function RitualLink({ to, children }: { to: string; children: React.ReactNode }) {
+  return (
+    <Link
+      to={to}
+      className="group flex min-h-[30rem] flex-col overflow-hidden rounded-panel bg-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-500 motion-safe:transition-[transform,box-shadow] motion-safe:duration-200 motion-safe:hover:-translate-y-0.5 motion-safe:hover:shadow-lg motion-safe:focus-visible:-translate-y-0.5 md:min-h-[27rem] lg:min-h-[34rem]"
+    >
+      {children}
+    </Link>
+  )
+}
+
+function RitualAction({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="flex items-center justify-between gap-3 border-t border-sand-200 px-6 py-4 text-sm font-semibold text-ink-900 lg:px-8">
+      {children}
+      <svg
+        viewBox="0 0 20 20"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+        className="size-4 shrink-0 text-brand-600 motion-safe:transition-transform motion-safe:duration-200 motion-safe:group-hover:translate-x-0.5 motion-safe:group-focus-visible:translate-x-0.5"
+      >
+        <path d="M3.5 10h12m-5-5 5 5-5 5" />
+      </svg>
+    </span>
   )
 }
 

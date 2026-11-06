@@ -3,7 +3,7 @@ import { Configurator } from '../components/configurator/Configurator'
 import { FinalCta } from '../components/sections/FinalCta'
 import { useSeo } from '../lib/seo'
 import { calculatorRoute } from '../lib/routes'
-import { fastestHeating, formatPrice, models, priceFrom } from '../data/models'
+import { fastestHeating, models } from '../data/models'
 
 export function CalculatorPage() {
   useSeo({
@@ -17,12 +17,11 @@ export function CalculatorPage() {
       <PageHeader
         title="Калькулятор банного чана"
         breadcrumb="Калькулятор"
-        lead="Соберите чан под себя: модель, размер, отделка, дымоход и опции. Цена считается сразу, а точный расчёт пришлём в удобный канал."
+        lead="Выберите модель, размер и комплектацию. Оставьте заявку, чтобы получить точный расчёт."
       >
         <PageFigures
           items={[
             { value: String(models.length), caption: 'моделей в линейке' },
-            { value: formatPrice(priceFrom), caption: 'стартовая цена' },
             {
               value: String(fastestHeating).replace('.', ','),
               unit: 'ч',
