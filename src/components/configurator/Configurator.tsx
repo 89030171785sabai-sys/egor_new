@@ -7,12 +7,14 @@ import {
   type ConfigOption,
 } from '../../data/configurator'
 import {
+  effectivePrice,
   formatHours,
   formatPrice,
+  isPromo,
   modelBySlug,
+  modelPriceFrom,
   models,
   modelSizes,
-  offerFor,
   sizeTier,
   steelGrades,
   type Model,
@@ -38,7 +40,7 @@ export function Configurator() {
   const shots = modelShots(model)
 
   const chosen = useMemo(() => pickOptions(selection), [selection])
-  const basePrice = offerFor(model, size)?.price
+  const basePrice = effectivePrice(model, size)
   const basePriceLabel = basePrice === undefined ? 'по запросу' : formatPrice(basePrice)
 
   const choose = (group: ConfigGroup, optionId: string) =>
@@ -91,7 +93,9 @@ export function Configurator() {
           </div>
 
           <div className="mt-4 rounded-panel bg-ink-900 p-5 text-white sm:p-6">
-            <p className="text-xs tracking-wider text-white/70 uppercase">Базовая цена чана</p>
+            <p className="text-xs tracking-wider text-white/70 uppercase">
+              {isPromo(model, size) ? 'Цена чана по акции' : 'Базовая цена чана'}
+            </p>
             <p className="font-display mt-1.5 text-3xl sm:text-4xl" aria-live="polite">{basePriceLabel}</p>
             <p className="mt-3 text-sm leading-relaxed text-white/70">
               Дополнительные опции и доставку рассчитаем по запросу.
@@ -208,7 +212,7 @@ function ModelTile({
   active: boolean
   onSelect: () => void
 }) {
-  const from = Math.min(...model.offers.map((offer) => offer.price))
+  const from = modelPriceFrom(model)
 
   return (
     <button
