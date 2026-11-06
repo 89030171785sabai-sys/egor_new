@@ -26,7 +26,7 @@ export function Hero() {
         // The first thing on the page, so it is fetched ahead of everything else.
         loading="eager"
         fetchPriority="high"
-        className="absolute inset-x-0 top-0 -z-20 h-[30rem] w-full object-cover lg:inset-0 lg:h-full"
+        className="absolute inset-x-0 top-0 -z-20 h-[30rem] w-full object-cover lg:inset-0 lg:h-full lg:object-[50%_67%]"
       />
       {/*
        * The shot is bright where the sun sits, so a flat wash is not enough to
