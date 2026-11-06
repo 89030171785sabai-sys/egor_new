@@ -50,9 +50,9 @@ export function Ritual() {
               <div className="relative mt-4 aspect-4/5 w-full lg:aspect-auto lg:min-h-0 lg:flex-1">
                 <img
                   src={photoUrl('ritual-winter.webp')}
-                  alt="Банный чан зимой во дворе дома"
+                  alt="Четверо отдыхают в банном чане во время снегопада"
                   loading="lazy"
-                  className="absolute inset-0 size-full rounded-card object-cover"
+                  className="absolute inset-0 size-full rounded-card object-cover object-[50%_60%]"
                 />
               </div>
             </Cell>
