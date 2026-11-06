@@ -8,9 +8,11 @@ import {
 } from '../../data/configurator'
 import {
   formatHours,
+  formatPrice,
   modelBySlug,
   models,
   modelSizes,
+  offerFor,
   sizeTier,
   steelGrades,
   type Model,
@@ -18,7 +20,8 @@ import {
 } from '../../data/models'
 import { LeadForm } from '../forms/LeadForm'
 import { PhotoGallery } from '../ui/Lightbox'
-import { photoUrl } from '../../lib/photos'
+import { ProductCardPhoto } from '../ui/ProductCardPhoto'
+import { Slider } from '../ui/Slider'
 
 type Selection = Record<string, string[]>
 
@@ -35,6 +38,8 @@ export function Configurator() {
   const shots = modelShots(model)
 
   const chosen = useMemo(() => pickOptions(selection), [selection])
+  const basePrice = offerFor(model, size)?.price
+  const basePriceLabel = basePrice === undefined ? 'по запросу' : formatPrice(basePrice)
 
   const choose = (group: ConfigGroup, optionId: string) =>
     setSelection((current) => {
@@ -54,97 +59,100 @@ export function Configurator() {
     Сталь: model.steel,
     'Время нагрева': formatHours(model.heatingHours),
     Комплектация: chosen.map((option) => option.note ? `${option.label} — ${option.note}` : option.label).join('; ') || 'базовая',
-    'Расчёт на сайте': 'по запросу',
+    'Расчёт на сайте': basePriceLabel,
+    'Дополнительные опции': 'по запросу',
   }
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:items-start">
-      <div className="lg:sticky lg:top-28">
-        <div className="overflow-hidden rounded-panel bg-white ring-1 ring-sand-200">
-          <PhotoGallery
-            single
-            photos={shots}
-            className="block"
-            thumbFit="contain"
-            thumbClassName="aspect-10/9 bg-white p-3 sm:p-4"
-          />
+    <div className="space-y-8">
+      <Group label="Модель" hint={`Выбрано: «${model.name}». Модели отличаются печью, временем нагрева и маркой стали.`}>
+        <Slider label="Выбор модели банного чана">
+          {models.map((item) => (
+            <ModelTile
+              key={item.slug}
+              model={item}
+              active={item.slug === model.slug}
+              onSelect={() => setSlug(item.slug)}
+            />
+          ))}
+        </Slider>
+      </Group>
+
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:items-start">
+        <div className="lg:sticky lg:top-28">
+          <div className="overflow-hidden rounded-panel bg-white ring-1 ring-sand-200">
+            <PhotoGallery
+              single
+              photos={shots}
+              className="block"
+              thumbFit="contain"
+              thumbClassName="aspect-10/9 bg-white"
+            />
+          </div>
+
+          <div className="mt-4 rounded-panel bg-ink-900 p-5 text-white sm:p-6">
+            <p className="text-xs tracking-wider text-white/70 uppercase">Базовая цена чана</p>
+            <p className="font-display mt-1.5 text-3xl sm:text-4xl" aria-live="polite">{basePriceLabel}</p>
+            <p className="mt-3 text-sm leading-relaxed text-white/70">
+              Дополнительные опции и доставку рассчитаем по запросу.
+            </p>
+          </div>
         </div>
 
-        <div className="mt-4 rounded-panel bg-ink-900 p-5 text-white sm:p-6">
-          <p className="text-xs tracking-wider text-white/70 uppercase">Стоимость комплектации</p>
-          <p className="font-display mt-1.5 text-3xl sm:text-4xl">По запросу</p>
-          <p className="mt-3 text-sm leading-relaxed text-white/70">
-            Уточним цену чана с выбранными опциями и доставкой после заявки.
-          </p>
-        </div>
-      </div>
-
-      <div className="space-y-8">
-        <Group label="Модель" hint="Отличаются печью, временем нагрева и маркой стали.">
-          <div className="grid gap-3 sm:grid-cols-2">
-            {models.map((item) => (
-              <ModelTile
-                key={item.slug}
-                model={item}
-                active={item.slug === model.slug}
-                onSelect={() => setSlug(item.slug)}
-              />
-            ))}
-          </div>
-        </Group>
-
-        <Group label="Размер чаши" hint="Диаметр и посадка. Доступные размеры зависят от модели.">
-          <div className="flex flex-wrap gap-2">
-            {sizes.map((item) => (
-              <button
-                key={item}
-                type="button"
-                onClick={() => setCm(item)}
-                aria-pressed={item === size}
-                className={`rounded-full border px-4 py-2.5 text-sm transition-colors ${
-                  item === size
-                    ? 'border-brand-500 bg-brand-500 text-white'
-                    : 'border-sand-200 bg-white hover:border-ink-300'
-                }`}
-              >
-                <span className="font-medium">{item} см</span>
-                <span className={item === size ? 'text-white/70' : 'text-ink-400'}>
-                  {' '}
-                  · до {sizeTier(item)?.people}
-                </span>
-              </button>
-            ))}
-          </div>
-        </Group>
-
-        {optionGroups.map((group) => (
-          <Group key={group.id} label={group.label} hint={group.hint}>
-            <div className="grid gap-2.5">
-              {group.options.map((option) => (
-                <OptionRow
-                  key={option.id}
-                  option={option}
-                  kind={group.kind}
-                  active={(selection[group.id] ?? []).includes(option.id)}
-                  onSelect={() => choose(group, option.id)}
-                />
+        <div className="space-y-8">
+          <Group label="Размер чаши" hint="Диаметр и посадка. Доступные размеры зависят от модели.">
+            <div className="flex flex-wrap gap-2">
+              {sizes.map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  onClick={() => setCm(item)}
+                  aria-pressed={item === size}
+                  className={`rounded-full border px-4 py-2.5 text-sm transition-colors ${
+                    item === size
+                      ? 'border-brand-500 bg-brand-500 text-white'
+                      : 'border-sand-200 bg-white hover:border-ink-300'
+                  }`}
+                >
+                  <span className="font-medium">{sizeTier(item)?.name} · {item} см</span>
+                  <span className={item === size ? 'text-white/70' : 'text-ink-400'}>
+                    {' '}
+                    · до {sizeTier(item)?.people}
+                  </span>
+                </button>
               ))}
             </div>
           </Group>
-        ))}
 
-        <div id="configurator-lead" className="scroll-mt-28 rounded-panel bg-white p-6 sm:p-8">
-          <h3 className="text-xl font-semibold text-navy-700">Прислать точный расчёт</h3>
-          <p className="mt-2 text-sm leading-relaxed text-ink-500">
-            Посчитаем выбранную комплектацию и доставку до вашего участка.
-          </p>
-          <LeadForm
-            source="calculator"
-            fields={['name', 'phone', 'city']}
-            submitLabel="Получить расчёт"
-            payload={leadPayload}
-            className="mt-6"
-          />
+          {optionGroups.map((group) => (
+            <Group key={group.id} label={group.label} hint={group.hint}>
+              <div className="grid gap-2.5">
+                {group.options.map((option) => (
+                  <OptionRow
+                    key={option.id}
+                    option={option}
+                    kind={group.kind}
+                    active={(selection[group.id] ?? []).includes(option.id)}
+                    onSelect={() => choose(group, option.id)}
+                  />
+                ))}
+              </div>
+            </Group>
+          ))}
+
+          <div id="configurator-lead" tabIndex={-1} className="scroll-mt-28 rounded-panel bg-white p-6 sm:p-8">
+            <h3 className="text-xl font-semibold text-navy-700">Прислать точный расчёт</h3>
+            <p className="mt-2 text-sm leading-relaxed text-ink-500">
+              Посчитаем выбранную комплектацию и доставку до вашего участка.
+            </p>
+            <LeadForm
+              source="calculator"
+              fields={['name', 'phone', 'city']}
+              submitLabel="Получить расчёт"
+              payload={leadPayload}
+              className="mt-6"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -205,30 +213,27 @@ function ModelTile({
       type="button"
       onClick={onSelect}
       aria-pressed={active}
-      className={`rounded-card border p-4 text-left transition-colors ${
+      className={`flex w-80 shrink-0 snap-start flex-col overflow-hidden rounded-card border text-left transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500 sm:w-96 ${
         active ? 'border-brand-500 bg-brand-50' : 'border-sand-200 bg-white hover:border-ink-300'
       }`}
     >
-      {model.photos?.card && (
-        <img
-          src={photoUrl(model.photos.card)}
-          alt=""
-          loading="lazy"
-          className="mb-3 aspect-10/9 w-full rounded-card bg-white object-contain p-2"
-        />
-      )}
-      <span className="flex items-start justify-between gap-2">
-        <span className="font-semibold">{model.name}</span>
-        {model.badge && (
-          <span className="rounded-full bg-brand-500 px-2 py-0.5 text-[0.65rem] font-medium text-white">
-            {model.badge}
-          </span>
-        )}
+      <span className="block w-full bg-white">
+        <ProductCardPhoto model={model} />
       </span>
-      <span className="mt-1 block text-xs leading-relaxed text-ink-500">{model.accent}</span>
-      <span className="mt-2 block text-xs text-ink-400">
-        Нагрев {formatHours(model.heatingHours)} · {model.steel} ·{' '}
-        {steelGrades[model.steel].life}
+      <span className="block w-full p-4">
+        <span className="flex items-start justify-between gap-2">
+          <span className="font-semibold">{model.name}</span>
+          {model.badge && (
+            <span className="rounded-full bg-brand-500 px-2 py-0.5 text-[0.65rem] font-medium text-white">
+              {model.badge}
+            </span>
+          )}
+        </span>
+        <span className="mt-1 block text-xs leading-relaxed text-ink-500">{model.accent}</span>
+        <span className="mt-2 block text-xs text-ink-400">
+          Нагрев {formatHours(model.heatingHours)} · {model.steel} ·{' '}
+          {steelGrades[model.steel].life}
+        </span>
       </span>
     </button>
   )

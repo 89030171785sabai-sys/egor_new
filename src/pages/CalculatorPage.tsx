@@ -3,7 +3,9 @@ import { Configurator } from '../components/configurator/Configurator'
 import { FinalCta } from '../components/sections/FinalCta'
 import { useSeo } from '../lib/seo'
 import { calculatorRoute } from '../lib/routes'
-import { fastestHeating, models } from '../data/models'
+import { fastestHeating, formatPrice, models } from '../data/models'
+
+const startingPrice = Math.min(...models.flatMap((model) => model.offers.map((offer) => offer.price)))
 
 export function CalculatorPage() {
   useSeo({
@@ -17,11 +19,12 @@ export function CalculatorPage() {
       <PageHeader
         title="Калькулятор банного чана"
         breadcrumb="Калькулятор"
-        lead="Выберите модель, размер и комплектацию. Оставьте заявку, чтобы получить точный расчёт."
+        lead="Выберите модель и размер, чтобы увидеть цену чана. Стоимость дополнительных опций уточним по заявке."
       >
         <PageFigures
           items={[
             { value: String(models.length), caption: 'моделей в линейке' },
+            { value: `от ${formatPrice(startingPrice)}`, caption: 'базовая цена чана' },
             {
               value: String(fastestHeating).replace('.', ','),
               unit: 'ч',
@@ -38,7 +41,7 @@ export function CalculatorPage() {
         </div>
       </section>
 
-      <FinalCta />
+      <FinalCta catalogTo="#configurator-lead" />
     </>
   )
 }

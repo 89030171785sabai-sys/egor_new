@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { SectionHeading } from '../ui/SectionHeading'
-import { ModelShot } from '../ui/ModelShot'
-import { studioPhotoBlend } from '../../lib/photos'
+import { ProductCardPhoto } from '../ui/ProductCardPhoto'
 import { Reveal } from '../ui/Reveal'
 import {
   formatPrice,
@@ -136,20 +135,7 @@ export function ModelRail({
   )
 }
 
-// Align the bases. Match bowl widths on frontal photos and overall heights on the side-stove photos.
-const productFraming: Record<string, { width: string; left: string; bottom: string }> = {
-  'cherny-brilliant-front.jpg': { width: '94.3%', left: '4.8%', bottom: '1.5%' },
-  'grafit-front.png': { width: '79.3%', left: '10.2%', bottom: '1.8%' },
-  'grant-front.png': { width: '107.7%', left: '-3.6%', bottom: '-0.8%' },
-  'nefrit-front.jpg': { width: '72.5%', left: '13.8%', bottom: '5.0%' },
-  'oniks-front.png': { width: '93.0%', left: '5.0%', bottom: '6.3%' },
-  'oniks-pro-front.png': { width: '97.0%', left: '4.8%', bottom: '3.6%' },
-  'valtsovavich-catalog.jpg': { width: '75.7%', left: '12.3%', bottom: '0.1%' },
-}
-
 function RailCard({ model }: { model: Model }) {
-  const photo = model.photos?.card ?? ''
-  const framing = productFraming[photo]
   const sizes = modelSizes(model)
   const from = modelPriceFrom(model)
 
@@ -160,25 +146,7 @@ function RailCard({ model }: { model: Model }) {
         className="relative block overflow-hidden rounded-panel bg-white transition-shadow hover:shadow-lg hover:shadow-ink-900/10"
       >
         <Loupe>
-          {framing ? (
-            <div className="relative aspect-5/6">
-              <ModelShot
-                model={model}
-                slot="card"
-                contain
-                className="absolute h-auto max-w-none"
-                style={{ ...framing, ...studioPhotoBlend(photo) }}
-              />
-            </div>
-          ) : (
-            <ModelShot
-              model={model}
-              slot="card"
-              ratio="10/9"
-              contain={model.photos?.cardContain}
-              className={model.photos?.cardContain ? 'aspect-10/9 w-full' : undefined}
-            />
-          )}
+          <ProductCardPhoto model={model} />
         </Loupe>
         {model.badge && (
           <span className="absolute top-3 left-3 rounded-full bg-brand-500 px-3 py-1 text-xs font-semibold text-white">

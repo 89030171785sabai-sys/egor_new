@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { photoUrl } from '../../lib/photos'
+import { photoUrl, studioPhotoBlend } from '../../lib/photos'
 
 export interface LightboxPhoto {
   file: string
@@ -68,14 +68,28 @@ export function PhotoGallery({
             type="button"
             onClick={() => setOpen(index)}
             aria-label={`Открыть фото: ${photo.alt}`}
-            className="group relative block cursor-zoom-in overflow-hidden rounded-panel focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500"
+            className={`group relative block cursor-zoom-in overflow-hidden rounded-panel focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500 ${thumbFit === 'contain' ? 'w-full' : ''}`}
           >
-            <img
-              src={photoUrl(photo.file)}
-              alt={photo.alt}
-              loading="lazy"
-              className={`w-full ${thumbFit === 'contain' ? 'object-contain' : 'object-cover'} transition-transform duration-500 group-hover:scale-[1.03] ${thumbClassName}`}
-            />
+            {thumbFit === 'contain' ? (
+              <span className={`relative block w-full ${thumbClassName}`}>
+                <span className="absolute inset-3 flex items-center justify-center sm:inset-4">
+                  <img
+                    src={photoUrl(photo.file)}
+                    alt={photo.alt}
+                    loading="lazy"
+                    className="h-auto max-h-full w-auto max-w-full object-contain motion-safe:transition-transform motion-safe:duration-500 motion-safe:group-hover:scale-[1.03]"
+                    style={studioPhotoBlend(photo.file)}
+                  />
+                </span>
+              </span>
+            ) : (
+              <img
+                src={photoUrl(photo.file)}
+                alt={photo.alt}
+                loading="lazy"
+                className={`w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] ${thumbClassName}`}
+              />
+            )}
             <span
               aria-hidden="true"
               className="absolute right-3 bottom-3 grid size-9 place-items-center rounded-full bg-white/90 text-ink-800 opacity-0 shadow transition-opacity group-hover:opacity-100 max-sm:opacity-100"

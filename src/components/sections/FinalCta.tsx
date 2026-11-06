@@ -1,7 +1,7 @@
 import { ButtonLink } from '../ui/Button'
 import { Reveal } from '../ui/Reveal'
 
-export function FinalCta() {
+export function FinalCta({ catalogTo = '/calculator' }: { catalogTo?: string } = {}) {
   return (
     <section className="pb-10 lg:pb-14">
       <div className="mx-auto max-w-(--container-content) px-4 sm:px-6">
@@ -14,7 +14,7 @@ export function FinalCta() {
               Оставьте заявку — пришлём каталог, рассчитаем стоимость и ответим на вопросы.
             </p>
             <div className="mt-9 flex flex-wrap justify-center gap-3">
-              <ButtonLink to="/calculator" size="lg">
+              <ButtonLink to={catalogTo} size="lg">
                 Получить каталог
               </ButtonLink>
               <ButtonLink to="/contacts" variant="ghost" size="lg">
