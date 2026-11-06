@@ -83,7 +83,7 @@ export function Delivery({ withPhotos = true }: { withPhotos?: boolean }) {
                     в любой город России
                   </>
                 }
-                subtitle="Отгружаем со своих площадок в Москве и Коркино. По Москве и области привозит наш водитель, по стране — транспортные компании."
+                subtitle="Отгружаем со своих площадок в Москве и Челябинске. По Москве и области привозит наш водитель, по стране — транспортные компании."
               />
 
               <dl className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -95,12 +95,21 @@ export function Delivery({ withPhotos = true }: { withPhotos?: boolean }) {
             {/* On a phone the labels would shrink to nothing, so the map keeps a
                 readable width and is swiped sideways instead. */}
             <div className="-mx-6 overflow-x-auto px-6 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              <img
-                src={photoUrl('delivery-map.webp')}
-                alt="Карта России: площадка в Москве, производство в Коркино, доставка по всей стране"
-                loading="lazy"
-                className="aspect-[1500/827] min-w-[38rem] rounded-panel object-cover ring-1 ring-sand-200 sm:min-w-0 sm:w-full"
-              />
+              <div className="relative aspect-[1500/823] min-w-[38rem] overflow-hidden rounded-panel ring-1 ring-sand-200 sm:min-w-0 sm:w-full">
+                <img
+                  src={photoUrl('delivery-map.webp')}
+                  alt="Карта России: площадка в Москве, производство в Челябинске, доставка по всей стране"
+                  loading="lazy"
+                  className="size-full"
+                />
+                {/* Replace the printed city name while keeping the map and its markers. */}
+                <svg viewBox="0 0 1500 823" aria-hidden="true" className="absolute inset-0 size-full">
+                  <rect x="488" y="495" width="334" height="54" rx="27" fill="#fff" />
+                  <text x="655" y="522" textAnchor="middle" dominantBaseline="central" fontSize="22" fill="#171a20">
+                    Челябинск · производство
+                  </text>
+                </svg>
+              </div>
             </div>
           </div>
 

@@ -47,7 +47,7 @@ export const contacts = {
 
   addresses: [
     { city: 'Москва', street: 'Очаковское шоссе, 46', role: 'производство и площадка' },
-    { city: 'Коркино', street: 'Челябинская обл., ул. 1 Мая, 35В', role: 'производство' },
+    { city: 'Челябинск', street: 'ул. Новоградская, 1А', role: 'производство' },
   ] satisfies Address[],
 
   /** The domain the site will live on, as the legal documents name it. */
