@@ -25,9 +25,9 @@ export function Ritual() {
             <div className="relative aspect-4/3 overflow-hidden rounded-panel bg-ink-900 lg:aspect-auto lg:h-full lg:min-h-[34rem]">
               <img
                 src={photoUrl('ritual-water.webp')}
-                alt="Горячая вода в чане зимой, над озером поднимается пар"
+                alt="Банный чан рядом с сауной на берегу зимнего озера"
                 loading="lazy"
-                className="absolute inset-0 size-full object-cover"
+                className="absolute inset-0 size-full object-cover object-[50%_35%]"
               />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink-900/75 to-transparent px-7 pt-24 pb-7">
                 <p className="max-w-md text-xl leading-snug text-white lg:text-2xl">
