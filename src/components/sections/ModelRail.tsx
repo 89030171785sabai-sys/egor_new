@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom'
 import { SectionHeading } from '../ui/SectionHeading'
 import { ProductCardPhoto } from '../ui/ProductCardPhoto'
 import { Reveal } from '../ui/Reveal'
+import { GraphiteOffer } from '../ui/GraphiteOffer'
 import {
   formatPrice,
   models,
   modelSizes,
   priceFrom,
   modelPriceFrom,
+  promo,
   sizeTier,
   sizeTiers,
   type Model,
@@ -114,7 +116,7 @@ export function ModelRail({
               {shown.map((model, index) => (
                 <li key={model.slug} className="w-80 shrink-0 snap-start sm:w-96">
                   <Reveal className="h-full" delay={Math.min(index, 3) * 70}>
-                    <RailCard model={model} />
+                    <RailCard model={model} highlightOffer={!excludeSlug} />
                   </Reveal>
                 </li>
               ))}
@@ -135,9 +137,9 @@ export function ModelRail({
   )
 }
 
-function RailCard({ model }: { model: Model }) {
+function RailCard({ model, highlightOffer }: { model: Model; highlightOffer: boolean }) {
   const sizes = modelSizes(model)
-  const from = modelPriceFrom(model)
+  const hasOffer = highlightOffer && model.slug === promo.modelSlug
 
   return (
     <article className="flex h-full flex-col">
@@ -148,7 +150,7 @@ function RailCard({ model }: { model: Model }) {
         <Loupe>
           <ProductCardPhoto model={model} />
         </Loupe>
-        {model.badge && (
+        {model.badge && !hasOffer && (
           <span className="absolute top-3 left-3 rounded-full bg-brand-500 px-3 py-1 text-xs font-semibold text-white">
             {model.badge}
           </span>
@@ -172,7 +174,13 @@ function RailCard({ model }: { model: Model }) {
         ))}
       </ul>
 
-      <p className="mt-3 text-center text-sm font-semibold">от {formatPrice(from)}</p>
+      {hasOffer ? (
+        <GraphiteOffer className="mx-auto mt-3 text-center" />
+      ) : (
+        <p className="mt-3 text-center text-sm font-semibold">
+          от {formatPrice(modelPriceFrom(model))}
+        </p>
+      )}
 
       <div className="mt-auto flex flex-col items-center gap-2.5 pt-4">
         <Link

@@ -3,9 +3,9 @@ import { ButtonLink } from "./Button";
 import { ModelShot } from "./ModelShot";
 import { photoUrl, studioPhotoBlend } from "../../lib/photos";
 import { PlaceholderImage } from "./PlaceholderImage";
+import { GraphiteOffer } from "./GraphiteOffer";
 import {
   formatHours,
-  formatPrice,
   formatPriceRange,
   promo,
   steelGrades,
@@ -37,6 +37,7 @@ export function ModelCard({
   photo?: boolean;
 }) {
   const cataloguePhoto = photo ? model.photos?.catalogue : undefined;
+  const hasOffer = model.slug === promo.modelSlug;
 
   return (
     <article className="rounded-panel bg-white p-5 shadow-sm shadow-ink-900/5 transition-shadow hover:shadow-lg hover:shadow-ink-900/10 sm:p-6 lg:grid lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)] lg:gap-8">
@@ -90,7 +91,7 @@ export function ModelCard({
           <h3 className="text-xl font-bold tracking-tight text-navy-700 uppercase">
             {model.name}
           </h3>
-          {model.badge && (
+          {model.badge && !hasOffer && (
             <span className="rounded-full bg-brand-500 px-3 py-1 text-xs font-semibold text-white">
               {model.badge}
             </span>
@@ -136,14 +137,7 @@ export function ModelCard({
         <div className="mt-6 border-t border-sand-200 pt-5">
           <p className="text-xs tracking-wider text-ink-400 uppercase">Цена</p>
           <p className="mt-1 text-xl font-bold">{formatPriceRange(model)}</p>
-          {model.slug === promo.modelSlug && (
-            <p className="mt-1.5 text-sm text-brand-600">
-              {promo.cm} см — {formatPrice(promo.price)}{" "}
-              <span className="text-ink-400 line-through">
-                {formatPrice(promo.was)}
-              </span>
-            </p>
-          )}
+          {hasOffer && <GraphiteOffer className="mt-3" />}
           <p className="mt-1.5 text-xs text-ink-400">
             {steelGrades[model.steel].title} · срок службы{" "}
             {steelGrades[model.steel].life}

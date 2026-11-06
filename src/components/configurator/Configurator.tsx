@@ -208,19 +208,21 @@ function ModelTile({
   active: boolean
   onSelect: () => void
 }) {
+  const from = Math.min(...model.offers.map((offer) => offer.price))
+
   return (
     <button
       type="button"
       onClick={onSelect}
       aria-pressed={active}
-      className={`flex w-80 shrink-0 snap-start flex-col overflow-hidden rounded-card border text-left transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500 sm:w-96 ${
+      className={`group flex w-80 shrink-0 snap-start flex-col overflow-hidden rounded-card border text-left transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500 sm:w-96 ${
         active ? 'border-brand-500 bg-brand-50' : 'border-sand-200 bg-white hover:border-ink-300'
       }`}
     >
-      <span className="block w-full bg-white">
+      <span className="block w-full shrink-0 bg-white">
         <ProductCardPhoto model={model} />
       </span>
-      <span className="block w-full p-4">
+      <span className="flex w-full flex-1 flex-col p-4">
         <span className="flex items-start justify-between gap-2">
           <span className="font-semibold">{model.name}</span>
           {model.badge && (
@@ -233,6 +235,20 @@ function ModelTile({
         <span className="mt-2 block text-xs text-ink-400">
           Нагрев {formatHours(model.heatingHours)} · {model.steel} ·{' '}
           {steelGrades[model.steel].life}
+        </span>
+        <span className="mt-auto flex flex-wrap items-center justify-between gap-2 pt-4">
+          <span className="whitespace-nowrap text-base font-semibold text-ink-900">
+            от {formatPrice(from)}
+          </span>
+          <span
+            className={`inline-flex min-h-10 min-w-24 items-center justify-center rounded-full border px-4 text-sm font-semibold transition-colors ${
+              active
+                ? 'border-brand-200 bg-white text-brand-700'
+                : 'border-transparent bg-ink-900 text-white group-hover:bg-ink-700'
+            }`}
+          >
+            {active ? 'Выбрано' : 'Выбрать'}
+          </span>
         </span>
       </span>
     </button>
