@@ -11,15 +11,20 @@ export function Slider({
   label,
   hint = 'Перетащите или пролистайте',
   className = '',
+  autoAdvanceMs,
+  pauseAdvance = false,
 }: {
   children: ReactNode
   label: string
   hint?: string
   className?: string
+  autoAdvanceMs?: number
+  pauseAdvance?: boolean
 }) {
   const trackRef = useRef<HTMLDivElement>(null)
   const [atStart, setAtStart] = useState(true)
   const [atEnd, setAtEnd] = useState(false)
+  const [paused, setPaused] = useState(false)
 
   const syncEdges = useCallback(() => {
     const track = trackRef.current
@@ -42,10 +47,48 @@ export function Slider({
     }
   }, [syncEdges])
 
+  useEffect(() => {
+    const track = trackRef.current
+    if (!track || !autoAdvanceMs || paused || pauseAdvance) return
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const hover = window.matchMedia('(hover: hover)')
+    const slider = track.parentElement
+    let timer: number | undefined
+
+    const observer = new IntersectionObserver(([entry]) => {
+      window.clearInterval(timer)
+      if (!entry.isIntersecting) return
+
+      timer = window.setInterval(() => {
+        if (document.hidden || reducedMotion.matches) return
+        if (hover.matches && slider?.matches(':hover')) return
+        if (slider?.querySelector(':focus-visible')) return
+
+        const max = track.scrollWidth - track.clientWidth
+        if (max <= 4) return
+        if (track.scrollLeft >= max - 4) {
+          track.scrollTo({ left: 0, behavior: 'instant' })
+        } else {
+          track.scrollBy({ left: slideWidth(track), behavior: 'smooth' })
+        }
+      }, autoAdvanceMs)
+    }, { threshold: 0.5 })
+
+    observer.observe(track)
+
+    return () => {
+      observer.disconnect()
+      window.clearInterval(timer)
+    }
+  }, [autoAdvanceMs, pauseAdvance, paused])
+
   const scrollBy = (direction: -1 | 1) => {
     const track = trackRef.current
     if (!track) return
-    track.scrollBy({ left: direction * track.clientWidth * 0.8, behavior: 'smooth' })
+    const distance = autoAdvanceMs ? slideWidth(track) : track.clientWidth * 0.8
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    track.scrollBy({ left: direction * distance, behavior: reducedMotion ? 'instant' : 'smooth' })
   }
 
   // Dragging the track with a mouse, the way the reference sliders behave.
@@ -89,12 +132,27 @@ export function Slider({
       {scrollable && (
         <div className="mx-auto mt-6 flex max-w-(--container-content) items-center justify-end gap-3 px-4 sm:px-6">
           <span className="mr-auto hidden text-sm text-ink-400 sm:block">{hint}</span>
+          {autoAdvanceMs && (
+            <button
+              type="button"
+              onClick={() => setPaused((current) => !current)}
+              className="mr-auto min-h-11 rounded-full bg-white px-4 text-sm font-medium text-ink-700 shadow-sm shadow-ink-900/10 transition-colors hover:bg-ink-800 hover:text-white motion-reduce:hidden sm:mr-0"
+            >
+              {paused ? 'Возобновить' : 'Пауза'}
+            </button>
+          )}
           <ArrowButton direction="prev" disabled={atStart} onClick={() => scrollBy(-1)} />
           <ArrowButton direction="next" disabled={atEnd} onClick={() => scrollBy(1)} />
         </div>
       )}
     </div>
   )
+}
+
+function slideWidth(track: HTMLDivElement) {
+  const [first, second] = track.children
+  if (!first || !second) return track.clientWidth
+  return second.getBoundingClientRect().left - first.getBoundingClientRect().left
 }
 
 function ArrowButton({

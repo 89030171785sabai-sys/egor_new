@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { photoUrl, studioPhotoBlend } from '../../lib/photos'
+import { Slider } from './Slider'
 
 export interface LightboxPhoto {
   file: string
@@ -17,6 +18,7 @@ export function PhotoGallery({
   thumbClassName = '',
   thumbFit = 'cover',
   single = false,
+  carouselLabel,
 }: {
   photos: LightboxPhoto[]
   /** Layout of the thumbnails. */
@@ -27,6 +29,8 @@ export function PhotoGallery({
   thumbFit?: 'cover' | 'contain'
   /** Shows only the first thumbnail; the viewer still pages through them all. */
   single?: boolean
+  /** Presents the previews as an auto-advancing photo rail. */
+  carouselLabel?: string
 }) {
   const [open, setOpen] = useState<number | null>(null)
 
@@ -59,49 +63,67 @@ export function PhotoGallery({
 
   const current = open === null ? null : photos[open]
 
+  const thumbnails = photos.map((photo, index) => (single && index > 0 ? null : (
+    <button
+      key={photo.file}
+      type="button"
+      onClick={() => setOpen(index)}
+      aria-label={`Открыть фото: ${photo.alt}`}
+      className={`group relative block cursor-zoom-in overflow-hidden rounded-panel focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500 ${
+        carouselLabel
+          ? 'w-full shrink-0 snap-start sm:w-[calc((100%_-_1.25rem)/2)] lg:w-[calc((100%_-_2.5rem)/3)]'
+          : thumbFit === 'contain' ? 'w-full' : ''
+      }`}
+    >
+      {thumbFit === 'contain' ? (
+        <span className={`relative block w-full ${thumbClassName}`}>
+          <span className="absolute inset-3 flex items-center justify-center sm:inset-4">
+            <img
+              src={photoUrl(photo.file)}
+              alt={photo.alt}
+              loading="lazy"
+              className="h-auto max-h-full w-auto max-w-full object-contain motion-safe:transition-transform motion-safe:duration-500 motion-safe:group-hover:scale-[1.03]"
+              style={studioPhotoBlend(photo.file)}
+            />
+          </span>
+        </span>
+      ) : (
+        <img
+          src={photoUrl(photo.file)}
+          alt={photo.alt}
+          loading="lazy"
+          className={`w-full motion-safe:transition-transform motion-safe:duration-500 motion-safe:group-hover:scale-[1.03] ${
+            carouselLabel ? 'bg-sand-100 object-contain' : 'object-cover'
+          } ${thumbClassName}`}
+        />
+      )}
+      <span
+        aria-hidden="true"
+        className="absolute right-3 bottom-3 grid size-9 place-items-center rounded-full bg-white/90 text-ink-800 opacity-0 shadow transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100 max-sm:opacity-100"
+      >
+        <svg viewBox="0 0 20 20" className="size-4">
+          <circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" strokeWidth="1.6" />
+          <path d="m13 13 4.5 4.5M8.5 6v5M6 8.5h5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+        </svg>
+      </span>
+    </button>
+  )))
+
   return (
     <>
-      <div className={className}>
-        {photos.map((photo, index) => (single && index > 0 ? null : (
-          <button
-            key={photo.file}
-            type="button"
-            onClick={() => setOpen(index)}
-            aria-label={`Открыть фото: ${photo.alt}`}
-            className={`group relative block cursor-zoom-in overflow-hidden rounded-panel focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500 ${thumbFit === 'contain' ? 'w-full' : ''}`}
-          >
-            {thumbFit === 'contain' ? (
-              <span className={`relative block w-full ${thumbClassName}`}>
-                <span className="absolute inset-3 flex items-center justify-center sm:inset-4">
-                  <img
-                    src={photoUrl(photo.file)}
-                    alt={photo.alt}
-                    loading="lazy"
-                    className="h-auto max-h-full w-auto max-w-full object-contain motion-safe:transition-transform motion-safe:duration-500 motion-safe:group-hover:scale-[1.03]"
-                    style={studioPhotoBlend(photo.file)}
-                  />
-                </span>
-              </span>
-            ) : (
-              <img
-                src={photoUrl(photo.file)}
-                alt={photo.alt}
-                loading="lazy"
-                className={`w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] ${thumbClassName}`}
-              />
-            )}
-            <span
-              aria-hidden="true"
-              className="absolute right-3 bottom-3 grid size-9 place-items-center rounded-full bg-white/90 text-ink-800 opacity-0 shadow transition-opacity group-hover:opacity-100 max-sm:opacity-100"
-            >
-              <svg viewBox="0 0 20 20" className="size-4">
-                <circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" strokeWidth="1.6" />
-                <path d="m13 13 4.5 4.5M8.5 6v5M6 8.5h5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-              </svg>
-            </span>
-          </button>
-        )))}
-      </div>
+      {carouselLabel ? (
+        <Slider
+          label={carouselLabel}
+          hint="Фото доставки"
+          className={className}
+          autoAdvanceMs={5000}
+          pauseAdvance={open !== null}
+        >
+          {thumbnails}
+        </Slider>
+      ) : (
+        <div className={className}>{thumbnails}</div>
+      )}
 
       {current && open !== null && (
         <div
