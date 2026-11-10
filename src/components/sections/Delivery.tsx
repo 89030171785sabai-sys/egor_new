@@ -32,14 +32,6 @@ const steps = [
 ]
 
 const gallery = [
-  { file: 'delivery-bright-1.webp', alt: 'Упакованный чан на поддоне у участка' },
-  { file: 'delivery-bright-2.webp', alt: 'Рабочие перемещают упакованный чан на поддоне' },
-  { file: 'delivery-bright-3.webp', alt: 'Упакованный чан и лестница рядом с деревянным домом' },
-  { file: 'delivery-bright-4.webp', alt: 'Кран поднимает упакованный чан на красных стропах' },
-  { file: 'delivery-bright-5.webp', alt: 'Чан в упаковке и лестница на участке вечером' },
-  { file: 'delivery-bright-6.webp', alt: 'Упакованный чан на поддоне рядом с вилочным погрузчиком' },
-  { file: 'delivery-bright-7.webp', alt: 'Упакованный чан рядом с открытым кузовом грузовика' },
-  { file: 'delivery-bright-8.webp', alt: 'Упакованный чан на поддоне рядом с домом' },
   {
     file: 'delivery-bowl-pallet.webp',
     alt: 'Чаша чана в плёнке на поддоне, готова к отгрузке',
@@ -56,6 +48,14 @@ const gallery = [
     file: 'delivery-crane.webp',
     alt: 'Чан в плёнке на стропах разгружают на участке у дома',
   },
+  { file: 'delivery-bright-1.webp', alt: 'Упакованный чан на поддоне у участка' },
+  { file: 'delivery-bright-2.webp', alt: 'Рабочие перемещают упакованный чан на поддоне' },
+  { file: 'delivery-bright-3.webp', alt: 'Упакованный чан и лестница рядом с деревянным домом' },
+  { file: 'delivery-bright-4.webp', alt: 'Кран поднимает упакованный чан на красных стропах' },
+  { file: 'delivery-bright-5.webp', alt: 'Чан в упаковке и лестница на участке вечером' },
+  { file: 'delivery-bright-6.webp', alt: 'Упакованный чан на поддоне рядом с вилочным погрузчиком' },
+  { file: 'delivery-bright-7.webp', alt: 'Упакованный чан рядом с открытым кузовом грузовика' },
+  { file: 'delivery-bright-8.webp', alt: 'Упакованный чан на поддоне рядом с домом' },
 ]
 
 /**
@@ -69,8 +69,8 @@ export function Delivery({ withPhotos = true }: { withPhotos?: boolean }) {
         <PhotoGallery
           photos={gallery}
           carouselLabel="Фотографии доставки чанов"
-          className="mx-auto max-w-(--container-content) px-4 pt-5 sm:px-6 sm:pt-8"
-          thumbClassName="aspect-4/5"
+          className="mx-auto max-w-[96rem] px-2 pt-2 sm:px-4 sm:pt-4 [&>[role=region]]:scroll-px-0"
+          thumbClassName="aspect-3/4 lg:aspect-auto lg:h-[min(78vh,42rem)]"
         />
       )}
 

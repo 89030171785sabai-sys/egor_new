@@ -92,9 +92,7 @@ export function PhotoGallery({
           src={photoUrl(photo.file)}
           alt={photo.alt}
           loading="lazy"
-          className={`w-full motion-safe:transition-transform motion-safe:duration-500 motion-safe:group-hover:scale-[1.03] ${
-            carouselLabel ? 'bg-sand-100 object-contain' : 'object-cover'
-          } ${thumbClassName}`}
+          className={`w-full object-cover motion-safe:transition-transform motion-safe:duration-500 motion-safe:group-hover:scale-[1.03] ${thumbClassName}`}
         />
       )}
       <span
