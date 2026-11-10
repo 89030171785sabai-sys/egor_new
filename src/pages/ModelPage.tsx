@@ -65,6 +65,8 @@ export function ModelPage({ slug }: { slug: string }) {
  */
 function heroWidthVars(model: Model): CSSProperties {
   const lg = model.photos?.heroWidth ?? 0.64
+  const lgWidth = `${(lg * 100).toFixed(1)}%`
+  const maxWidth = model.photos?.heroMaxWidthRem
   // The phone shows the shot in the flow, so it wants the plain formula width.
   const sm = Math.min((lg / (model.photos?.heroBoost ?? 1)) * 1.25, 1)
   // The glow reaches past the picture on both sides, so the fade at its edges
@@ -72,7 +74,7 @@ function heroWidthVars(model: Model): CSSProperties {
   const glowLg = Math.min(lg * 1.35, 1)
   const glowSm = Math.min(sm * 1.2, 1)
   return {
-    '--hero-lg': `${(lg * 100).toFixed(1)}%`,
+    '--hero-lg': maxWidth ? `min(${lgWidth}, ${maxWidth}rem)` : lgWidth,
     '--hero-sm': `${(sm * 100).toFixed(1)}%`,
     '--hero-glow-lg': `${(glowLg * 100).toFixed(1)}%`,
     '--hero-glow-sm': `${(glowSm * 100).toFixed(1)}%`,
@@ -238,6 +240,10 @@ function ModelVideoBlock({
   video: ModelVideo
   photos: Array<{ file: string; alt: string }>
 }) {
+  const card = video.showCardPhoto ? model.photos?.card : undefined
+  const visiblePhotos = card
+    ? [{ file: card, alt: `Банный чан «${model.name}» в студии` }, ...photos].slice(0, 2)
+    : photos.slice(0, 2)
   const heading = (
     <h2 className="mx-auto max-w-(--container-content) px-4 text-2xl font-bold text-navy-700 sm:px-6">
       Видеообзор комплекта
@@ -260,13 +266,15 @@ function ModelVideoBlock({
               className="aspect-4/5 sm:aspect-2/3"
             />
           </div>
-          {photos.slice(0, 2).map((photo) => (
+          {visiblePhotos.map((photo) => (
             <img
               key={photo.file}
               src={photoUrl(photo.file)}
               alt={photo.alt}
               loading="lazy"
-              className="aspect-3/4 w-full rounded-panel object-cover sm:aspect-2/3"
+              className={`aspect-3/4 w-full rounded-panel sm:aspect-2/3 ${
+                photo.file === card ? 'bg-white object-contain' : 'object-cover'
+              }`}
             />
           ))}
         </div>
@@ -286,7 +294,7 @@ function ModelVideoBlock({
             className="aspect-video"
           />
         </div>
-        {photos.slice(0, 2).map((photo) => (
+        {visiblePhotos.map((photo) => (
           <div
             key={photo.file}
             className="relative aspect-3/4 overflow-hidden rounded-panel sm:aspect-auto"
@@ -295,7 +303,9 @@ function ModelVideoBlock({
               src={photoUrl(photo.file)}
               alt={photo.alt}
               loading="lazy"
-              className="absolute inset-0 size-full object-cover object-[50%_65%]"
+              className={`absolute inset-0 size-full ${
+                photo.file === card ? 'bg-white object-contain' : 'object-cover object-[50%_65%]'
+              }`}
             />
           </div>
         ))}

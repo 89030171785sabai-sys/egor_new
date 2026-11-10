@@ -5,7 +5,7 @@ import { ModelShot } from './ModelShot'
 // Align the bases. Match bowl widths on frontal photos and overall heights on the side-stove photos.
 const productFraming: Record<string, { width: string; left: string; bottom: string }> = {
   'cherny-brilliant-front.jpg': { width: '94.3%', left: '4.8%', bottom: '1.5%' },
-  'grafit-front.png': { width: '79.3%', left: '10.2%', bottom: '1.8%' },
+  'grafit-front-chimney.webp': { width: '93%', left: '3.5%', bottom: '4%' },
   'grant-front.png': { width: '107.7%', left: '-3.6%', bottom: '-0.8%' },
   'nefrit-front.jpg': { width: '72.5%', left: '13.8%', bottom: '5.0%' },
   'oniks-front.png': { width: '93.0%', left: '5.0%', bottom: '6.3%' },

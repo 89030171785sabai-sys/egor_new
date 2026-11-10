@@ -76,6 +76,8 @@ export interface ModelVideo {
   poster: string
   /** Shot upright on a phone: shown tall and narrow instead of cropped to 16:9. */
   portrait?: boolean
+  /** Show the studio product photo next to the video. */
+  showCardPhoto?: boolean
 }
 
 export interface ModelPhotos {
@@ -120,6 +122,8 @@ export interface ModelPhotos {
    * script after adding a photograph rather than guessing a value.
    */
   heroWidth?: number
+  /** Cap the image width on large screens so the entire photo fits the hero. */
+  heroMaxWidthRem?: number
   /**
    * The shot's own backdrop colour. The page lays it behind the photograph as
    * a soft glow, which is what lets the picture's edges fade out without the
@@ -196,10 +200,20 @@ export const models: Model[] = [
       { cm: 210, price: 135500 },
       { cm: 235, price: 176500 },
     ],
-    // Only the model page's own hero: the home page and the catalogue card
-    // are waiting for their own shots.
-    photos: { stove: 'grafit-stove-white.jpg', scene: 'grafit-scene.webp', banner: 'grafit-banner.webp', card: 'grafit-front.png', cardContain: true, catalogue: 'grafit-front.png', cardTop: '#f2f3f5', hero: 'grafit-page-hero.png', heroWidth: 0.596, heroTone: '#263b44', heroBoost: 1.18 },
-    video: { src: 'grafit-obzor.mp4', poster: 'grafit-obzor-poster.webp', portrait: true },
+    photos: {
+      stove: 'grafit-stove-white.jpg',
+      scene: 'grafit-scene.webp',
+      banner: 'grafit-banner.webp',
+      card: 'grafit-front-chimney.webp',
+      cardContain: true,
+      catalogue: 'grafit-front-chimney.webp',
+      cardTop: '#fff',
+      hero: 'grafit-hero-chimney.webp',
+      heroWidth: 0.596,
+      heroMaxWidthRem: 46,
+      heroTone: '#17434b',
+    },
+    video: { src: 'grafit-obzor.mp4', poster: 'grafit-obzor-poster.webp', portrait: true, showCardPhoto: true },
     includes: [...commonIncludes, 'Ветрозащита без дна', 'Дымоход 3 м и защитный экран'],
     seoTitle: 'Банный чан «Графит»',
     seoDescription:
