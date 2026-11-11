@@ -1,24 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Link, NavLink, useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { LogoLockup } from '../ui/Logo'
-import { navItems, modelRoutes, opensDark } from '../../lib/routes'
+import { navItems, opensDark } from '../../lib/routes'
 import { contacts, hasContact } from '../../data/contacts'
 
 /**
- * Floating pill header. It sits over the content rather than pushing it down,
- * tightens once the page is scrolled, and carries the sections of the site;
- * the model line lives behind its own button, which opens a slide-out list.
- *
- * At rest it has no plate at all: the links sit in white straight on the
- * photograph behind the opening screen, and the model line reads as outlined
- * chips. Every page on the site opens on a dark block, which is what makes
- * that safe.
- *
- * It takes its white plate the moment the page moves. That is not decoration:
- * anything see-through with the page running underneath shows whatever passes
- * below it — a dark button sliding under one of the two pills was tinting it a
- * different colour from the other — and white type needs the dark opening
- * screen behind it, which is exactly what scrolls away.
+ * The fixed header overlays the opening screen and takes a white background
+ * on scroll or on pages that open with a light background.
  */
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -123,33 +111,6 @@ export function Header() {
             </button>
           </div>
 
-          <nav
-            aria-label="Модели"
-            className={`pointer-events-auto mx-auto mt-2 hidden w-fit max-w-full items-center gap-1.5 rounded-full px-2 py-1.5 transition-all duration-300 md:flex ${
-              scrolled ? 'bg-white shadow-lg shadow-ink-900/10' : 'bg-transparent'
-            }`}
-          >
-            {modelRoutes.map((route) => (
-              <NavLink
-                key={route.path}
-                to={route.path}
-                className={({ isActive }) =>
-                  // Off the plate they are outlined chips, the way the model
-                  // line reads over a photograph.
-                  `rounded-full px-3 py-1.5 text-[0.8125rem] whitespace-nowrap transition-colors ${
-                    isActive
-                      ? 'bg-brand-500 text-white'
-                      : scrolled
-                        ? 'text-ink-600 hover:bg-sand-200 hover:text-ink-900'
-                        : 'text-white/85 ring-1 ring-white/30 hover:bg-white/15 hover:text-white'
-                  }`
-                }
-              >
-                {route.label}
-              </NavLink>
-            ))}
-          </nav>
-
           {menuOpen && (
             <nav className="pointer-events-auto mx-auto mt-2 max-h-[80dvh] w-full max-w-md overflow-y-auto rounded-panel bg-white p-5 shadow-xl shadow-ink-900/10 lg:hidden">
               <p className="mb-2 text-xs tracking-wider text-ink-400 uppercase">Разделы</p>
@@ -162,17 +123,6 @@ export function Header() {
                 >
                   {item.label}
                 </NavItem>
-              ))}
-
-              <p className="mt-5 mb-2 text-xs tracking-wider text-ink-400 uppercase">Модели</p>
-              {modelRoutes.map((route) => (
-                <Link
-                  key={route.path}
-                  to={route.path}
-                  className="block border-b border-sand-200 py-2.5 text-base last:border-0"
-                >
-                  {route.label}
-                </Link>
               ))}
 
               <div className="mt-5 border-t border-sand-200 pt-4">
