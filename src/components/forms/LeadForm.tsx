@@ -91,7 +91,7 @@ export function LeadForm({
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
-    if (!validate()) return
+    if (state === 'submitting' || !validate()) return
 
     setState('submitting')
     const result = await submitLead({
@@ -111,7 +111,9 @@ export function LeadForm({
       },
     })
 
-    if (result.ok) reachGoal('lead', { source })
+    if (result.ok && result.confirmed) {
+      reachGoal(source === 'quiz' ? 'quiz_success' : 'lead_success', { source })
+    }
     setState(result.ok ? 'success' : 'error')
   }
 

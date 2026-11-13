@@ -22,7 +22,7 @@ export interface Lead {
   payload?: Record<string, string | number | boolean>
 }
 
-export type LeadResult = { ok: true } | { ok: false; error: string }
+export type LeadResult = { ok: true; confirmed: boolean } | { ok: false; error: string }
 
 const endpoint = import.meta.env.VITE_LEADS_ENDPOINT as string | undefined
 
@@ -32,29 +32,26 @@ export async function submitLead(lead: Lead): Promise<LeadResult> {
     // exercised, and leave a trace for debugging.
     console.info('[lead] no VITE_LEADS_ENDPOINT configured, lead not sent', lead)
     await new Promise((resolve) => setTimeout(resolve, 400))
-    return { ok: true }
+    return { ok: true, confirmed: false }
   }
 
-  // A Google Apps Script web app does not answer the pre-flight request a JSON
-  // POST triggers, so the lead goes as plain text with no custom headers and
-  // the answer is opaque. A network failure is still reported; a script that
-  // rejected the row is not, which is why the script itself is kept trivial.
+  // The site server reads the Apps Script acknowledgment, which is hidden
+  // from the browser when the request uses no-cors.
   const toGoogleScript = /^https:\/\/script\.google(usercontent)?\.com\//.test(endpoint)
+  const url = toGoogleScript ? `${import.meta.env.BASE_URL}lead-receiver.php` : endpoint
   const body = JSON.stringify({ ...lead, sentAt: new Date().toISOString(), page: location.href })
 
   try {
-    if (toGoogleScript) {
-      await fetch(endpoint, { method: 'POST', mode: 'no-cors', body })
-      return { ok: true }
-    }
-
-    const response = await fetch(endpoint, {
+    const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body,
     })
     if (!response.ok) return { ok: false, error: `HTTP ${response.status}` }
-    return { ok: true }
+    if (toGoogleScript && (await response.text()).trim() !== 'ok') {
+      return { ok: false, error: 'Lead was not acknowledged' }
+    }
+    return { ok: true, confirmed: true }
   } catch (error) {
     return { ok: false, error: error instanceof Error ? error.message : 'network' }
   }

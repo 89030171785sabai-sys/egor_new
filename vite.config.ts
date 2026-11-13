@@ -97,6 +97,13 @@ function staticHostAssets(origin: string): Plugin {
 
       await copyFile(dist('index.html'), dist('404.html'))
       await writeFile(dist('.nojekyll'), '', 'utf8')
+
+      const endpoint = process.env.VITE_LEADS_ENDPOINT
+      if (endpoint && /^https:\/\/script\.google(usercontent)?\.com\//.test(endpoint)) {
+        const template = readFileSync(resolve(__dirname, 'server/lead-receiver.php'), 'utf8')
+        const phpUrl = "'" + endpoint.replaceAll('\\', '\\\\').replaceAll("'", "\\'") + "'"
+        await writeFile(dist('lead-receiver.php'), template.replace('__LEADS_ENDPOINT__', () => phpUrl), 'utf8')
+      }
     },
   }
 }
